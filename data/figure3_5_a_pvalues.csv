@@ -1,0 +1,5 @@
+pvalue_wilcoxon,site1,site2,BH_corrected_pvalue_wilcoxon,BH_corrected_pvalue_wilcoxon_asterisks
+6.422844305225096e-18,CF Lung/Trachea,Non-CF Lung/Trachea,1.9268532915675286e-17,***
+3.606710541758812e-14,CF Lung/Trachea,Skin/Wound,7.213421083517625e-14,***
+1.5107897729363528e-30,CF Lung/Trachea,Urine/Catheter,9.064738637618117e-30,***
+0.01365116313437193,Non-CF Lung/Trachea,Urine/Catheter,0.020476744701557893,*

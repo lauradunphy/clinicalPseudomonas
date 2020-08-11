@@ -1,0 +1,442 @@
+variable1,variable2,pearsonCorr,pvalue,BH_corrected_pvalue,BH_corrected_pvalue_asterisks
+Age,Cystic Fibrosis,-0.580738668585542,0,0,***
+Age,Diabetes,0.06347295328860192,0.04800558094733365,0.09089581310519732,
+Age,Co-isolated organism,-0.1922908115840426,1.5345618109563475e-9,7.385078715227422e-9,***
+Age,Hemolytic,0.13726297056966963,1.770268762757432e-5,6.1034639432383106e-5,***
+Age,Metallic,0.11342492948886258,3.981589876238534e-4,0.0011791631556552582,**
+Age,Mucoid,-0.2029065177119757,1.7583046130198454e-10,8.829747078425745e-10,***
+Age,Antipseudomonal,-0.280243024169253,0,0,***
+Age,Non-Antipseudomonal,-0.18371303669991335,8.096751491493137e-9,3.596826143336374e-8,***
+Age,Pigment,0.12753876783169166,6.737056363448346e-5,2.1318630410363946e-4,***
+Age,Repeat Patient,-0.24568915789446258,7.993605777301127e-15,5.430949807519295e-14,***
+Age,Season (fall),-0.02920792966575717,0.3632624034449279,0.49941261222520367,
+Age,Season (spring),0.028377175236481356,0.37707613689559905,0.5064220210632755,
+Age,Season (summer),-0.016948590148708496,0.5978530359827332,0.7046125066939356,
+Age,Season (winter),0.02077385627446481,0.5179119353767279,0.6397735672300756,
+Age,Sex (Female),0.0014079430674751661,0.9650508783532228,0.9777489162262915,
+Age,Source (Blood),0.07175051465470925,0.02536416211381498,0.05278487791253388,
+Age,Source (ENT/Sinus),-0.27465485249945454,0,0,***
+Age,Source (Lung/Trachea),-0.21274905061211535,2.116862241052786e-11,1.1642742325790323e-10,***
+Age,Source (Other),0.0014704611959569347,0.9635000602290558,0.9777489162262915,
+Age,Source (Skin/Wound),0.13124976504777391,4.089793839190392e-5,1.3496319669328293e-4,***
+Age,Source (Urine/Catheter),0.3528029290338343,0,0,***
+Cystic Fibrosis,Cystic Fibrosis,NA,NA,NA,
+Cystic Fibrosis,Diabetes,0.1807584386422591,1.4104026391237312e-8,6.147226596935507e-8,***
+Cystic Fibrosis,Co-isolated organism,0.25162344534975367,1.7763568394002505e-15,1.2434497875801753e-14,***
+Cystic Fibrosis,Hemolytic,-0.3207557988717953,0,0,***
+Cystic Fibrosis,Metallic,-0.19754724987790995,5.328804064674841e-10,2.6190505083827415e-9,***
+Cystic Fibrosis,Mucoid,0.460405451978552,0,0,***
+Cystic Fibrosis,Antipseudomonal,0.4797093082064609,0,0,***
+Cystic Fibrosis,Non-Antipseudomonal,0.25706798042243456,4.440892098500626e-16,3.3091808863020793e-15,***
+Cystic Fibrosis,Pigment,-0.31240774184559705,0,0,***
+Cystic Fibrosis,Repeat Patient,0.397458193187699,0,0,***
+Cystic Fibrosis,Season (fall),0.017028166542138255,0.5961344801270132,0.7046125066939356,
+Cystic Fibrosis,Season (spring),-0.025705605322754742,0.4236473375304066,0.5560371305086587,
+Cystic Fibrosis,Season (summer),-0.002333432334395947,0.9421099215616364,0.96723285280328,
+Cystic Fibrosis,Season (winter),0.008231092302755198,0.7978257655237075,0.8571988457487276,
+Cystic Fibrosis,Sex (Female),NA,NA,NA,
+Cystic Fibrosis,Source (Blood),-0.12010865037737978,1.7580941778572168e-4,5.27428253357165e-4,***
+Cystic Fibrosis,Source (ENT/Sinus),0.22245848557531922,2.3643309532417334e-12,1.3654011254971011e-11,***
+Cystic Fibrosis,Source (Lung/Trachea),0.41619937548754193,0,0,***
+Cystic Fibrosis,Source (Other),-0.10500941924073508,0.0010490365009476754,0.0028848503776061074,**
+Cystic Fibrosis,Source (Skin/Wound),-0.239847450957648,3.597122599785507e-14,2.2457711366228437e-13,***
+Cystic Fibrosis,Source (Urine/Catheter),-0.4172030128756668,0,0,***
+Diabetes,Cystic Fibrosis,NA,NA,NA,
+Diabetes,Diabetes,NA,NA,NA,
+Diabetes,Co-isolated organism,0.049133567808223685,0.12601750764870734,0.21248207494052113,
+Diabetes,Hemolytic,-0.08644699627196809,0.007031660320059974,0.017655581890585366,*
+Diabetes,Metallic,-0.048976388532215046,0.127235037254805,0.21298038844826056,
+Diabetes,Mucoid,0.1288855364660654,5.62957385632501e-5,1.8061549455709408e-4,***
+Diabetes,Antipseudomonal,0.10567658162669673,9.738605838496284e-4,0.002710383070714026,**
+Diabetes,Non-Antipseudomonal,0.07397332614018386,0.021151836711208905,0.045664245610179975,*
+Diabetes,Pigment,-0.0601145276323751,0.061137200600609454,0.11242816377570541,
+Diabetes,Repeat Patient,0.0830236119166346,0.009647186093378002,0.022739795791533863,*
+Diabetes,Season (fall),0.0305447115077374,0.3417080900730456,0.48130834638337516,
+Diabetes,Season (spring),0.018441432481427537,0.5659950481804477,0.6809627923421011,
+Diabetes,Season (summer),-0.009567169576075008,0.7658984361000436,0.8306222476014559,
+Diabetes,Season (winter),-0.03962875034265411,0.21729217118192823,0.33022691804621984,
+Diabetes,Sex (Female),NA,NA,NA,
+Diabetes,Source (Blood),0.033184919610981606,0.30159285593679463,0.4327201846049662,
+Diabetes,Source (ENT/Sinus),-0.03350867876078729,0.29689844638030793,0.43068894102525973,
+Diabetes,Source (Lung/Trachea),0.04528937347978088,0.15849180087394443,0.25249383449573215,
+Diabetes,Source (Other),-0.06162643307804365,0.054897736969996114,0.10310062796804148,
+Diabetes,Source (Skin/Wound),-0.01649608372116897,0.607667924196249,0.7053833692931333,
+Diabetes,Source (Urine/Catheter),-0.005384483680130408,0.8669213356764438,0.9078705511125902,
+Co-isolated organism,Cystic Fibrosis,NA,NA,NA,
+Co-isolated organism,Diabetes,NA,NA,NA,
+Co-isolated organism,Co-isolated organism,NA,NA,NA,
+Co-isolated organism,Hemolytic,-0.040204924920935595,0.21067449295219864,0.322290118357337,
+Co-isolated organism,Metallic,-0.07460604395952089,0.020070047489628484,0.04373755632173754,*
+Co-isolated organism,Mucoid,0.07328934096760566,0.02237799056216727,0.047424915778537975,*
+Co-isolated organism,Antipseudomonal,NA,NA,NA,
+Co-isolated organism,Non-Antipseudomonal,NA,NA,NA,
+Co-isolated organism,Pigment,-0.055856861904628595,0.08191788152802393,0.14669015994553122,
+Co-isolated organism,Repeat Patient,NA,NA,NA,
+Co-isolated organism,Season (fall),0.042867145920850856,0.18198417905045305,0.2859751385078548,
+Co-isolated organism,Season (spring),-0.024237896722266346,0.4506018789608668,0.5834054980152034,
+Co-isolated organism,Season (summer),-0.010875882012317541,0.735004925149934,0.8162795082193979,
+Co-isolated organism,Season (winter),-0.01180100256155026,0.7134186299397423,0.8011051638240619,
+Co-isolated organism,Sex (Female),NA,NA,NA,
+Co-isolated organism,Source (Blood),NA,NA,NA,
+Co-isolated organism,Source (ENT/Sinus),NA,NA,NA,
+Co-isolated organism,Source (Lung/Trachea),NA,NA,NA,
+Co-isolated organism,Source (Other),NA,NA,NA,
+Co-isolated organism,Source (Skin/Wound),NA,NA,NA,
+Co-isolated organism,Source (Urine/Catheter),NA,NA,NA,
+Hemolytic,Cystic Fibrosis,NA,NA,NA,
+Hemolytic,Diabetes,NA,NA,NA,
+Hemolytic,Co-isolated organism,NA,NA,NA,
+Hemolytic,Hemolytic,NA,NA,NA,
+Hemolytic,Metallic,NA,NA,NA,
+Hemolytic,Mucoid,NA,NA,NA,
+Hemolytic,Antipseudomonal,NA,NA,NA,
+Hemolytic,Non-Antipseudomonal,NA,NA,NA,
+Hemolytic,Pigment,0.2568506748713169,4.440892098500626e-16,3.3091808863020793e-15,***
+Hemolytic,Repeat Patient,NA,NA,NA,
+Hemolytic,Season (fall),0.085049391126784,0.008011016749023936,0.019896474178321275,*
+Hemolytic,Season (spring),0.10788776677099043,7.588610709521326e-4,0.0021641593504931186,**
+Hemolytic,Season (summer),-0.033886384583582216,0.29148380718039135,0.43068894102525973,
+Hemolytic,Season (winter),-0.15552075808074287,1.1183682115945004e-6,4.305717614638827e-6,***
+Hemolytic,Sex (Female),NA,NA,NA,
+Hemolytic,Source (Blood),NA,NA,NA,
+Hemolytic,Source (ENT/Sinus),NA,NA,NA,
+Hemolytic,Source (Lung/Trachea),NA,NA,NA,
+Hemolytic,Source (Other),NA,NA,NA,
+Hemolytic,Source (Skin/Wound),NA,NA,NA,
+Hemolytic,Source (Urine/Catheter),NA,NA,NA,
+Metallic,Cystic Fibrosis,NA,NA,NA,
+Metallic,Diabetes,NA,NA,NA,
+Metallic,Co-isolated organism,NA,NA,NA,
+Metallic,Hemolytic,0.10068679346264538,0.001681231699503405,0.004568994383356313,**
+Metallic,Metallic,NA,NA,NA,
+Metallic,Mucoid,NA,NA,NA,
+Metallic,Antipseudomonal,NA,NA,NA,
+Metallic,Non-Antipseudomonal,NA,NA,NA,
+Metallic,Pigment,0.12179557862996607,1.4206799031168948e-4,4.3181191792105616e-4,***
+Metallic,Repeat Patient,NA,NA,NA,
+Metallic,Season (fall),0.0010912207041693341,0.9729093665085875,0.981406391543597,
+Metallic,Season (spring),-0.046066819695139434,0.15145962709029703,0.246388548294779,
+Metallic,Season (summer),0.010575874108491775,0.7420512492479532,0.818093287085462,
+Metallic,Season (winter),0.031127395713129485,0.33257402043666984,0.4735445223072748,
+Metallic,Sex (Female),NA,NA,NA,
+Metallic,Source (Blood),NA,NA,NA,
+Metallic,Source (ENT/Sinus),NA,NA,NA,
+Metallic,Source (Lung/Trachea),NA,NA,NA,
+Metallic,Source (Other),NA,NA,NA,
+Metallic,Source (Skin/Wound),NA,NA,NA,
+Metallic,Source (Urine/Catheter),NA,NA,NA,
+Mucoid,Cystic Fibrosis,NA,NA,NA,
+Mucoid,Diabetes,NA,NA,NA,
+Mucoid,Co-isolated organism,NA,NA,NA,
+Mucoid,Hemolytic,-0.42654535294885537,0,0,***
+Mucoid,Metallic,-0.23476402061209697,1.2656542480726785e-13,7.693845560652334e-13,***
+Mucoid,Mucoid,NA,NA,NA,
+Mucoid,Antipseudomonal,NA,NA,NA,
+Mucoid,Non-Antipseudomonal,NA,NA,NA,
+Mucoid,Pigment,-0.2763443963637951,0,0,***
+Mucoid,Repeat Patient,NA,NA,NA,
+Mucoid,Season (fall),-0.02572525330940007,0.42329301004649666,0.5560371305086587,
+Mucoid,Season (spring),-0.024048026662784213,0.45415832263631595,0.5834054980152034,
+Mucoid,Season (summer),-0.04041937225964539,0.20824900480842423,0.3207034674049733,
+Mucoid,Season (winter),0.0883897235093761,0.0058486313460299755,0.015011487121476938,*
+Mucoid,Sex (Female),NA,NA,NA,
+Mucoid,Source (Blood),NA,NA,NA,
+Mucoid,Source (ENT/Sinus),NA,NA,NA,
+Mucoid,Source (Lung/Trachea),NA,NA,NA,
+Mucoid,Source (Other),NA,NA,NA,
+Mucoid,Source (Skin/Wound),NA,NA,NA,
+Mucoid,Source (Urine/Catheter),NA,NA,NA,
+Antipseudomonal,Cystic Fibrosis,NA,NA,NA,
+Antipseudomonal,Diabetes,NA,NA,NA,
+Antipseudomonal,Co-isolated organism,0.17532957602113086,3.8187559781022173e-8,1.6335789461881708e-7,***
+Antipseudomonal,Hemolytic,-0.19139067506411103,1.8338677243434631e-9,8.64537641476204e-9,***
+Antipseudomonal,Metallic,-0.1234727380535585,1.1463176222425986e-4,3.530658276507204e-4,***
+Antipseudomonal,Mucoid,0.20697093327731325,7.4294570495681e-11,3.813787952111625e-10,***
+Antipseudomonal,Antipseudomonal,NA,NA,NA,
+Antipseudomonal,Non-Antipseudomonal,0.4937164941269942,0,0,***
+Antipseudomonal,Pigment,-0.1266579633905349,7.569471461010835e-5,2.3629025776939226e-4,***
+Antipseudomonal,Repeat Patient,NA,NA,NA,
+Antipseudomonal,Season (fall),0.00898526931348315,0.7797584515798306,0.8417018799763593,
+Antipseudomonal,Season (spring),-0.022719370758889426,0.479482722703628,0.6003723641262068,
+Antipseudomonal,Season (summer),-0.05698709449489672,0.07591064009270276,0.13699498329229953,
+Antipseudomonal,Season (winter),0.06702635110872733,0.036774570999214884,0.07260620428050119,
+Antipseudomonal,Sex (Female),NA,NA,NA,
+Antipseudomonal,Source (Blood),NA,NA,NA,
+Antipseudomonal,Source (ENT/Sinus),NA,NA,NA,
+Antipseudomonal,Source (Lung/Trachea),NA,NA,NA,
+Antipseudomonal,Source (Other),NA,NA,NA,
+Antipseudomonal,Source (Skin/Wound),NA,NA,NA,
+Antipseudomonal,Source (Urine/Catheter),NA,NA,NA,
+Non-Antipseudomonal,Cystic Fibrosis,NA,NA,NA,
+Non-Antipseudomonal,Diabetes,NA,NA,NA,
+Non-Antipseudomonal,Co-isolated organism,0.07671653307046694,0.016802587311807615,0.0373211314329573,*
+Non-Antipseudomonal,Hemolytic,-0.11292782902003494,4.223961300122703e-4,0.0012351076713017018,**
+Non-Antipseudomonal,Metallic,-0.05335190465939316,0.09660626342167467,0.1675673658439731,
+Non-Antipseudomonal,Mucoid,0.09712319784762664,0.00244788336681645,0.006575128578309302,**
+Non-Antipseudomonal,Antipseudomonal,NA,NA,NA,
+Non-Antipseudomonal,Non-Antipseudomonal,NA,NA,NA,
+Non-Antipseudomonal,Pigment,-0.04614872641335423,0.15073280296791225,0.246388548294779,
+Non-Antipseudomonal,Repeat Patient,NA,NA,NA,
+Non-Antipseudomonal,Season (fall),0.015859735474200803,0.6215903508373783,0.717936855217172,
+Non-Antipseudomonal,Season (spring),-0.024024415338898344,0.4546016867650935,0.5834054980152034,
+Non-Antipseudomonal,Season (summer),-0.028569629821970845,0.3738475699500581,0.5050221558974469,
+Non-Antipseudomonal,Season (winter),0.0334147898815812,0.29825475581263716,0.43068894102525973,
+Non-Antipseudomonal,Sex (Female),NA,NA,NA,
+Non-Antipseudomonal,Source (Blood),NA,NA,NA,
+Non-Antipseudomonal,Source (ENT/Sinus),NA,NA,NA,
+Non-Antipseudomonal,Source (Lung/Trachea),NA,NA,NA,
+Non-Antipseudomonal,Source (Other),NA,NA,NA,
+Non-Antipseudomonal,Source (Skin/Wound),NA,NA,NA,
+Non-Antipseudomonal,Source (Urine/Catheter),NA,NA,NA,
+Pigment,Cystic Fibrosis,NA,NA,NA,
+Pigment,Diabetes,NA,NA,NA,
+Pigment,Co-isolated organism,NA,NA,NA,
+Pigment,Hemolytic,NA,NA,NA,
+Pigment,Metallic,NA,NA,NA,
+Pigment,Mucoid,NA,NA,NA,
+Pigment,Antipseudomonal,NA,NA,NA,
+Pigment,Non-Antipseudomonal,NA,NA,NA,
+Pigment,Pigment,NA,NA,NA,
+Pigment,Repeat Patient,NA,NA,NA,
+Pigment,Season (fall),0.0639199186306747,0.046451058241731236,0.08941828711533263,
+Pigment,Season (spring),0.049467068145750054,0.12346419879137205,0.20970757294710987,
+Pigment,Season (summer),-0.04715914639701334,0.1419835663753808,0.23427288451937828,
+Pigment,Season (winter),-0.06658176683040509,0.03804443462397433,0.07447681693337348,
+Pigment,Sex (Female),NA,NA,NA,
+Pigment,Source (Blood),NA,NA,NA,
+Pigment,Source (ENT/Sinus),NA,NA,NA,
+Pigment,Source (Lung/Trachea),NA,NA,NA,
+Pigment,Source (Other),NA,NA,NA,
+Pigment,Source (Skin/Wound),NA,NA,NA,
+Pigment,Source (Urine/Catheter),NA,NA,NA,
+Repeat Patient,Cystic Fibrosis,NA,NA,NA,
+Repeat Patient,Diabetes,NA,NA,NA,
+Repeat Patient,Co-isolated organism,0.08493491218226616,0.00809640074788831,0.019896474178321275,*
+Repeat Patient,Hemolytic,-0.25516775984786116,6.661338147750939e-16,4.808653475407709e-15,***
+Repeat Patient,Metallic,-0.07158660757121328,0.025701655564015047,0.053009664600781034,
+Repeat Patient,Mucoid,0.2602478175359556,2.220446049250313e-16,1.7687001288855942e-15,***
+Repeat Patient,Antipseudomonal,0.45722307488040026,0,0,***
+Repeat Patient,Non-Antipseudomonal,0.2735593226416617,0,0,***
+Repeat Patient,Pigment,-0.1666080244902917,1.774796469788953e-7,7.454145173113602e-7,***
+Repeat Patient,Repeat Patient,NA,NA,NA,
+Repeat Patient,Season (fall),0.08081494630536142,0.01176412408182137,0.027175126629007364,*
+Repeat Patient,Season (spring),-0.15933015639203715,6.025950001209424e-7,2.4420955268059243e-6,***
+Repeat Patient,Season (summer),-0.0793947680036699,0.013333658909112422,0.029903642796164753,*
+Repeat Patient,Season (winter),0.13999509249354503,1.1959314670351162e-5,4.250156444386336e-5,***
+Repeat Patient,Sex (Female),NA,NA,NA,
+Repeat Patient,Source (Blood),-0.014416861226316257,0.6536577297530055,0.7401712528085503,
+Repeat Patient,Source (ENT/Sinus),0.0226504155168118,0.48081769421362885,0.6003723641262068,
+Repeat Patient,Source (Lung/Trachea),0.2790668159064141,0,0,***
+Repeat Patient,Source (Other),-0.04536646218527437,0.15778368397176612,0.25249383449573215,
+Repeat Patient,Source (Skin/Wound),-0.15573347910229948,1.0808267130180127e-6,4.231711367917982e-6,***
+Repeat Patient,Source (Urine/Catheter),-0.21220581620302953,2.385758257616999e-11,1.2816515290919226e-10,***
+Season (spring),Cystic Fibrosis,NA,NA,NA,
+Season (spring),Diabetes,NA,NA,NA,
+Season (spring),Co-isolated organism,NA,NA,NA,
+Season (spring),Hemolytic,NA,NA,NA,
+Season (spring),Metallic,NA,NA,NA,
+Season (spring),Mucoid,NA,NA,NA,
+Season (spring),Antipseudomonal,NA,NA,NA,
+Season (spring),Non-Antipseudomonal,NA,NA,NA,
+Season (spring),Pigment,NA,NA,NA,
+Season (spring),Repeat Patient,NA,NA,NA,
+Season (spring),Season (fall),-0.33154657271709786,0,0,***
+Season (spring),Season (spring),NA,NA,NA,
+Season (spring),Season (summer),-0.2845626777210831,0,0,***
+Season (spring),Season (winter),NA,NA,NA,
+Season (spring),Sex (Female),NA,NA,NA,
+Season (spring),Source (Blood),NA,NA,NA,
+Season (spring),Source (ENT/Sinus),NA,NA,NA,
+Season (spring),Source (Lung/Trachea),NA,NA,NA,
+Season (spring),Source (Other),NA,NA,NA,
+Season (spring),Source (Skin/Wound),NA,NA,NA,
+Season (spring),Source (Urine/Catheter),NA,NA,NA,
+Season (summer),Cystic Fibrosis,NA,NA,NA,
+Season (summer),Diabetes,NA,NA,NA,
+Season (summer),Co-isolated organism,NA,NA,NA,
+Season (summer),Hemolytic,NA,NA,NA,
+Season (summer),Metallic,NA,NA,NA,
+Season (summer),Mucoid,NA,NA,NA,
+Season (summer),Antipseudomonal,NA,NA,NA,
+Season (summer),Non-Antipseudomonal,NA,NA,NA,
+Season (summer),Pigment,NA,NA,NA,
+Season (summer),Repeat Patient,NA,NA,NA,
+Season (summer),Season (fall),-0.363702983910865,0,0,***
+Season (summer),Season (spring),NA,NA,NA,
+Season (summer),Season (summer),NA,NA,NA,
+Season (summer),Season (winter),NA,NA,NA,
+Season (summer),Sex (Female),NA,NA,NA,
+Season (summer),Source (Blood),NA,NA,NA,
+Season (summer),Source (ENT/Sinus),NA,NA,NA,
+Season (summer),Source (Lung/Trachea),NA,NA,NA,
+Season (summer),Source (Other),NA,NA,NA,
+Season (summer),Source (Skin/Wound),NA,NA,NA,
+Season (summer),Source (Urine/Catheter),NA,NA,NA,
+Season (winter),Cystic Fibrosis,NA,NA,NA,
+Season (winter),Diabetes,NA,NA,NA,
+Season (winter),Co-isolated organism,NA,NA,NA,
+Season (winter),Hemolytic,NA,NA,NA,
+Season (winter),Metallic,NA,NA,NA,
+Season (winter),Mucoid,NA,NA,NA,
+Season (winter),Antipseudomonal,NA,NA,NA,
+Season (winter),Non-Antipseudomonal,NA,NA,NA,
+Season (winter),Pigment,NA,NA,NA,
+Season (winter),Repeat Patient,NA,NA,NA,
+Season (winter),Season (fall),-0.3843504081346873,0,0,***
+Season (winter),Season (spring),-0.3007173054945358,0,0,***
+Season (winter),Season (summer),-0.3298836131095302,0,0,***
+Season (winter),Season (winter),NA,NA,NA,
+Season (winter),Sex (Female),NA,NA,NA,
+Season (winter),Source (Blood),NA,NA,NA,
+Season (winter),Source (ENT/Sinus),NA,NA,NA,
+Season (winter),Source (Lung/Trachea),NA,NA,NA,
+Season (winter),Source (Other),NA,NA,NA,
+Season (winter),Source (Skin/Wound),NA,NA,NA,
+Season (winter),Source (Urine/Catheter),NA,NA,NA,
+Sex (Female),Cystic Fibrosis,0.05711347577381115,0.0752618191278418,0.13689354502780673,
+Sex (Female),Diabetes,0.03006460271428222,0.34935347630987335,0.48607604432938517,
+Sex (Female),Co-isolated organism,-0.019311145052036773,0.5478179619766541,0.669555286860355,
+Sex (Female),Hemolytic,-0.00981597626051192,0.7599946963961817,0.8281074286203677,
+Sex (Female),Metallic,0.00803422521744648,0.8025602611803049,0.8582936126511593,
+Sex (Female),Mucoid,-0.06007116814848246,0.06132445296856659,0.11242816377570541,
+Sex (Female),Antipseudomonal,-0.04238465487268945,0.18695703517676998,0.29180456166103963,
+Sex (Female),Non-Antipseudomonal,-0.0029293477860224343,0.9273625570114603,0.9563426369180684,
+Sex (Female),Pigment,-0.005317211232523494,0.8685687956531707,0.9078705511125902,
+Sex (Female),Repeat Patient,-0.05325669215757061,0.09720358018654718,0.1675673658439731,
+Sex (Female),Season (fall),-0.01509688809810801,0.6384600273381167,0.7301201302727968,
+Sex (Female),Season (spring),0.036176707226121006,0.2600747944669304,0.39011219170039557,
+Sex (Female),Season (summer),-0.006680637762937043,0.8353002750792751,0.8891906154069702,
+Sex (Female),Season (winter),-0.011153552257385457,0.7285030185007848,0.8129671365878324,
+Sex (Female),Sex (Female),NA,NA,NA,
+Sex (Female),Source (Blood),-0.08914443917189697,0.005439635487153094,0.014118604466655782,*
+Sex (Female),Source (ENT/Sinus),0.0873633075777905,0.006449259077071723,0.016371196118720528,*
+Sex (Female),Source (Lung/Trachea),-0.054883778154760234,0.08739318030719767,0.15410553168673788,
+Sex (Female),Source (Other),-0.028854454072113376,0.3691008845463055,0.5015429666482152,
+Sex (Female),Source (Skin/Wound),3.411242473125835e-4,0.9915297866705011,0.9915297866705011,
+Sex (Female),Source (Urine/Catheter),0.03392501954951276,0.29093371218920927,0.43068894102525973,
+Source (Blood),Cystic Fibrosis,NA,NA,NA,
+Source (Blood),Diabetes,NA,NA,NA,
+Source (Blood),Co-isolated organism,-0.04286728945293727,0.18198271443876646,0.2859751385078548,
+Source (Blood),Hemolytic,0.0750570942147492,0.019328600663786055,0.04252292146032932,*
+Source (Blood),Metallic,-0.010052608221758689,0.7543927583655856,0.82589918095948,
+Source (Blood),Mucoid,-0.07993430547345519,0.012716840457168921,0.02879990338829432,*
+Source (Blood),Antipseudomonal,-0.006243190114502347,0.8459452474901357,0.8963915237166116,
+Source (Blood),Non-Antipseudomonal,-8.6539586501078e-4,0.9785141617393442,0.9827685711382109,
+Source (Blood),Pigment,0.0830818914192271,0.009596242855602899,0.022739795791533863,*
+Source (Blood),Repeat Patient,NA,NA,NA,
+Source (Blood),Season (fall),0.04550974231203545,0.1564739108838875,0.25249383449573215,
+Source (Blood),Season (spring),-0.02138016852759924,0.5057674358414017,0.6281305251578698,
+Source (Blood),Season (summer),-0.017760324460801225,0.5804291709219926,0.6947105620879809,
+Source (Blood),Season (winter),-0.010504910407439292,0.7437211700776927,0.818093287085462,
+Source (Blood),Sex (Female),NA,NA,NA,
+Source (Blood),Source (Blood),NA,NA,NA,
+Source (Blood),Source (ENT/Sinus),NA,NA,NA,
+Source (Blood),Source (Lung/Trachea),NA,NA,NA,
+Source (Blood),Source (Other),-0.024054454308865936,0.45403766899670606,0.5834054980152034,
+Source (Blood),Source (Skin/Wound),NA,NA,NA,
+Source (Blood),Source (Urine/Catheter),NA,NA,NA,
+Source (ENT/Sinus),Cystic Fibrosis,NA,NA,NA,
+Source (ENT/Sinus),Diabetes,NA,NA,NA,
+Source (ENT/Sinus),Co-isolated organism,0.06920260665661346,0.031066386203421947,0.0624029148955693,
+Source (ENT/Sinus),Hemolytic,-0.08170930045680713,0.01086180893714861,0.025344220853346755,*
+Source (ENT/Sinus),Metallic,-0.030153760137034854,0.34792556990616363,0.48607604432938517,
+Source (ENT/Sinus),Mucoid,0.0730661338647031,0.022791260429212645,0.047861646901346554,*
+Source (ENT/Sinus),Antipseudomonal,-0.0188472355149298,0.5574778116250674,0.6742270915465475,
+Source (ENT/Sinus),Non-Antipseudomonal,-0.023738480560679964,0.4599901478381714,0.5856665913474348,
+Source (ENT/Sinus),Pigment,0.02700812361807501,0.40053507323952386,0.5348185081984393,
+Source (ENT/Sinus),Repeat Patient,NA,NA,NA,
+Source (ENT/Sinus),Season (fall),-0.03713306726021086,0.2476782838382663,0.37394564422640203,
+Source (ENT/Sinus),Season (spring),-0.026226554298451304,0.41431138997768224,0.5500340866945093,
+Source (ENT/Sinus),Season (summer),0.05269221688487202,0.100805605739128,0.1724895920425079,
+Source (ENT/Sinus),Season (winter),0.01175850179037355,0.7144054707695098,0.8011051638240619,
+Source (ENT/Sinus),Sex (Female),NA,NA,NA,
+Source (ENT/Sinus),Source (Blood),-0.06921484664620207,0.031036561536131657,0.0624029148955693,
+Source (ENT/Sinus),Source (ENT/Sinus),NA,NA,NA,
+Source (ENT/Sinus),Source (Lung/Trachea),NA,NA,NA,
+Source (ENT/Sinus),Source (Other),-0.060513633500314905,0.05943572986642054,0.11072301289631567,
+Source (ENT/Sinus),Source (Skin/Wound),-0.13821656045885072,1.5450812587580742e-5,5.40778440565326e-5,***
+Source (ENT/Sinus),Source (Urine/Catheter),NA,NA,NA,
+Source (Lung/Trachea),Cystic Fibrosis,NA,NA,NA,
+Source (Lung/Trachea),Diabetes,NA,NA,NA,
+Source (Lung/Trachea),Co-isolated organism,0.0658777913328034,0.04013128293713164,0.07790190217207907,
+Source (Lung/Trachea),Hemolytic,-0.21136824646582703,2.8669955298710192e-11,1.505172653182285e-10,***
+Source (Lung/Trachea),Metallic,-0.11162687154120356,4.924929241583165e-4,0.001422073318507139,**
+Source (Lung/Trachea),Mucoid,0.2776207872932573,0,0,***
+Source (Lung/Trachea),Antipseudomonal,0.29212985154810467,0,0,***
+Source (Lung/Trachea),Non-Antipseudomonal,0.18409426629486988,7.532196200088492e-9,3.4116418082753756e-8,***
+Source (Lung/Trachea),Pigment,-0.24090263610346638,2.7533531010703882e-14,1.8172130467064562e-13,***
+Source (Lung/Trachea),Repeat Patient,NA,NA,NA,
+Source (Lung/Trachea),Season (fall),-0.017413879385815262,0.5878365443777558,0.6999496997487711,
+Source (Lung/Trachea),Season (spring),-0.016596831987592823,0.6054764837446223,0.7053833692931333,
+Source (Lung/Trachea),Season (summer),-0.031026380548656616,0.33414613478825017,0.4735445223072748,
+Source (Lung/Trachea),Season (winter),0.0636918068532283,0.047239050013324846,0.090183640934529255,
+Source (Lung/Trachea),Sex (Female),NA,NA,NA,
+Source (Lung/Trachea),Source (Blood),-0.15193424482545537,1.9752379323279e-6,7.359354231737821e-6,***
+Source (Lung/Trachea),Source (ENT/Sinus),-0.38221998676253427,0,0,***
+Source (Lung/Trachea),Source (Lung/Trachea),NA,NA,NA,
+Source (Lung/Trachea),Source (Other),-0.13283411945577459,3.2913755176222637e-5,1.101895281986584e-4,***
+Source (Lung/Trachea),Source (Skin/Wound),-0.3034006395048436,0,0,***
+Source (Lung/Trachea),Source (Urine/Catheter),-0.5277507032258438,0,0,***
+Source (Other),Cystic Fibrosis,NA,NA,NA,
+Source (Other),Diabetes,NA,NA,NA,
+Source (Other),Co-isolated organism,-0.0037713866170466163,0.9065678548625498,0.9390904684899058,
+Source (Other),Hemolytic,0.04202202199385325,0.19076000487420575,0.29574202097947333,
+Source (Other),Metallic,0.02907985661837791,0.3653711318877031,0.49941261222520367,
+Source (Other),Mucoid,-0.06988551589586313,0.02943945046475749,0.060181531481052916,
+Source (Other),Antipseudomonal,-0.08967519533738852,0.005167642490207847,0.013565061536795597,*
+Source (Other),Non-Antipseudomonal,-0.005348246401702588,0.8678086926140607,0.9078705511125902,
+Source (Other),Pigment,0.06881044625740398,0.03203503113157913,0.06379389820167913,
+Source (Other),Repeat Patient,NA,NA,NA,
+Source (Other),Season (fall),0.01661018952745747,0.6051862008453268,0.7053833692931333,
+Source (Other),Season (spring),0.03371734192001237,0.29389888727059765,0.43068894102525973,
+Source (Other),Season (summer),-0.02993687162432998,0.35140562512124385,0.48607604432938517,
+Source (Other),Season (winter),-0.01937626056694223,0.5464687224932208,0.669555286860355,
+Source (Other),Sex (Female),NA,NA,NA,
+Source (Other),Source (Blood),NA,NA,NA,
+Source (Other),Source (ENT/Sinus),NA,NA,NA,
+Source (Other),Source (Lung/Trachea),NA,NA,NA,
+Source (Other),Source (Other),NA,NA,NA,
+Source (Other),Source (Skin/Wound),NA,NA,NA,
+Source (Other),Source (Urine/Catheter),NA,NA,NA,
+Source (Skin/Wound),Cystic Fibrosis,NA,NA,NA,
+Source (Skin/Wound),Diabetes,NA,NA,NA,
+Source (Skin/Wound),Co-isolated organism,0.02266252502634024,0.48058310823386297,0.6003723641262068,
+Source (Skin/Wound),Hemolytic,0.15283824056590198,1.7134959409137451e-6,6.4888124975586084e-6,***
+Source (Skin/Wound),Metallic,-0.015569350144144173,0.6279892137437426,0.7217189471383311,
+Source (Skin/Wound),Mucoid,-0.14197749956470476,8.955892904616292e-6,3.232517595259943e-5,***
+Source (Skin/Wound),Antipseudomonal,-0.10757654129354026,7.861973996741156e-4,0.002214775601520984,**
+Source (Skin/Wound),Non-Antipseudomonal,-0.08038490385998565,0.01222116622687519,0.027951380182259098,*
+Source (Skin/Wound),Pigment,0.08456809386035863,0.0083754972302712,0.02036568273886997,*
+Source (Skin/Wound),Repeat Patient,NA,NA,NA,
+Source (Skin/Wound),Season (fall),0.03341078605363629,0.2983126864244223,0.43068894102525973,
+Source (Skin/Wound),Season (spring),-0.023662167456421183,0.46143428409191833,0.5856665913474348,
+Source (Skin/Wound),Season (summer),-0.014896242291196607,0.6429288173988543,0.7316086542814549,
+Source (Skin/Wound),Season (winter),0.0014528148788901009,0.9639377792046004,0.9777489162262915,
+Source (Skin/Wound),Sex (Female),NA,NA,NA,
+Source (Skin/Wound),Source (Blood),-0.05494173372135603,0.08705902491020323,0.15410553168673788,
+Source (Skin/Wound),Source (ENT/Sinus),NA,NA,NA,
+Source (Skin/Wound),Source (Lung/Trachea),NA,NA,NA,
+Source (Skin/Wound),Source (Other),-0.048034837890787475,0.13472066584875986,0.2238883007990182,
+Source (Skin/Wound),Source (Skin/Wound),NA,NA,NA,
+Source (Skin/Wound),Source (Urine/Catheter),NA,NA,NA,
+Source (Urine/Catheter),Cystic Fibrosis,NA,NA,NA,
+Source (Urine/Catheter),Diabetes,NA,NA,NA,
+Source (Urine/Catheter),Co-isolated organism,-0.1311143419785945,4.1659528395854295e-5,1.3554015576679355e-4,***
+Source (Urine/Catheter),Hemolytic,0.16324245759567685,3.144560605239377e-7,1.297131249661243e-6,***
+Source (Urine/Catheter),Metallic,0.15825445688021197,7.18633519802836e-7,2.862143846111295e-6,***
+Source (Urine/Catheter),Mucoid,-0.22895328732052864,5.146993942162226e-13,3.04860410420378e-12,***
+Source (Urine/Catheter),Antipseudomonal,-0.2148841154584397,1.318900544333701e-11,7.430878676611827e-11,***
+Source (Urine/Catheter),Non-Antipseudomonal,-0.1349257658399863,2.4615986957243763e-5,8.362195569298984e-5,***
+Source (Urine/Catheter),Pigment,0.14324511541952722,7.428679130283555e-6,2.7238490144373035e-5,***
+Source (Urine/Catheter),Repeat Patient,NA,NA,NA,
+Source (Urine/Catheter),Season (fall),0.005067797496680742,0.8746816999214437,0.910141768837178,
+Source (Urine/Catheter),Season (spring),0.05389385780738461,0.09326194341942573,0.16320840098399503,
+Source (Urine/Catheter),Season (summer),0.019169928727163877,0.5507497019539198,0.669595690270292,
+Source (Urine/Catheter),Season (winter),-0.07371915104185245,0.02160048872993592,0.0462010453390296,*
+Source (Urine/Catheter),Sex (Female),NA,NA,NA,
+Source (Urine/Catheter),Source (Blood),-0.09556848217332055,0.002873211992826308,0.0076288732223319215,**
+Source (Urine/Catheter),Source (ENT/Sinus),-0.24042100602906386,3.108624468950438e-14,1.9947007009098647e-13,***
+Source (Urine/Catheter),Source (Lung/Trachea),NA,NA,NA,
+Source (Urine/Catheter),Source (Other),-0.08355427172986492,0.009192085101769276,0.02211845477613232,*
+Source (Urine/Catheter),Source (Skin/Wound),-0.1908426809321576,2.0431296654521702e-9,9.439259054389027e-9,***
+Source (Urine/Catheter),Source (Urine/Catheter),NA,NA,NA,
