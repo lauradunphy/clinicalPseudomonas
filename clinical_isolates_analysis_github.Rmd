@@ -174,7 +174,7 @@ isolates_tidy_resistance_profiles$SIR <- factor(isolates_tidy_resistance_profile
 cbPalette <- c("#F0E442","#0072B2", "#56B4E9","#CC79A7","#E69F00", "#009E73") 
 ```
 
-## Table 1 Data:
+## Table S1 Data:
 ```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE}
 ### By Patient
 # Calculate the median age (if there is a birthday, take median age across visits)
@@ -264,7 +264,7 @@ total_DM_isolate
 
 ```
 
-## Table 2 Data:
+## Table S2 Data:
 ```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE}
 # Number of isolates and percent of isolates at each site
 total_site <- isolates_tidy %>% group_by(Isolate, SITE_BROAD) %>% 
@@ -2202,10 +2202,10 @@ History of antimicrobial prescriptions in the 60 days prior to isolate collectio
 
 ## Supplemental Tables and Data 
 
-The following are exported as csv files:
+The following are exported as csv files: (Table S1 and Table S2 data are generated earlier in the script)
 
-- **Table S1.** Complete list of antimicrobials considered in this study arranged by antimicrobial class in descending frequency of prescription. 
-- **Table S2.** Complete list of co-isolating pathogens observed in this study.
+- **Table S3.** Complete list of antimicrobials considered in this study arranged by antimicrobial class in descending frequency of prescription. 
+- **Table S4.** Complete list of co-isolating pathogens observed in this study.
 - **Data S1.** CSV of adjusted P-values, correlation coefficients, and regression coefficients.
 - **Data S2.** CSV of all isolate morphological phenotypes and paired patient metadata. 
 - **Data S3.** CSV of antimicrobial susceptibility profiles of all isolates.
@@ -2223,11 +2223,11 @@ SX_table <- inner_join(isolates_tidy_antibiotic_treatment_duration, anti_pseudom
   summarise() %>% ungroup() %>% 
   mutate(Activity = factor(anti_pseudomonal, levels = c('yes','no'), labels = c('Antipseudomonal','Non-Antipseudomonal'))) %>% 
   select(Antibiotic, AntibioticAbbreviation, AntibioticClass, Activity, numRx) %>% arrange(AntibioticClass, desc(numRx)) %>% filter(Antibiotic != 'noabx')
-write_csv(SX_table, 'supplement/SupplementalTable1.csv')
+write_csv(SX_table, 'supplement/SupplementalTable3.csv')
 
 # Supplemental Table XX: All coinfecting pathogens in this study
 SXX_table <- isolates_tidy_co_infecting_organisms %>% group_by(Organism, Classification) %>% summarise(`Number of Occurances` = n()) %>% filter(Organism != 'None')
-write_csv(SXX_table, 'supplement/SupplementalTable2.csv')
+write_csv(SXX_table, 'supplement/SupplementalTable4.csv')
 
 # Data S1: Coefficients, Pvalues, BH adjusted pvalues for all Pearson and LR models and pvalues for all other statistical tests:
   # Figure 2A - Pearson Coeff
