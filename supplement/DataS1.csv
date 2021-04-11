@@ -1,0 +1,403 @@
+Figure,variable1,variable2,Metric,Value,pvalue,BH_corrected_pvalue,Significance
+Figure 2A,Age,Sex (Female),Pearson Correlation Coefficient,0.0014079430674751661,0.9650508783532228,0.9777489162262915,
+Figure 2A,Age,Cystic Fibrosis,Pearson Correlation Coefficient,-0.580738668585542,0,0,***
+Figure 2A,Age,Diabetes,Pearson Correlation Coefficient,0.06347295328860192,0.04800558094733365,0.09089581310519732,
+Figure 2A,Age,Repeat Patient,Pearson Correlation Coefficient,-0.24568915789446258,7.993605777301127e-15,5.595524044110789e-14,***
+Figure 2A,Age,Source (Lung/Trachea),Pearson Correlation Coefficient,-0.21274905061211535,2.116862241052786e-11,1.1642742325790323e-10,***
+Figure 2A,Age,Source (Urine/Catheter),Pearson Correlation Coefficient,0.3528029290338343,0,0,***
+Figure 2A,Age,Antipseudomonal,Pearson Correlation Coefficient,-0.280243024169253,0,0,***
+Figure 2A,Age,Non-Antipseudomonal,Pearson Correlation Coefficient,-0.18371303669991335,8.096751491493137e-9,3.6673521461468914e-8,***
+Figure 2A,Age,Mucoid,Pearson Correlation Coefficient,-0.2029065177119757,1.7583046130198454e-10,8.829747078425745e-10,***
+Figure 2A,Age,Metallic,Pearson Correlation Coefficient,0.11342492948886258,3.981589876238534e-4,0.0011791631556552582,**
+Figure 2A,Age,Hemolytic,Pearson Correlation Coefficient,0.11916426072190622,1.9784846334203188e-4,5.935453900260956e-4,***
+Figure 2A,Age,Pigment,Pearson Correlation Coefficient,0.12753876783169166,6.737056363448346e-5,2.1614722499396777e-4,***
+Figure 2A,Age,Season (winter),Pearson Correlation Coefficient,0.02077385627446481,0.5179119353767279,0.6397735672300756,
+Figure 2A,Age,Season (spring),Pearson Correlation Coefficient,0.028377175236481356,0.37707613689559905,0.5093835533501951,
+Figure 2A,Age,Season (summer),Pearson Correlation Coefficient,-0.016948590148708496,0.5978530359827332,0.7046125066939356,
+Figure 2A,Age,Season (fall),Pearson Correlation Coefficient,-0.02920792966575717,0.3632624034449279,0.5023853063455918,
+Figure 2A,Age,Co-isolated organism,Pearson Correlation Coefficient,-0.1922908115840426,1.5345618109563475e-9,7.385078715227422e-9,***
+Figure 2A,Age,Source (Other),Pearson Correlation Coefficient,0.0014704611959569347,0.9635000602290558,0.9777489162262915,
+Figure 2A,Age,Source (Blood),Pearson Correlation Coefficient,0.07175051465470925,0.02536416211381498,0.05278487791253388,
+Figure 2A,Age,Source (Skin/Wound),Pearson Correlation Coefficient,0.13124976504777391,4.089793839190392e-5,1.369191850511566e-4,***
+Figure 2A,Age,Source (ENT/Sinus),Pearson Correlation Coefficient,-0.27465485249945454,0,0,***
+Figure 2A,Sex (Female),Cystic Fibrosis,Pearson Correlation Coefficient,0.05711347577381115,0.0752618191278418,0.13689354502780673,
+Figure 2A,Sex (Female),Diabetes,Pearson Correlation Coefficient,0.03006460271428222,0.34935347630987335,0.4890042132711285,
+Figure 2A,Sex (Female),Repeat Patient,Pearson Correlation Coefficient,-0.05325669215757061,0.09720358018654718,0.1675673658439731,
+Figure 2A,Sex (Female),Source (Lung/Trachea),Pearson Correlation Coefficient,-0.054883778154760234,0.08739318030719767,0.15410553168673788,
+Figure 2A,Sex (Female),Source (Urine/Catheter),Pearson Correlation Coefficient,0.03392501954951276,0.29093371218920927,0.433397676503406,
+Figure 2A,Sex (Female),Antipseudomonal,Pearson Correlation Coefficient,-0.04238465487268945,0.18695703517676998,0.28984614178411994,
+Figure 2A,Sex (Female),Non-Antipseudomonal,Pearson Correlation Coefficient,-0.0029293477860224343,0.9273625570114603,0.9563707220508724,
+Figure 2A,Sex (Female),Mucoid,Pearson Correlation Coefficient,-0.06007116814848246,0.06132445296856659,0.11242816377570541,
+Figure 2A,Sex (Female),Metallic,Pearson Correlation Coefficient,0.00803422521744648,0.8025602611803049,0.862285675965816,
+Figure 2A,Sex (Female),Hemolytic,Pearson Correlation Coefficient,-0.0029282464399321972,0.9273897910796338,0.9563707220508724,
+Figure 2A,Sex (Female),Pigment,Pearson Correlation Coefficient,-0.005317211232523494,0.8685687956531707,0.9119972354358292,
+Figure 2A,Sex (Female),Season (winter),Pearson Correlation Coefficient,-0.011153552257385457,0.7285030185007848,0.8129671365878324,
+Figure 2A,Sex (Female),Season (spring),Pearson Correlation Coefficient,0.036176707226121006,0.2600747944669304,0.39011219170039557,
+Figure 2A,Sex (Female),Season (summer),Pearson Correlation Coefficient,-0.006680637762937043,0.8353002750792751,0.8933072386264469,
+Figure 2A,Sex (Female),Season (fall),Pearson Correlation Coefficient,-0.01509688809810801,0.6384600273381167,0.7301201302727968,
+Figure 2A,Sex (Female),Co-isolated organism,Pearson Correlation Coefficient,-0.019311145052036773,0.5478179619766541,0.669555286860355,
+Figure 2A,Sex (Female),Source (Other),Pearson Correlation Coefficient,-0.028854454072113376,0.3691008845463055,0.5045106765100389,
+Figure 2A,Sex (Female),Source (Blood),Pearson Correlation Coefficient,-0.08914443917189697,0.005439635487153094,0.013961731083692941,*
+Figure 2A,Sex (Female),Source (Skin/Wound),Pearson Correlation Coefficient,3.411242473125835e-4,0.9915297866705011,0.9915297866705011,
+Figure 2A,Sex (Female),Source (ENT/Sinus),Pearson Correlation Coefficient,0.0873633075777905,0.006449259077071723,0.0160191273849846,*
+Figure 2A,Cystic Fibrosis,Diabetes,Pearson Correlation Coefficient,0.1807584386422591,1.4104026391237312e-8,6.265442493030422e-8,***
+Figure 2A,Cystic Fibrosis,Repeat Patient,Pearson Correlation Coefficient,0.397458193187699,0,0,***
+Figure 2A,Cystic Fibrosis,Source (Lung/Trachea),Pearson Correlation Coefficient,0.41619937548754193,0,0,***
+Figure 2A,Cystic Fibrosis,Source (Urine/Catheter),Pearson Correlation Coefficient,-0.4172030128756668,0,0,***
+Figure 2A,Cystic Fibrosis,Antipseudomonal,Pearson Correlation Coefficient,0.4797093082064609,0,0,***
+Figure 2A,Cystic Fibrosis,Non-Antipseudomonal,Pearson Correlation Coefficient,0.25706798042243456,4.440892098500626e-16,3.4194869158454822e-15,***
+Figure 2A,Cystic Fibrosis,Mucoid,Pearson Correlation Coefficient,0.460405451978552,0,0,***
+Figure 2A,Cystic Fibrosis,Metallic,Pearson Correlation Coefficient,-0.19754724987790995,5.328804064674841e-10,2.6190505083827415e-9,***
+Figure 2A,Cystic Fibrosis,Hemolytic,Pearson Correlation Coefficient,-0.30760933629678805,0,0,***
+Figure 2A,Cystic Fibrosis,Pigment,Pearson Correlation Coefficient,-0.31240774184559705,0,0,***
+Figure 2A,Cystic Fibrosis,Season (winter),Pearson Correlation Coefficient,0.008231092302755198,0.7978257655237075,0.8612044478316657,
+Figure 2A,Cystic Fibrosis,Season (spring),Pearson Correlation Coefficient,-0.025705605322754742,0.4236473375304066,0.5592144855401368,
+Figure 2A,Cystic Fibrosis,Season (summer),Pearson Correlation Coefficient,-0.002333432334395947,0.9421099215616364,0.96723285280328,
+Figure 2A,Cystic Fibrosis,Season (fall),Pearson Correlation Coefficient,0.017028166542138255,0.5961344801270132,0.7046125066939356,
+Figure 2A,Cystic Fibrosis,Co-isolated organism,Pearson Correlation Coefficient,0.25162344534975367,1.7763568394002505e-15,1.3236723545208317e-14,***
+Figure 2A,Cystic Fibrosis,Source (Other),Pearson Correlation Coefficient,-0.10500941924073508,0.0010490365009476754,0.002933052471246464,**
+Figure 2A,Cystic Fibrosis,Source (Blood),Pearson Correlation Coefficient,-0.12010865037737978,1.7580941778572168e-4,5.343680987960751e-4,***
+Figure 2A,Cystic Fibrosis,Source (Skin/Wound),Pearson Correlation Coefficient,-0.239847450957648,3.597122599785507e-14,2.3081536681957004e-13,***
+Figure 2A,Cystic Fibrosis,Source (ENT/Sinus),Pearson Correlation Coefficient,0.22245848557531922,2.3643309532417334e-12,1.3654011254971011e-11,***
+Figure 2A,Diabetes,Repeat Patient,Pearson Correlation Coefficient,0.0830236119166346,0.009647186093378002,0.022739795791533863,*
+Figure 2A,Diabetes,Source (Lung/Trachea),Pearson Correlation Coefficient,0.04528937347978088,0.15849180087394443,0.25249383449573215,
+Figure 2A,Diabetes,Source (Urine/Catheter),Pearson Correlation Coefficient,-0.005384483680130408,0.8669213356764438,0.9119972354358292,
+Figure 2A,Diabetes,Antipseudomonal,Pearson Correlation Coefficient,0.10567658162669673,9.738605838496284e-4,0.0027773061094970883,**
+Figure 2A,Diabetes,Non-Antipseudomonal,Pearson Correlation Coefficient,0.07397332614018386,0.021151836711208905,0.045664245610179975,*
+Figure 2A,Diabetes,Mucoid,Pearson Correlation Coefficient,0.1288855364660654,5.62957385632501e-5,1.8315937476212355e-4,***
+Figure 2A,Diabetes,Metallic,Pearson Correlation Coefficient,-0.048976388532215046,0.127235037254805,0.21298038844826056,
+Figure 2A,Diabetes,Hemolytic,Pearson Correlation Coefficient,-0.08739161400490034,0.006431978685911055,0.0160191273849846,*
+Figure 2A,Diabetes,Pigment,Pearson Correlation Coefficient,-0.0601145276323751,0.061137200600609454,0.11242816377570541,
+Figure 2A,Diabetes,Season (winter),Pearson Correlation Coefficient,-0.03962875034265411,0.21729217118192823,0.33022691804621984,
+Figure 2A,Diabetes,Season (spring),Pearson Correlation Coefficient,0.018441432481427537,0.5659950481804477,0.6809627923421011,
+Figure 2A,Diabetes,Season (summer),Pearson Correlation Coefficient,-0.009567169576075008,0.7658984361000436,0.8345402770712739,
+Figure 2A,Diabetes,Season (fall),Pearson Correlation Coefficient,0.0305447115077374,0.3417080900730456,0.4842611583243775,
+Figure 2A,Diabetes,Co-isolated organism,Pearson Correlation Coefficient,0.049133567808223685,0.12601750764870734,0.21248207494052113,
+Figure 2A,Diabetes,Source (Other),Pearson Correlation Coefficient,-0.06162643307804365,0.054897736969996114,0.10310062796804148,
+Figure 2A,Diabetes,Source (Blood),Pearson Correlation Coefficient,0.033184919610981606,0.30159285593679463,0.43542468575874727,
+Figure 2A,Diabetes,Source (Skin/Wound),Pearson Correlation Coefficient,-0.01649608372116897,0.607667924196249,0.7053833692931333,
+Figure 2A,Diabetes,Source (ENT/Sinus),Pearson Correlation Coefficient,-0.03350867876078729,0.29689844638030793,0.433397676503406,
+Figure 2A,Repeat Patient,Source (Lung/Trachea),Pearson Correlation Coefficient,0.2790668159064141,0,0,***
+Figure 2A,Repeat Patient,Source (Urine/Catheter),Pearson Correlation Coefficient,-0.21220581620302953,2.385758257616999e-11,1.2816515290919226e-10,***
+Figure 2A,Repeat Patient,Antipseudomonal,Pearson Correlation Coefficient,0.45722307488040026,0,0,***
+Figure 2A,Repeat Patient,Non-Antipseudomonal,Pearson Correlation Coefficient,0.2735593226416617,0,0,***
+Figure 2A,Repeat Patient,Mucoid,Pearson Correlation Coefficient,0.2602478175359556,2.220446049250313e-16,1.7687001288855942e-15,***
+Figure 2A,Repeat Patient,Metallic,Pearson Correlation Coefficient,-0.07158660757121328,0.025701655564015047,0.053009664600781034,
+Figure 2A,Repeat Patient,Hemolytic,Pearson Correlation Coefficient,-0.23771069618463064,6.128431095930864e-14,3.826128603135215e-13,***
+Figure 2A,Repeat Patient,Pigment,Pearson Correlation Coefficient,-0.1666080244902917,1.774796469788953e-7,7.321035437879431e-7,***
+Figure 2A,Repeat Patient,Season (winter),Pearson Correlation Coefficient,0.13999509249354503,1.1959314670351162e-5,4.3165651388298726e-5,***
+Figure 2A,Repeat Patient,Season (spring),Pearson Correlation Coefficient,-0.15933015639203715,6.025950001209424e-7,2.399990431516167e-6,***
+Figure 2A,Repeat Patient,Season (summer),Pearson Correlation Coefficient,-0.0793947680036699,0.013333658909112422,0.030196815764754602,*
+Figure 2A,Repeat Patient,Season (fall),Pearson Correlation Coefficient,0.08081494630536142,0.01176412408182137,0.0274496228575832,*
+Figure 2A,Repeat Patient,Co-isolated organism,Pearson Correlation Coefficient,0.08493491218226616,0.00809640074788831,0.019896474178321275,*
+Figure 2A,Repeat Patient,Source (Other),Pearson Correlation Coefficient,-0.04536646218527437,0.15778368397176612,0.25249383449573215,
+Figure 2A,Repeat Patient,Source (Blood),Pearson Correlation Coefficient,-0.014416861226316257,0.6536577297530055,0.7401712528085503,
+Figure 2A,Repeat Patient,Source (Skin/Wound),Pearson Correlation Coefficient,-0.15573347910229948,1.0808267130180127e-6,4.161182845119349e-6,***
+Figure 2A,Repeat Patient,Source (ENT/Sinus),Pearson Correlation Coefficient,0.0226504155168118,0.48081769421362885,0.6036352574095014,
+Figure 2A,Source (Lung/Trachea),Source (Urine/Catheter),Pearson Correlation Coefficient,-0.5277507032258438,0,0,***
+Figure 2A,Source (Lung/Trachea),Antipseudomonal,Pearson Correlation Coefficient,0.29212985154810467,0,0,***
+Figure 2A,Source (Lung/Trachea),Non-Antipseudomonal,Pearson Correlation Coefficient,0.18409426629486988,7.532196200088492e-9,3.479874644440884e-8,***
+Figure 2A,Source (Lung/Trachea),Mucoid,Pearson Correlation Coefficient,0.2776207872932573,0,0,***
+Figure 2A,Source (Lung/Trachea),Metallic,Pearson Correlation Coefficient,-0.11162687154120356,4.924929241583165e-4,0.0014400742465895077,**
+Figure 2A,Source (Lung/Trachea),Hemolytic,Pearson Correlation Coefficient,-0.20426442096360098,1.3211676197499855e-10,6.781993781383259e-10,***
+Figure 2A,Source (Lung/Trachea),Pigment,Pearson Correlation Coefficient,-0.24090263610346638,2.7533531010703882e-14,1.8706604892566462e-13,***
+Figure 2A,Source (Lung/Trachea),Season (winter),Pearson Correlation Coefficient,0.0636918068532283,0.047239050013324846,0.090183640934529255,
+Figure 2A,Source (Lung/Trachea),Season (spring),Pearson Correlation Coefficient,-0.016596831987592823,0.6054764837446223,0.7053833692931333,
+Figure 2A,Source (Lung/Trachea),Season (summer),Pearson Correlation Coefficient,-0.031026380548656616,0.33414613478825017,0.47646763664250485,
+Figure 2A,Source (Lung/Trachea),Season (fall),Pearson Correlation Coefficient,-0.017413879385815262,0.5878365443777558,0.6999496997487711,
+Figure 2A,Source (Lung/Trachea),Co-isolated organism,Pearson Correlation Coefficient,0.0658777913328034,0.04013128293713164,0.07790190217207907,
+Figure 2A,Source (Lung/Trachea),Source (Other),Pearson Correlation Coefficient,-0.13283411945577459,3.2913755176222637e-5,1.1180996243687396e-4,***
+Figure 2A,Source (Lung/Trachea),Source (Blood),Pearson Correlation Coefficient,-0.15193424482545537,1.9752379323279e-6,7.479999383077786e-6,***
+Figure 2A,Source (Lung/Trachea),Source (Skin/Wound),Pearson Correlation Coefficient,-0.3034006395048436,0,0,***
+Figure 2A,Source (Lung/Trachea),Source (ENT/Sinus),Pearson Correlation Coefficient,-0.38221998676253427,0,0,***
+Figure 2A,Source (Urine/Catheter),Antipseudomonal,Pearson Correlation Coefficient,-0.2148841154584397,1.318900544333701e-11,7.430878676611827e-11,***
+Figure 2A,Source (Urine/Catheter),Non-Antipseudomonal,Pearson Correlation Coefficient,-0.1349257658399863,2.4615986957243763e-5,8.487004458392999e-5,***
+Figure 2A,Source (Urine/Catheter),Mucoid,Pearson Correlation Coefficient,-0.22895328732052864,5.146993942162226e-13,3.04860410420378e-12,***
+Figure 2A,Source (Urine/Catheter),Metallic,Pearson Correlation Coefficient,0.15825445688021197,7.18633519802836e-7,2.813632933465341e-6,***
+Figure 2A,Source (Urine/Catheter),Hemolytic,Pearson Correlation Coefficient,0.16292705937239932,3.315752605814737e-7,1.3437523718301828e-6,***
+Figure 2A,Source (Urine/Catheter),Pigment,Pearson Correlation Coefficient,0.14324511541952722,7.428679130283555e-6,2.76778206305726e-5,***
+Figure 2A,Source (Urine/Catheter),Season (winter),Pearson Correlation Coefficient,-0.07371915104185245,0.02160048872993592,0.0462010453390296,*
+Figure 2A,Source (Urine/Catheter),Season (spring),Pearson Correlation Coefficient,0.05389385780738461,0.09326194341942573,0.16320840098399503,
+Figure 2A,Source (Urine/Catheter),Season (summer),Pearson Correlation Coefficient,0.019169928727163877,0.5507497019539198,0.669595690270292,
+Figure 2A,Source (Urine/Catheter),Season (fall),Pearson Correlation Coefficient,0.005067797496680742,0.8746816999214437,0.9142600573839526,
+Figure 2A,Source (Urine/Catheter),Co-isolated organism,Pearson Correlation Coefficient,-0.1311143419785945,4.1659528395854295e-5,1.3747644370631917e-4,***
+Figure 2A,Source (Urine/Catheter),Source (Other),Pearson Correlation Coefficient,-0.08355427172986492,0.009192085101769276,0.02211845477613232,*
+Figure 2A,Source (Urine/Catheter),Source (Blood),Pearson Correlation Coefficient,-0.09556848217332055,0.002873211992826308,0.0076288732223319215,**
+Figure 2A,Source (Urine/Catheter),Source (Skin/Wound),Pearson Correlation Coefficient,-0.1908426809321576,2.0431296654521702e-9,9.631896994274517e-9,***
+Figure 2A,Source (Urine/Catheter),Source (ENT/Sinus),Pearson Correlation Coefficient,-0.24042100602906386,3.108624468950438e-14,2.0516921495072893e-13,***
+Figure 2A,Source (ENT/Sinus),Antipseudomonal,Pearson Correlation Coefficient,-0.0188472355149298,0.5574778116250674,0.6742270915465475,
+Figure 2A,Source (ENT/Sinus),Non-Antipseudomonal,Pearson Correlation Coefficient,-0.023738480560679964,0.4599901478381714,0.5889023183714538,
+Figure 2A,Source (ENT/Sinus),Mucoid,Pearson Correlation Coefficient,0.0730661338647031,0.022791260429212645,0.047861646901346554,*
+Figure 2A,Source (ENT/Sinus),Metallic,Pearson Correlation Coefficient,-0.030153760137034854,0.34792556990616363,0.4890042132711285,
+Figure 2A,Source (ENT/Sinus),Hemolytic,Pearson Correlation Coefficient,-0.07877391757028018,0.014075983227963995,0.031568467239414394,*
+Figure 2A,Source (ENT/Sinus),Pigment,Pearson Correlation Coefficient,0.02700812361807501,0.40053507323952386,0.5379279181298257,
+Figure 2A,Source (ENT/Sinus),Season (winter),Pearson Correlation Coefficient,0.01175850179037355,0.7144054707695098,0.8011051638240619,
+Figure 2A,Source (ENT/Sinus),Season (spring),Pearson Correlation Coefficient,-0.026226554298451304,0.41431138997768224,0.5532134744788705,
+Figure 2A,Source (ENT/Sinus),Season (summer),Pearson Correlation Coefficient,0.05269221688487202,0.100805605739128,0.1724895920425079,
+Figure 2A,Source (ENT/Sinus),Season (fall),Pearson Correlation Coefficient,-0.03713306726021086,0.2476782838382663,0.37394564422640203,
+Figure 2A,Source (ENT/Sinus),Co-isolated organism,Pearson Correlation Coefficient,0.06920260665661346,0.031066386203421947,0.0624029148955693,
+Figure 2A,Source (ENT/Sinus),Source (Other),Pearson Correlation Coefficient,-0.060513633500314905,0.05943572986642054,0.11072301289631567,
+Figure 2A,Source (ENT/Sinus),Source (Blood),Pearson Correlation Coefficient,-0.06921484664620207,0.031036561536131657,0.0624029148955693,
+Figure 2A,Source (ENT/Sinus),Source (Skin/Wound),Pearson Correlation Coefficient,-0.13821656045885072,1.5450812587580742e-5,5.490981088817156e-5,***
+Figure 2A,Source (Skin/Wound),Antipseudomonal,Pearson Correlation Coefficient,-0.10757654129354026,7.861973996741156e-4,0.002270144991559009,**
+Figure 2A,Source (Skin/Wound),Non-Antipseudomonal,Pearson Correlation Coefficient,-0.08038490385998565,0.01222116622687519,0.02823089398408169,*
+Figure 2A,Source (Skin/Wound),Mucoid,Pearson Correlation Coefficient,-0.14197749956470476,8.955892904616292e-6,3.283827398359307e-5,***
+Figure 2A,Source (Skin/Wound),Metallic,Pearson Correlation Coefficient,-0.015569350144144173,0.6279892137437426,0.7217189471383311,
+Figure 2A,Source (Skin/Wound),Hemolytic,Pearson Correlation Coefficient,0.13529270755705763,2.3382587148290668e-5,8.183905501901734e-5,***
+Figure 2A,Source (Skin/Wound),Pigment,Pearson Correlation Coefficient,0.08456809386035863,0.0083754972302712,0.02036568273886997,*
+Figure 2A,Source (Skin/Wound),Season (winter),Pearson Correlation Coefficient,0.0014528148788901009,0.9639377792046004,0.9777489162262915,
+Figure 2A,Source (Skin/Wound),Season (spring),Pearson Correlation Coefficient,-0.023662167456421183,0.46143428409191833,0.5889023183714538,
+Figure 2A,Source (Skin/Wound),Season (summer),Pearson Correlation Coefficient,-0.014896242291196607,0.6429288173988543,0.7316086542814549,
+Figure 2A,Source (Skin/Wound),Season (fall),Pearson Correlation Coefficient,0.03341078605363629,0.2983126864244223,0.433397676503406,
+Figure 2A,Source (Skin/Wound),Co-isolated organism,Pearson Correlation Coefficient,0.02266252502634024,0.48058310823386297,0.6036352574095014,
+Figure 2A,Source (Skin/Wound),Source (Other),Pearson Correlation Coefficient,-0.048034837890787475,0.13472066584875986,0.2238883007990182,
+Figure 2A,Source (Skin/Wound),Source (Blood),Pearson Correlation Coefficient,-0.05494173372135603,0.08705902491020323,0.15410553168673788,
+Figure 2A,Source (Blood),Antipseudomonal,Pearson Correlation Coefficient,-0.006243190114502347,0.8459452474901357,0.9005223602314347,
+Figure 2A,Source (Blood),Non-Antipseudomonal,Pearson Correlation Coefficient,-8.6539586501078e-4,0.9785141617393442,0.9827685711382109,
+Figure 2A,Source (Blood),Mucoid,Pearson Correlation Coefficient,-0.07993430547345519,0.012716840457168921,0.029085050946594262,*
+Figure 2A,Source (Blood),Metallic,Pearson Correlation Coefficient,-0.010052608221758689,0.7543927583655856,0.82589918095948,
+Figure 2A,Source (Blood),Hemolytic,Pearson Correlation Coefficient,0.07771565033961506,0.015425485515326853,0.034262376481158686,*
+Figure 2A,Source (Blood),Pigment,Pearson Correlation Coefficient,0.0830818914192271,0.009596242855602899,0.022739795791533863,*
+Figure 2A,Source (Blood),Season (winter),Pearson Correlation Coefficient,-0.010504910407439292,0.7437211700776927,0.818093287085462,
+Figure 2A,Source (Blood),Season (spring),Pearson Correlation Coefficient,-0.02138016852759924,0.5057674358414017,0.6281305251578698,
+Figure 2A,Source (Blood),Season (summer),Pearson Correlation Coefficient,-0.017760324460801225,0.5804291709219926,0.6947105620879809,
+Figure 2A,Source (Blood),Season (fall),Pearson Correlation Coefficient,0.04550974231203545,0.1564739108838875,0.25249383449573215,
+Figure 2A,Source (Blood),Co-isolated organism,Pearson Correlation Coefficient,-0.04286728945293727,0.18198271443876646,0.2840428740584774,
+Figure 2A,Source (Blood),Source (Other),Pearson Correlation Coefficient,-0.024054454308865936,0.45403766899670606,0.586664746607467,
+Figure 2A,Source (Other),Antipseudomonal,Pearson Correlation Coefficient,-0.08967519533738852,0.005167642490207847,0.013412645115033848,*
+Figure 2A,Source (Other),Non-Antipseudomonal,Pearson Correlation Coefficient,-0.005348246401702588,0.8678086926140607,0.9119972354358292,
+Figure 2A,Source (Other),Mucoid,Pearson Correlation Coefficient,-0.06988551589586313,0.02943945046475749,0.060181531481052916,
+Figure 2A,Source (Other),Metallic,Pearson Correlation Coefficient,0.02907985661837791,0.3653711318877031,0.5023853063455918,
+Figure 2A,Source (Other),Hemolytic,Pearson Correlation Coefficient,0.04457643102912871,0.16515494354644655,0.2613067942412956,
+Figure 2A,Source (Other),Pigment,Pearson Correlation Coefficient,0.06881044625740398,0.03203503113157913,0.06379389820167913,
+Figure 2A,Source (Other),Season (winter),Pearson Correlation Coefficient,-0.01937626056694223,0.5464687224932208,0.669555286860355,
+Figure 2A,Source (Other),Season (spring),Pearson Correlation Coefficient,0.03371734192001237,0.29389888727059765,0.433397676503406,
+Figure 2A,Source (Other),Season (summer),Pearson Correlation Coefficient,-0.02993687162432998,0.35140562512124385,0.4890042132711285,
+Figure 2A,Source (Other),Season (fall),Pearson Correlation Coefficient,0.01661018952745747,0.6051862008453268,0.7053833692931333,
+Figure 2A,Source (Other),Co-isolated organism,Pearson Correlation Coefficient,-0.0037713866170466163,0.9065678548625498,0.9433206057353558,
+Figure 2A,Antipseudomonal,Non-Antipseudomonal,Pearson Correlation Coefficient,0.4937164941269942,0,0,***
+Figure 2A,Antipseudomonal,Mucoid,Pearson Correlation Coefficient,0.20697093327731325,7.4294570495681e-11,3.9004649510232525e-10,***
+Figure 2A,Antipseudomonal,Metallic,Pearson Correlation Coefficient,-0.1234727380535585,1.1463176222425986e-4,3.578369874838382e-4,***
+Figure 2A,Antipseudomonal,Hemolytic,Pearson Correlation Coefficient,-0.17574282979507838,3.543730953126101e-8,1.5445317927776024e-7,***
+Figure 2A,Antipseudomonal,Pigment,Pearson Correlation Coefficient,-0.1266579633905349,7.569471461010835e-5,2.3952711061554836e-4,***
+Figure 2A,Antipseudomonal,Season (winter),Pearson Correlation Coefficient,0.06702635110872733,0.036774570999214884,0.07260620428050119,
+Figure 2A,Antipseudomonal,Season (spring),Pearson Correlation Coefficient,-0.022719370758889426,0.479482722703628,0.6036352574095014,
+Figure 2A,Antipseudomonal,Season (summer),Pearson Correlation Coefficient,-0.05698709449489672,0.07591064009270276,0.13699498329229953,
+Figure 2A,Antipseudomonal,Season (fall),Pearson Correlation Coefficient,0.00898526931348315,0.7797584515798306,0.8456535319950276,
+Figure 2A,Antipseudomonal,Co-isolated organism,Pearson Correlation Coefficient,0.17532957602113086,3.8187559781022173e-8,1.6335789461881708e-7,***
+Figure 2A,Non-Antipseudomonal,Mucoid,Pearson Correlation Coefficient,0.09712319784762664,0.00244788336681645,0.006575128578309302,**
+Figure 2A,Non-Antipseudomonal,Metallic,Pearson Correlation Coefficient,-0.05335190465939316,0.09660626342167467,0.1675673658439731,
+Figure 2A,Non-Antipseudomonal,Hemolytic,Pearson Correlation Coefficient,-0.10452966237790093,0.001106370699820225,0.0030425194245056186,**
+Figure 2A,Non-Antipseudomonal,Pigment,Pearson Correlation Coefficient,-0.04614872641335423,0.15073280296791225,0.246388548294779,
+Figure 2A,Non-Antipseudomonal,Season (winter),Pearson Correlation Coefficient,0.0334147898815812,0.29825475581263716,0.433397676503406,
+Figure 2A,Non-Antipseudomonal,Season (spring),Pearson Correlation Coefficient,-0.024024415338898344,0.4546016867650935,0.586664746607467,
+Figure 2A,Non-Antipseudomonal,Season (summer),Pearson Correlation Coefficient,-0.028569629821970845,0.3738475699500581,0.5079928744615495,
+Figure 2A,Non-Antipseudomonal,Season (fall),Pearson Correlation Coefficient,0.015859735474200803,0.6215903508373783,0.717936855217172,
+Figure 2A,Non-Antipseudomonal,Co-isolated organism,Pearson Correlation Coefficient,0.07671653307046694,0.016802587311807615,0.036965692085976755,*
+Figure 2A,Co-isolated organism,Mucoid,Pearson Correlation Coefficient,0.07328934096760566,0.02237799056216727,0.047424915778537975,*
+Figure 2A,Co-isolated organism,Metallic,Pearson Correlation Coefficient,-0.07460604395952089,0.020070047489628484,0.04373755632173754,*
+Figure 2A,Co-isolated organism,Hemolytic,Pearson Correlation Coefficient,-0.040751884963563315,0.20452822303333518,0.3149734634713362,
+Figure 2A,Co-isolated organism,Pigment,Pearson Correlation Coefficient,-0.055856861904628595,0.08191788152802393,0.14669015994553122,
+Figure 2A,Co-isolated organism,Season (winter),Pearson Correlation Coefficient,-0.01180100256155026,0.7134186299397423,0.8011051638240619,
+Figure 2A,Co-isolated organism,Season (spring),Pearson Correlation Coefficient,-0.024237896722266346,0.4506018789608668,0.586664746607467,
+Figure 2A,Co-isolated organism,Season (summer),Pearson Correlation Coefficient,-0.010875882012317541,0.735004925149934,0.8162795082193979,
+Figure 2A,Co-isolated organism,Season (fall),Pearson Correlation Coefficient,0.042867145920850856,0.18198417905045305,0.2840428740584774,
+Figure 2A,Mucoid,Metallic,Pearson Correlation Coefficient,-0.23476402061209697,1.2656542480726785e-13,7.693845560652334e-13,***
+Figure 2A,Mucoid,Hemolytic,Pearson Correlation Coefficient,-0.4299582518107478,0,0,***
+Figure 2A,Mucoid,Pigment,Pearson Correlation Coefficient,-0.2763443963637951,0,0,***
+Figure 2A,Mucoid,Season (winter),Pearson Correlation Coefficient,0.0883897235093761,0.0058486313460299755,0.014846525724537629,*
+Figure 2A,Mucoid,Season (spring),Pearson Correlation Coefficient,-0.024048026662784213,0.45415832263631595,0.586664746607467,
+Figure 2A,Mucoid,Season (summer),Pearson Correlation Coefficient,-0.04041937225964539,0.20824900480842423,0.31857960338242386,
+Figure 2A,Mucoid,Season (fall),Pearson Correlation Coefficient,-0.02572525330940007,0.42329301004649666,0.5592144855401368,
+Figure 2A,Metallic,Hemolytic,Pearson Correlation Coefficient,0.10496807343508134,0.0010538673381534913,0.002933052471246464,**
+Figure 2A,Metallic,Pigment,Pearson Correlation Coefficient,0.12179557862996607,1.4206799031168948e-4,4.3756941016000363e-4,***
+Figure 2A,Metallic,Season (winter),Pearson Correlation Coefficient,0.031127395713129485,0.33257402043666984,0.47646763664250485,
+Figure 2A,Metallic,Season (spring),Pearson Correlation Coefficient,-0.046066819695139434,0.15145962709029703,0.246388548294779,
+Figure 2A,Metallic,Season (summer),Pearson Correlation Coefficient,0.010575874108491775,0.7420512492479532,0.818093287085462,
+Figure 2A,Metallic,Season (fall),Pearson Correlation Coefficient,0.0010912207041693341,0.9729093665085875,0.981406391543597,
+Figure 2A,Hemolytic,Pigment,Pearson Correlation Coefficient,0.24750510296758865,5.10702591327572e-15,3.6866343311459104e-14,***
+Figure 2A,Hemolytic,Season (winter),Pearson Correlation Coefficient,-0.1678729227711584,1.4272036308327074e-7,5.994255249497372e-7,***
+Figure 2A,Hemolytic,Season (spring),Pearson Correlation Coefficient,0.10039910206864772,0.0017337669024897195,0.004711766523236767,**
+Figure 2A,Hemolytic,Season (summer),Pearson Correlation Coefficient,-0.022136323400815824,0.49083392117036295,0.612879112380291,
+Figure 2A,Hemolytic,Season (fall),Pearson Correlation Coefficient,0.09255838579006889,0.0038932550335062377,0.010219794462953874,*
+Figure 2A,Pigment,Season (winter),Pearson Correlation Coefficient,-0.06658176683040509,0.03804443462397433,0.07447681693337348,
+Figure 2A,Pigment,Season (spring),Pearson Correlation Coefficient,0.049467068145750054,0.12346419879137205,0.20970757294710987,
+Figure 2A,Pigment,Season (summer),Pearson Correlation Coefficient,-0.04715914639701334,0.1419835663753808,0.23427288451937828,
+Figure 2A,Pigment,Season (fall),Pearson Correlation Coefficient,0.0639199186306747,0.046451058241731236,0.08941828711533263,
+Figure 2A,Season (winter),Season (spring),Pearson Correlation Coefficient,-0.3007173054945358,0,0,***
+Figure 2A,Season (winter),Season (summer),Pearson Correlation Coefficient,-0.3298836131095302,0,0,***
+Figure 2A,Season (winter),Season (fall),Pearson Correlation Coefficient,-0.3843504081346873,0,0,***
+Figure 2A,Season (spring),Season (summer),Pearson Correlation Coefficient,-0.2845626777210831,0,0,***
+Figure 2A,Season (spring),Season (fall),Pearson Correlation Coefficient,-0.33154657271709786,0,0,***
+Figure 2A,Season (summer),Season (fall),Pearson Correlation Coefficient,-0.363702983910865,0,0,***
+Figure 2B CF,Piperacillin/Tazobactam,Tobramycin,Pearson Correlation Coefficient,-0.03531157379763271,0.6258832035983357,0.7301970708647251,
+Figure 2B CF,Meropenem,Piperacillin/Tazobactam,Pearson Correlation Coefficient,0.40006769598029723,8.196242351488081e-9,4.3030272345312426e-8,***
+Figure 2B CF,Meropenem,Tobramycin,Pearson Correlation Coefficient,0.18581013750252248,0.009677124523933323,0.016934967916883314,*
+Figure 2B CF,Gentamicin,Meropenem,Pearson Correlation Coefficient,0.10502444912319248,0.14605966493637856,0.20448353091092997,
+Figure 2B CF,Gentamicin,Piperacillin/Tazobactam,Pearson Correlation Coefficient,-0.025616253141987406,0.723624708893686,0.7598059443383703,
+Figure 2B CF,Gentamicin,Tobramycin,Pearson Correlation Coefficient,0.48548160243779553,8.313350008393172e-13,8.72901750881283e-12,***
+Figure 2B CF,Ciprofloxacin,Gentamicin,Pearson Correlation Coefficient,-0.22438539816182673,0.001706205857875176,0.004478790376922337,**
+Figure 2B CF,Ciprofloxacin,Meropenem,Pearson Correlation Coefficient,-0.20651084435320935,0.003958763687243572,0.009237115270235002,**
+Figure 2B CF,Ciprofloxacin,Piperacillin/Tazobactam,Pearson Correlation Coefficient,-0.1295898358699446,0.07246172025382602,0.10869258038073903,
+Figure 2B CF,Ciprofloxacin,Tobramycin,Pearson Correlation Coefficient,-0.03176605066500122,0.6609861691125121,0.7305636605980397,
+Figure 2B CF,Cefepime,Ciprofloxacin,Pearson Correlation Coefficient,-0.04043945303698801,0.5765836882961157,0.712250438483437,
+Figure 2B CF,Cefepime,Gentamicin,Pearson Correlation Coefficient,0.20309856783456795,0.004614349136659923,0.009690133186985838,**
+Figure 2B CF,Cefepime,Meropenem,Pearson Correlation Coefficient,0.30508657920156573,1.6020460250842916e-5,6.728593305354025e-5,***
+Figure 2B CF,Cefepime,Piperacillin/Tazobactam,Pearson Correlation Coefficient,0.23852995537948193,8.360083762983805e-4,0.0025080251288951416,**
+Figure 2B CF,Cefepime,Tobramycin,Pearson Correlation Coefficient,0.059394962653611695,0.41192787793015895,0.5406553397833336,
+Figure 2B CF,Amikacin,Cefepime,Pearson Correlation Coefficient,0.25377750730668736,3.6921143074009066e-4,0.0012922400075903173,**
+Figure 2B CF,Amikacin,Ciprofloxacin,Pearson Correlation Coefficient,-0.14393307010831036,0.045824829690910285,0.07402472488531661,
+Figure 2B CF,Amikacin,Gentamicin,Pearson Correlation Coefficient,0.6936595925490975,0,0,***
+Figure 2B CF,Amikacin,Meropenem,Pearson Correlation Coefficient,0.18997506675594839,0.008139780557940846,0.015539581065159796,*
+Figure 2B CF,Amikacin,Piperacillin/Tazobactam,Pearson Correlation Coefficient,0.014850854850792874,0.8375832664209921,0.8375832664209921,
+Figure 2B CF,Amikacin,Tobramycin,Pearson Correlation Coefficient,0.417796352282595,1.4914398605014867e-9,1.0440079023510407e-8,***
+Figure 2B No CF,Piperacillin/Tazobactam,Tobramycin,Pearson Correlation Coefficient,-0.1214923827337031,0.12472326366339614,0.3273985671164149,
+Figure 2B No CF,Meropenem,Piperacillin/Tazobactam,Pearson Correlation Coefficient,0.03875220547845336,0.6255056242011809,0.7726834181308706,
+Figure 2B No CF,Meropenem,Tobramycin,Pearson Correlation Coefficient,-0.0076391541419017685,0.923380683355703,0.923380683355703,
+Figure 2B No CF,Gentamicin,Meropenem,Pearson Correlation Coefficient,-0.10977009228648885,0.16569615863949805,0.34796193314294593,
+Figure 2B No CF,Gentamicin,Piperacillin/Tazobactam,Pearson Correlation Coefficient,-0.14873265462168186,0.059701991339583316,0.17910597401874995,
+Figure 2B No CF,Gentamicin,Tobramycin,Pearson Correlation Coefficient,0.5210501057189062,1.3811174426336947e-12,9.667822098435863e-12,***
+Figure 2B No CF,Ciprofloxacin,Gentamicin,Pearson Correlation Coefficient,-0.05524417362793861,0.48640382873130017,0.6384050252098314,
+Figure 2B No CF,Ciprofloxacin,Meropenem,Pearson Correlation Coefficient,-0.030048115508062665,0.7051464471615363,0.7793723889680139,
+Figure 2B No CF,Ciprofloxacin,Piperacillin/Tazobactam,Pearson Correlation Coefficient,-0.277910804809554,3.578085983098056e-4,0.0015027961129011837,**
+Figure 2B No CF,Ciprofloxacin,Tobramycin,Pearson Correlation Coefficient,-0.03320710291375185,0.6758132034956525,0.7793723889680139,
+Figure 2B No CF,Cefepime,Ciprofloxacin,Pearson Correlation Coefficient,-0.11041845713428754,0.16319564272809028,0.34796193314294593,
+Figure 2B No CF,Cefepime,Gentamicin,Pearson Correlation Coefficient,-0.09615705242498415,0.2249756710359967,0.3937074243129942,
+Figure 2B No CF,Cefepime,Meropenem,Pearson Correlation Coefficient,-0.010953574899159999,0.8903143398992108,0.923380683355703,
+Figure 2B No CF,Cefepime,Piperacillin/Tazobactam,Pearson Correlation Coefficient,0.34908839232153854,5.664788326864567e-6,2.9740138716038977e-5,***
+Figure 2B No CF,Cefepime,Tobramycin,Pearson Correlation Coefficient,-0.08395496721641461,0.2896729800605191,0.41198519632815056,
+Figure 2B No CF,Amikacin,Cefepime,Pearson Correlation Coefficient,-0.09001066168038617,0.25615971503131774,0.41198519632815056,
+Figure 2B No CF,Amikacin,Ciprofloxacin,Pearson Correlation Coefficient,-0.08316087803067473,0.2942751402343933,0.41198519632815056,
+Figure 2B No CF,Amikacin,Gentamicin,Pearson Correlation Coefficient,0.613383691634062,0,0,***
+Figure 2B No CF,Amikacin,Meropenem,Pearson Correlation Coefficient,-0.09748850959989852,0.2185904468469717,0.3937074243129942,
+Figure 2B No CF,Amikacin,Piperacillin/Tazobactam,Pearson Correlation Coefficient,-0.1688718955844139,0.03223756386387855,0.11283147352357492,
+Figure 2B No CF,Amikacin,Tobramycin,Pearson Correlation Coefficient,0.5617124153689866,8.881784197001252e-15,9.325873406851315e-14,***
+Figure 2C,Tobramycin,Age,Adjusted Odds Ratio,8.908359608752686,0.08159398776528423,0.19815682742997598,
+Figure 2C,Tobramycin,Sex (Female),Adjusted Odds Ratio,2.7222476818903676,0.005713866538391274,0.03418809611752307,*
+Figure 2C,Tobramycin,Cystic Fibrosis,Adjusted Odds Ratio,6.1073174507372645,0.010496008217750456,0.04626018436712238,*
+Figure 2C,Tobramycin,Diabetes,Adjusted Odds Ratio,1.317735140553402,0.4242049041916275,0.638992197453211,
+Figure 2C,Tobramycin,Repeat Patient,Adjusted Odds Ratio,1.191124409353219,0.6398175618562882,0.7690736349585686,
+Figure 2C,Tobramycin,Source (Lung/Trachea),Adjusted Odds Ratio,1.7476353216713882,0.18847631326221234,0.37381135463672116,
+Figure 2C,Tobramycin,Source (Urine/Catheter),Adjusted Odds Ratio,0.2955380744755906,0.2802692074554621,0.5035761620248478,
+Figure 2C,Tobramycin,Antipseudomonal,Adjusted Odds Ratio,1.442136404392423,0.5549420403770304,0.7327722029562209,
+Figure 2C,Tobramycin,Non-Antipseudomonal,Adjusted Odds Ratio,2.3846606644236843,0.10433742775932056,0.24010443477749197,
+Figure 2C,Tobramycin,Co-isolated organsim,Adjusted Odds Ratio,1.9628363378042606,0.04523680082149695,0.12817093566090804,
+Figure 2C,Tobramycin,Mucoid,Adjusted Odds Ratio,0.35680852581019623,0.011406896702372007,0.04847931098508103,*
+Figure 2C,Tobramycin,Metallic,Adjusted Odds Ratio,0.7297319579367785,0.5603552140253454,0.7327722029562209,
+Figure 2C,Tobramycin,Hemolytic,Adjusted Odds Ratio,0.4390835107586574,0.024441939911381994,0.08079419026262381,
+Figure 2C,Tobramycin,Pigment,Adjusted Odds Ratio,0.4919057511673326,0.040146984975812136,0.11943728030304111,
+Figure 2C,Tobramycin,Season (winter),Adjusted Odds Ratio,1.3508528706255414,0.47703706359067166,0.6758025067534515,
+Figure 2C,Tobramycin,Season (spring),Adjusted Odds Ratio,0.49160460584111887,0.25530044677479824,0.47469926822189046,
+Figure 2C,Tobramycin,Season (summer),Adjusted Odds Ratio,1.332351162629786,0.5228830723553286,0.7152078805779782,
+Figure 2C,Piperacillin/Tazobactam,Age,Adjusted Odds Ratio,4.635303304927996,0.005378713905771667,0.03418809611752307,*
+Figure 2C,Piperacillin/Tazobactam,Sex (Female),Adjusted Odds Ratio,0.5772577178839154,0.0026310796903561058,0.026091540262698047,*
+Figure 2C,Piperacillin/Tazobactam,Cystic Fibrosis,Adjusted Odds Ratio,3.368698414450562,1.1801638922541376e-4,0.0023406583863040393,**
+Figure 2C,Piperacillin/Tazobactam,Diabetes,Adjusted Odds Ratio,1.2935018218965615,0.17947953993260926,0.3662459002188774,
+Figure 2C,Piperacillin/Tazobactam,Repeat Patient,Adjusted Odds Ratio,1.4015614619595613,0.10491958494478641,0.24010443477749197,
+Figure 2C,Piperacillin/Tazobactam,Source (Lung/Trachea),Adjusted Odds Ratio,1.2769578477879515,0.2835260744173513,0.5035761620248478,
+Figure 2C,Piperacillin/Tazobactam,Source (Urine/Catheter),Adjusted Odds Ratio,1.2199657054458106,0.4892452108144611,0.6849432951402455,
+Figure 2C,Piperacillin/Tazobactam,Antipseudomonal,Adjusted Odds Ratio,2.13336300590266,0.00305843735635423,0.027996465031242566,*
+Figure 2C,Piperacillin/Tazobactam,Non-Antipseudomonal,Adjusted Odds Ratio,0.8905903380499794,0.5991467066915596,0.7584942350669743,
+Figure 2C,Piperacillin/Tazobactam,Co-isolated organsim,Adjusted Odds Ratio,0.6297890834378188,0.021234469375781266,0.07432064281523443,
+Figure 2C,Piperacillin/Tazobactam,Mucoid,Adjusted Odds Ratio,0.5550134212916468,0.023183535251838888,0.07882401985625222,
+Figure 2C,Piperacillin/Tazobactam,Metallic,Adjusted Odds Ratio,1.7068385704587972,0.015172002207797028,0.0564208832102452,
+Figure 2C,Piperacillin/Tazobactam,Hemolytic,Adjusted Odds Ratio,0.5562045285401407,0.004677279686128556,0.032740957802899893,*
+Figure 2C,Piperacillin/Tazobactam,Pigment,Adjusted Odds Ratio,0.7353601549817373,0.13631146877303485,0.30039008859242866,
+Figure 2C,Piperacillin/Tazobactam,Season (winter),Adjusted Odds Ratio,1.2362685432341818,0.374707021531061,0.5867123100288982,
+Figure 2C,Piperacillin/Tazobactam,Season (spring),Adjusted Odds Ratio,1.28241793714006,0.3490921610277556,0.569068043319218,
+Figure 2C,Piperacillin/Tazobactam,Season (summer),Adjusted Odds Ratio,1.1592113710978773,0.5554255632491365,0.7327722029562209,
+Figure 2C,Meropenem,Age,Adjusted Odds Ratio,1.4039764438931794,0.5666323650330967,0.7329266460754185,
+Figure 2C,Meropenem,Sex (Female),Adjusted Odds Ratio,0.6239738623140276,0.01767971722841738,0.06375413182368692,
+Figure 2C,Meropenem,Cystic Fibrosis,Adjusted Odds Ratio,2.562059464433283,0.006063760373545397,0.03418809611752307,*
+Figure 2C,Meropenem,Diabetes,Adjusted Odds Ratio,2.142415638854906,1.80879348495276e-4,0.0030749489244196924,**
+Figure 2C,Meropenem,Repeat Patient,Adjusted Odds Ratio,1.209446142386041,0.39245055548581304,0.606514494841711,
+Figure 2C,Meropenem,Source (Lung/Trachea),Adjusted Odds Ratio,1.276252714923075,0.34155260311348146,0.5645105523681152,
+Figure 2C,Meropenem,Source (Urine/Catheter),Adjusted Odds Ratio,2.5421298449295344,0.003988131557849184,0.03068375334147147,*
+Figure 2C,Meropenem,Antipseudomonal,Adjusted Odds Ratio,3.396251305561811,3.926564363268992e-5,0.0014431990106413078,**
+Figure 2C,Meropenem,Non-Antipseudomonal,Adjusted Odds Ratio,1.075106965789876,0.7703067342581094,0.8699416334170065,
+Figure 2C,Meropenem,Co-isolated organsim,Adjusted Odds Ratio,0.8568058952446841,0.45853854486188833,0.6733233608228324,
+Figure 2C,Meropenem,Mucoid,Adjusted Odds Ratio,0.6122481423570312,0.0735601388979671,0.18624801125229967,
+Figure 2C,Meropenem,Metallic,Adjusted Odds Ratio,1.4726334253492301,0.11397073850825241,0.2558965638204158,
+Figure 2C,Meropenem,Hemolytic,Adjusted Odds Ratio,0.5437690665521381,0.006374950232898392,0.03418809611752307,*
+Figure 2C,Meropenem,Pigment,Adjusted Odds Ratio,0.7305539172390331,0.15525070614438394,0.32411989528388924,
+Figure 2C,Meropenem,Season (winter),Adjusted Odds Ratio,1.3887181673711906,0.20410051479581115,0.39174131065647627,
+Figure 2C,Meropenem,Season (spring),Adjusted Odds Ratio,0.9187724417023524,0.7813770660408745,0.8699416334170065,
+Figure 2C,Meropenem,Season (summer),Adjusted Odds Ratio,1.543901331809969,0.10100752194082166,0.24010443477749197,
+Figure 2C,Gentamicin,Age,Adjusted Odds Ratio,2.9989398810066685,0.13906329816683705,0.3008824087609747,
+Figure 2C,Gentamicin,Sex (Female),Adjusted Odds Ratio,0.8196380725385123,0.35848666655257905,0.5764853151318501,
+Figure 2C,Gentamicin,Cystic Fibrosis,Adjusted Odds Ratio,9.508050141867747,4.981079162460465e-8,5.927484203327953e-6,***
+Figure 2C,Gentamicin,Diabetes,Adjusted Odds Ratio,1.1828547086808183,0.4639707192224559,0.6733233608228324,
+Figure 2C,Gentamicin,Repeat Patient,Adjusted Odds Ratio,1.298407593425391,0.29117828721648714,0.5095620026288525,
+Figure 2C,Gentamicin,Source (Lung/Trachea),Adjusted Odds Ratio,1.8486499026611884,0.026268599811675522,0.08226219414708914,
+Figure 2C,Gentamicin,Source (Urine/Catheter),Adjusted Odds Ratio,1.2006049641031593,0.6955098838093142,0.8114281977775333,
+Figure 2C,Gentamicin,Antipseudomonal,Adjusted Odds Ratio,1.399489338037048,0.3166717562366344,0.5461440433646304,
+Figure 2C,Gentamicin,Non-Antipseudomonal,Adjusted Odds Ratio,1.1423004683062457,0.6263382377868186,0.7690736349585686,
+Figure 2C,Gentamicin,Co-isolated organsim,Adjusted Odds Ratio,1.1070658443732975,0.6476426836622149,0.7706947935580357,
+Figure 2C,Gentamicin,Mucoid,Adjusted Odds Ratio,0.5038116233384765,0.01273513871046246,0.05051605021816776,
+Figure 2C,Gentamicin,Metallic,Adjusted Odds Ratio,1.0489013814376693,0.8770231157874565,0.9352171050004947,
+Figure 2C,Gentamicin,Hemolytic,Adjusted Odds Ratio,0.8264874245647175,0.4381887696631391,0.6518057948739194,
+Figure 2C,Gentamicin,Pigment,Adjusted Odds Ratio,0.5422035051352843,0.007841023063805925,0.038878406024704375,*
+Figure 2C,Gentamicin,Season (winter),Adjusted Odds Ratio,1.0562139008322,0.8468917180960095,0.9245882059947259,
+Figure 2C,Gentamicin,Season (spring),Adjusted Odds Ratio,0.9737117110448609,0.9340053959005598,0.9499713001039881,
+Figure 2C,Gentamicin,Season (summer),Adjusted Odds Ratio,0.9917511863084207,0.977788746603811,0.9860750919140128,
+Figure 2C,Ciprofloxacin,Age,Adjusted Odds Ratio,0.7022487962850976,0.5187400128552724,0.7152078805779782,
+Figure 2C,Ciprofloxacin,Sex (Female),Adjusted Odds Ratio,1.1563835026030846,0.47110884654609747,0.675445213722718,
+Figure 2C,Ciprofloxacin,Cystic Fibrosis,Adjusted Odds Ratio,1.174872932019695,0.6373296634925911,0.7690736349585686,
+Figure 2C,Ciprofloxacin,Diabetes,Adjusted Odds Ratio,1.3708366783987505,0.14301874137499027,0.30391482542185433,
+Figure 2C,Ciprofloxacin,Repeat Patient,Adjusted Odds Ratio,2.468389783713902,9.710566328801942e-5,0.0023111147862548624,**
+Figure 2C,Ciprofloxacin,Source (Lung/Trachea),Adjusted Odds Ratio,1.2716502321959604,0.36821238853875204,0.5842303231481533,
+Figure 2C,Ciprofloxacin,Source (Urine/Catheter),Adjusted Odds Ratio,3.0059760669386186,4.7111514910369313e-4,0.007007837842917435,**
+Figure 2C,Ciprofloxacin,Antipseudomonal,Adjusted Odds Ratio,2.4598479831288347,0.001731332971351011,0.022892069287863366,*
+Figure 2C,Ciprofloxacin,Non-Antipseudomonal,Adjusted Odds Ratio,1.0999944102274501,0.702464001927795,0.8115846235864815,
+Figure 2C,Ciprofloxacin,Co-isolated organsim,Adjusted Odds Ratio,1.0201437822617812,0.9262893031794927,0.9499713001039881,
+Figure 2C,Ciprofloxacin,Mucoid,Adjusted Odds Ratio,0.4350978435891422,0.006607783283218744,0.03418809611752307,*
+Figure 2C,Ciprofloxacin,Metallic,Adjusted Odds Ratio,1.2215810790442672,0.41172255982036415,0.6281408284438889,
+Figure 2C,Ciprofloxacin,Hemolytic,Adjusted Odds Ratio,0.5133535429347656,0.00412554666776087,0.03068375334147147,*
+Figure 2C,Ciprofloxacin,Pigment,Adjusted Odds Ratio,0.9097377097352801,0.688346787980306,0.811022453164915,
+Figure 2C,Ciprofloxacin,Season (winter),Adjusted Odds Ratio,1.0366087911979385,0.8968599885250641,0.9361959529340581,
+Figure 2C,Ciprofloxacin,Season (spring),Adjusted Odds Ratio,2.0295098149013397,0.01247025486492569,0.05051605021816776,
+Figure 2C,Ciprofloxacin,Season (summer),Adjusted Odds Ratio,1.3913910080842236,0.2364761560610592,0.4466771836708896,
+Figure 2C,Cefepime,Age,Adjusted Odds Ratio,9.82149530329708,0.002145610677466703,0.02457234430217094,*
+Figure 2C,Cefepime,Sex (Female),Adjusted Odds Ratio,0.5050571758768634,0.0022713931707889104,0.02457234430217094,*
+Figure 2C,Cefepime,Cystic Fibrosis,Adjusted Odds Ratio,2.623193245140864,0.013441375237736808,0.05159753720292517,
+Figure 2C,Cefepime,Diabetes,Adjusted Odds Ratio,1.810712254759622,0.00838866627929136,0.039930051489426875,*
+Figure 2C,Cefepime,Repeat Patient,Adjusted Odds Ratio,1.5560581471148336,0.07047542470089804,0.18517962801976467,
+Figure 2C,Cefepime,Source (Lung/Trachea),Adjusted Odds Ratio,1.2901025816229674,0.33774469612653113,0.5645105523681152,
+Figure 2C,Cefepime,Source (Urine/Catheter),Adjusted Odds Ratio,0.5870859240414507,0.1815841017891913,0.3662459002188774,
+Figure 2C,Cefepime,Antipseudomonal,Adjusted Odds Ratio,4.189570287287068,4.851089111399354e-5,0.0014431990106413078,**
+Figure 2C,Cefepime,Non-Antipseudomonal,Adjusted Odds Ratio,1.1478240413659637,0.6264860310642743,0.7690736349585686,
+Figure 2C,Cefepime,Co-isolated organsim,Adjusted Odds Ratio,0.6196914303697436,0.045089578394747004,0.12817093566090804,
+Figure 2C,Cefepime,Mucoid,Adjusted Odds Ratio,0.5982265720635459,0.07856568011845387,0.19477741529366688,
+Figure 2C,Cefepime,Metallic,Adjusted Odds Ratio,0.7375962630762476,0.32303067676231334,0.5491521504959327,
+Figure 2C,Cefepime,Hemolytic,Adjusted Odds Ratio,0.48267974179852335,0.0034641986818348017,0.029445688795595813,*
+Figure 2C,Cefepime,Pigment,Adjusted Odds Ratio,0.7648126888980326,0.27395254570365185,0.5015438913651472,
+Figure 2C,Cefepime,Season (winter),Adjusted Odds Ratio,1.0827084003255698,0.7822164266858798,0.8699416334170065,
+Figure 2C,Cefepime,Season (spring),Adjusted Odds Ratio,1.7920500194315776,0.06108959622808939,0.16860516950489013,
+Figure 2C,Cefepime,Season (summer),Adjusted Odds Ratio,0.9978228132832975,0.994442640560915,0.994442640560915,
+Figure 2C,Amikacin,Age,Adjusted Odds Ratio,5.716561144560167,0.07158204108327038,0.18517962801976467,
+Figure 2C,Amikacin,Sex (Female),Adjusted Odds Ratio,0.8569468054755631,0.5434689709948388,0.7327722029562209,
+Figure 2C,Amikacin,Cystic Fibrosis,Adjusted Odds Ratio,10.676859310386485,7.94572173697253e-6,4.7277044334986557e-4,***
+Figure 2C,Amikacin,Diabetes,Adjusted Odds Ratio,1.0242322241776436,0.9289957398297606,0.9499713001039881,
+Figure 2C,Amikacin,Repeat Patient,Adjusted Odds Ratio,1.7227357160127528,0.062341407211892144,0.16860516950489013,
+Figure 2C,Amikacin,Source (Lung/Trachea),Adjusted Odds Ratio,2.4921777067119577,0.008868670704339082,0.04059122360832118,*
+Figure 2C,Amikacin,Source (Urine/Catheter),Adjusted Odds Ratio,0.8965891119550818,0.8802043341181127,0.9352171050004947,
+Figure 2C,Amikacin,Antipseudomonal,Adjusted Odds Ratio,1.7599604140855414,0.20135557163343168,0.39174131065647627,
+Figure 2C,Amikacin,Non-Antipseudomonal,Adjusted Odds Ratio,0.9043632384976089,0.7587037635771721,0.8681321910161872,
+Figure 2C,Amikacin,Co-isolated organsim,Adjusted Odds Ratio,0.9434687211687417,0.8234093829708087,0.9072751534585762,
+Figure 2C,Amikacin,Mucoid,Adjusted Odds Ratio,0.5231892731872233,0.03388265241568466,0.10338552916580704,
+Figure 2C,Amikacin,Metallic,Adjusted Odds Ratio,0.8261381601855406,0.6332397003708163,0.7690736349585686,
+Figure 2C,Amikacin,Hemolytic,Adjusted Odds Ratio,0.5318014150654882,0.025336257375028187,0.08148688182779336,
+Figure 2C,Amikacin,Pigment,Adjusted Odds Ratio,0.48541077171641617,0.006055705440717265,0.03418809611752307,*
+Figure 2C,Amikacin,Season (winter),Adjusted Odds Ratio,0.9547200030316757,0.8898796584275622,0.9361959529340581,
+Figure 2C,Amikacin,Season (spring),Adjusted Odds Ratio,1.0673307973343227,0.866985306032848,0.9352171050004947,
+Figure 2C,Amikacin,Season (summer),Adjusted Odds Ratio,1.2101548157480193,0.5803653196141132,0.7426179896137577,
+Figure 4A,CF Lung/Trachea,Non-CF Lung/Trachea,Wilcoxon Rank Sum Test,NA,6.422844305225096e-18,1.9268532915675286e-17,***
+Figure 4A,CF Lung/Trachea,Skin/Wound,Wilcoxon Rank Sum Test,NA,3.606710541758812e-14,7.213421083517625e-14,***
+Figure 4A,CF Lung/Trachea,Urine/Catheter,Wilcoxon Rank Sum Test,NA,1.5107897729363528e-30,9.064738637618117e-30,***
+Figure 4A,Non-CF Lung/Trachea,Skin/Wound,Wilcoxon Rank Sum Test,NA,0.22117509585248757,0.26541011502298506,
+Figure 4A,Non-CF Lung/Trachea,Urine/Catheter,Wilcoxon Rank Sum Test,NA,0.01365116313437193,0.020476744701557893,*
+Figure 4A,Skin/Wound,Urine/Catheter,Wilcoxon Rank Sum Test,NA,0.6321830226129237,0.6321830226129237,
+Figure S3A,Skin/Wound,Urine/Catheter,Wilcoxon Rank Sum Test,NA,1.1223998609126898e-121,1.1223998609126898e-121,***
+Figure S3A,      Lung/Trachea,Skin/Wound,Wilcoxon Rank Sum Test,NA,0,0,***
+Figure S3A,      Lung/Trachea,Urine/Catheter,Wilcoxon Rank Sum Test,NA,0,0,***
+Figure S3B,Cystic Fibrosis,No Cystic Fibrosis,Wilcoxon Rank Sum Test,NA,0,NA,***
