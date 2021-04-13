@@ -1341,7 +1341,7 @@ ggsave('figures/Figure2.jpg',Figure3_2, dpi = 300, height = 3.7, width = 7.5, un
 
 **Figure 2 – Pairwise relationships between demographic, phenotypic, and antimicrobial susceptibility data.**
 A.	Pearson correlation coefficients between different phenotypic and demographic measurements of all clinical isolates. Asterisks denote BH corrected p-values (* < 0.05, ** < 0.01, *** < 0.001). 
-B.	Pearson correlation coefficients across antimicrobial susceptibility data for isolates resistant to at least one antimicrobial (n = 354 isolates). Coefficients calculated for isolates from patients with (bottom) and without (top) CF. Intermediately resistant isolates were considered resistant. Asterisks denote BH corrected p-values (* < 0.05, ** < 0.01, *** < 0.001).
+B.	The observed number of co-resistant isolates relative to the number that would be expected assuming statistical independence between antibiotics. Determined for isolates from patients with (bottom) and without (top) CF. Intermediately resistant isolates were considered resistant. Asterisks denote BH corrected p-values from Fisher's exact test (* < 0.05, ** < 0.01, *** < 0.001).
 C.	Adjusted odds ratios between measured features and susceptibility data across all isolates. Adjusted odds ratios were calculated from logistic regression models (one model per antimicrobial, see methods). Asterisks denote BH corrected p-values (* < 0.05, ** < 0.01, *** < 0.001).
 
 
