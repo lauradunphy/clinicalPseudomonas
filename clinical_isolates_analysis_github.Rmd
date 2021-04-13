@@ -1,0 +1,2466 @@
+---
+title: "clinical_isolates_analysis_github"
+author: "Laura Dunphy"
+date: "August 10, 2020"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This R markdown file contains all analyses performed by Dunphy et al. Output contains figures, tables (unformatted), supplemental figures, supplemental data, and supplemental tables
+
+Updated in April 2021 with a new Figure 2B
+
+Note: To protect patient data, the early stages of the following analyses have been pre-analyzed, altered, or excluded from this dataset:
+
+- Figure 1B, 1C
+
+- Table 1 age calculations
+
+- Figure 2
+
+- Figure 3B
+
+- Figure 4
+
+- Figure S2
+
+- Data S1
+
+This was done to protect the privacy of patients >=90 years of age or with cystic fibrosis as required by the IRB. Our analysis utilized raw patient ages, but for the data to be shared, patients were lumped into different age range categories. For transparency, code related to age has been kept but commented out (an will not run because age has been converted to a character variable in the shared dataset).
+
+
+## Load required packages. Uncomment top half of this section to install packages (first time only)
+
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE}
+# Load required packages
+# # Uncomment to install packages:
+# install.packages('readr')
+# install.packages('dplyr')
+# install.packages('ggplot2')
+# install.packages('ggthemes')
+# install.packages('tidyr')
+# install.packages('knitr')
+# install.packages('reshape2')
+# install.packages('ggpubr')
+# install.packages('grid')
+# install.packages('gridExtra')
+# install.packages('png')
+# install.packages('cowplot')
+# install.packages('stringr')
+# install.packages('vegan')
+# install.packages('ggdendro')
+# install.packages('stringr')
+# install.packages('cluster')
+# install.packages('ape')
+# install.packages('tibble')
+# install.packages('Hmisc')
+# install.packages('randomForest')
+# install.packages('AUCRF')
+# install.packages('RColorBrewer')
+# install.packages('fmsb')
+# install.packages('viridis')
+
+
+# Load packages
+library(randomForest)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(tidyr)
+library(knitr)
+library(reshape2)
+library(ggpubr)
+library(grid)
+library(gridExtra)
+library(png)
+library(cowplot)
+library(stringr)
+library(vegan)
+library(ggdendro)
+library(stringr)
+library(cluster)
+library(ape)
+library(tibble)
+library(Hmisc)
+library(RColorBrewer)
+library(fmsb)
+library(viridis)
+```
+
+## Load data
+
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE}
+# Tidy Phenotype Data: isolates_tidy_all
+  # Fields
+    # Isolate
+    # Patient_index
+    # Age (with patients >90 lumped together)
+    # Sex
+    # repeatPatient (yes = at least second visit for that patient)
+    # cystic_fibrosis
+    # diabetes (prediabetic == no diabetes)
+    # HEMOLYSIS
+    # MUCOIDY
+    # PIGMENT
+    # METALLIC
+    # Color note (note about pigments if mixed)
+    # SITE_BROAD
+    # IsolationMonth 
+    # rankedDate (1 = first isolate for that patient, ties have same ranked date)
+isolates_tidy <- read_csv('data/isolates_tidy_all.csv') 
+
+
+# Tidy Resistance Data: isolates_tidy_resistance_profiles_all
+  # Fields:
+    # Isolate
+    # SusceptibilityMethod
+    # Antibiotic
+    # SIR
+isolates_tidy_resistance_profiles <- read_csv('data/isolates_tidy_resistance_profiles_all.csv')
+
+# Tidy Co infecting organisms: isolates_tidy_co_infecting_organisms
+  # Fields:
+    # Isolate
+    # Patient_index
+    # SITE_BROAD
+    # Organism
+    # Co_colonizingBacteria - raw list of pathogens that were parsed for Organism column
+    # Classification (Bacteria or Fungi)
+isolates_tidy_co_infecting_organisms <- read_csv('data/isolates_tidy_co_infecting_organisms_all.csv')
+# Rename MRSA/MSSA
+isolates_tidy_co_infecting_organisms <- isolates_tidy_co_infecting_organisms %>%
+  mutate(Organism = case_when(Organism == 'MSSA' ~ 'S. aureus (MSSA)',
+                              Organism == 'MRSA' ~ 'S. aureus (MRSA)', TRUE ~ Organism))
+
+# Antibiotic Prescription Data:
+  # Fields:
+    # Isolate
+    # Patient Index
+    # Antibiotic
+    # Antibiotic Abbreviation
+    # Antibiotic Class
+# Note: If an isolate had multiple prescriptions of the same antibiotic, this is only counted once in this dataset
+isolates_tidy_antibiotic_treatment_duration <- read_csv('data/isolates_tidy_antibiotic_treatment_duration_all.csv')
+
+# Anti_Pseudomonal Information for each antibiotic
+  # Fields
+    # Antibiotic
+    # Antibiotic Abbreviation
+    # Antibiotic Class
+    # anti_pseudomonal (yes/no)
+anti_pseudomonal <- read_csv('data/anti_pseudomonal.csv')
+
+######################## Calculate number of isolates and number of patients:#######################3
+numIsolates <- length(unique(isolates_tidy$Isolate))
+numPatients <- length(unique(isolates_tidy$Patient_index))
+'Number of Isolates'
+numIsolates
+'Number of Patients'
+numPatients
+
+######################## Factor Everything #######################
+isolates_tidy$diabetes <- factor(isolates_tidy$Diabetes, levels = c('nodb','db'), labels = c('nodb','db'), ordered = TRUE)
+isolates_tidy$HEMOLYSIS <- factor(isolates_tidy$Hemolysis, levels = c('Non-Hemolytic','Hemolytic'), ordered = TRUE)
+isolates_tidy$PIGMENT <- factor(isolates_tidy$Pigment, levels = c('Green','Blue','Red','Mixed','None'), ordered = TRUE)
+isolates_tidy$MUCOIDY <- factor(isolates_tidy$Mucoidy, levels = c('Non-Mucoid','Mucoid'))
+isolates_tidy$METALLIC <- factor(isolates_tidy$Metallic, levels = c('Non-Metallic','Metallic'))
+isolates_tidy$SITE_BROAD <- factor(isolates_tidy$IsolationSite, levels = c("Lung/Trachea","Urine/Catheter", "ENT/Sinus","Skin/Wound", "Blood","Other"), ordered = TRUE)
+isolates_tidy_resistance_profiles$SIR <- factor(isolates_tidy_resistance_profiles$SIR, levels = c("S","I","R"), ordered = TRUE)
+
+###################### Namin Consistency ########################
+isolates_tidy$Patient_index <- isolates_tidy$PatientIndex
+isolates_tidy$rankedDate <- isolates_tidy$RankedDate
+isolates_tidy$repeatPatient <- isolates_tidy$RepeatPatient
+
+isolates_tidy <- isolates_tidy %>% 
+  select(-Diabetes, -Hemolysis, - Pigment, -Mucoidy,-Metallic,
+         -IsolationSite, -PatientIndex, -RankedDate, -RepeatPatient)
+
+####################### Color Palettes ##########################
+# Colorblind friendly palette from: http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
+# cbPalette <- c("#009E73","#E69F00", "#56B4E9","#0072B2" ,"#D55E00","#F0E442", "#CC79A7") 
+cbPalette <- c("#F0E442","#0072B2", "#56B4E9","#CC79A7","#E69F00", "#009E73") 
+```
+
+## Table S1 Data:
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE}
+### By Patient
+# Calculate the median age (if there is a birthday, take median age across visits)
+# median_IQR_age <- isolates_tidy %>% 
+#   group_by(Patient_index) %>% 
+#   mutate(median_patient_age = median(Age)) %>% 
+#   group_by(Patient_index, median_patient_age) %>% 
+#   summarise() %>% ungroup() %>% 
+#   summarise(median_age = median(median_patient_age), 
+#             IQ25_age = quantile(median_patient_age, 0.25),
+#             IQ75_age = quantile(median_patient_age, 0.75))
+# median_IQR_age
+# 
+# # Classify patients by WHO age ranges
+# age_classification <- isolates_tidy %>% 
+#   group_by(Patient_index) %>% 
+#   mutate(median_patient_age = median(Age)) %>% 
+#   group_by(Patient_index, median_patient_age) %>% 
+#   summarise() %>% ungroup() %>%
+#   mutate(ageRange = case_when(median_patient_age <= 14 ~ '0-14',
+#                               median_patient_age > 14 & median_patient_age <= 24 ~ '15-24',
+#                               median_patient_age > 24 & median_patient_age <= 44 ~ '25-44',
+#                               median_patient_age > 44 & median_patient_age <= 64 ~ '45-64',
+#                               TRUE ~ '65+')) %>% 
+#   group_by(ageRange) %>% 
+#   summarise(n_ageRange = n(), percent_ageRange = n()/numPatients * 100)
+# age_classification
+
+# Count the number of male and female patients
+total_sex <- isolates_tidy %>% group_by(Patient_index, Sex) %>% 
+  summarise() %>% ungroup() %>% 
+  group_by(Sex) %>% summarise(n_Sex = n(), percent_Sex = n()/numPatients * 100)
+total_sex
+
+# # Count the number of patients with and without CF
+# total_CF <- isolates_tidy %>% group_by(Patient_index, cystic_fibrosis) %>% 
+#   summarise() %>% ungroup() %>% 
+#   group_by(cystic_fibrosis) %>% summarise(n_CF = n(), percent_CF = n()/numPatients * 100)
+# total_CF
+# Count the number of patients with and without diabetes
+total_DM <- isolates_tidy %>% 
+  group_by(Patient_index, diabetes) %>% 
+  summarise() %>% ungroup() %>% 
+  group_by(diabetes) %>% summarise(n_DM = n(), percent_DM = n()/numPatients * 100)
+total_DM
+
+### By Isolate:
+# # Calculate the median patient age and IQR at the isolate level
+# median_IQR_age_isolate <- isolates_tidy %>% 
+#   group_by(Isolate, Age) %>% 
+#   summarise() %>% ungroup() %>% 
+#   summarise(median_age = median(Age), 
+#             IQ25_age = quantile(Age, 0.25),
+#             IQ75_age = quantile(Age, 0.75))
+# median_IQR_age_isolate
+# 
+# # Classify isolates by WHO age ranges (does not change results if you use raw age or take the median across repeat patients)
+# age_classification_isolate <- isolates_tidy %>% 
+#   group_by(Isolate, Age) %>% 
+#   summarise() %>% ungroup() %>%
+#   mutate(ageRange = case_when(Age <= 14 ~ '0-14',
+#                               Age > 14 & Age <= 24 ~ '15-24',
+#                               Age > 24 & Age <= 44 ~ '25-44',
+#                               Age > 44 & Age <= 64 ~ '45-64',
+#                               TRUE ~ '65+')) %>% 
+#   group_by(ageRange) %>% 
+#   summarise(n_ageRange = n(), percent_ageRange = n()/numIsolates * 100)
+# age_classification_isolate
+
+# Count the number of isolates from male and female patients
+total_sex_isolate <- isolates_tidy %>% group_by(Isolate, Sex) %>% 
+  summarise() %>% ungroup() %>% 
+  group_by(Sex) %>% summarise(n_Sex = n(), percent_Sex = n()/numIsolates * 100)
+total_sex_isolate
+
+# Count the number of isolates from patients with and without CF
+# total_CF_isolate <- isolates_tidy %>% group_by(Isolate, cystic_fibrosis) %>% 
+#   summarise() %>% ungroup() %>% 
+#   group_by(cystic_fibrosis) %>% summarise(n_CF = n(), percent_CF = n()/numIsolates * 100)
+# total_CF_isolate
+# Count the number of isolates from patients with and without diabetes
+total_DM_isolate <- isolates_tidy %>% 
+  group_by(Isolate, diabetes) %>%
+  summarise() %>% ungroup() %>% 
+  group_by(diabetes) %>% summarise(n_DM = n(), percent_DM = n()/numIsolates * 100)
+total_DM_isolate
+
+```
+
+## Table S2 Data:
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE}
+# Number of isolates and percent of isolates at each site
+total_site <- isolates_tidy %>% group_by(Isolate, SITE_BROAD) %>% 
+  summarise() %>% ungroup() %>% 
+  group_by(SITE_BROAD) %>% summarise(n_site = n(), percent_site = n()/numIsolates * 100)
+total_site
+
+# Number of isolates and percent of isolates sensitive to each antibiotic (numIndividAbx = number of isolates with AST testing for that abx)
+total_sensitive <- isolates_tidy_resistance_profiles %>% group_by(Antibiotic) %>% mutate(numIndividAbx = n()) %>% 
+  ungroup() %>% group_by(Antibiotic,SIR, numIndividAbx) %>% 
+  mutate(n_SIR = n(), percent_SIR = n()/numIndividAbx*100) %>%
+  filter(SIR == 'S') %>% ungroup() %>% group_by(Antibiotic, numIndividAbx, n_SIR, percent_SIR) %>% summarise()
+total_sensitive
+```
+
+## Additional Data:
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE}
+# Median and IQR age of CF patients: (removed for privacy reasons)
+# 'Median (IQR) age of CF patients'
+# median_IQR_age_cf <- isolates_tidy %>% 
+#   group_by(Patient_index) %>%
+#   filter(cystic_fibrosis == 'cf') %>% 
+#   mutate(median_patient_age = median(as.numeric(Age))) %>% 
+#   group_by(Patient_index, median_patient_age) %>% 
+#   summarise() %>% ungroup() %>% 
+#   summarise(median_age = median(median_patient_age), 
+#             IQ25_age = quantile(median_patient_age, 0.25),
+#             IQ75_age = quantile(median_patient_age, 0.75))
+# median_IQR_age_cf
+
+# Number and percentage of MDR isolates 
+  # As defined by Magiorakos et al 2012
+  # No Ceft, Ceft/Avi, Cefo/Tazo
+  # Resistant/Intermediate to at least one antimicrbial from the following groups:
+    # Aminoglycosides: Amikacin, Gentamicin, Tobramycin
+    # Carbapenems: Meropenem
+    # Cephalosporins: Cefepime
+    # Fluoroquinolones: Ciprofloxacin
+    # Penicillins + Beta-lactamase inhibitors: Piperacillin-Tazo
+    # Monobactams: Aztreonam
+'Number MDR Isolates'
+nMDRIsolates <- nrow(isolates_tidy_resistance_profiles %>% 
+  filter(Antibiotic %in% c('Amikacin','Gentamicin','Tobramycin','Meropenem','Cefepime','Ciprofloxacin','Piperacillin/Tazobactam', 'Aztreonam')) %>% 
+  mutate(Category = case_when(Antibiotic %in% c('Amikacin','Gentamicin','Tobramycin') ~ 'Aminoglycoside',
+                              Antibiotic == 'Meropenem' ~ 'Carbapenem',
+                              Antibiotic == 'Cefepime' ~ 'Cephalosporin',
+                              Antibiotic == 'Ciprofloxacin' ~ 'Fluoroquinolone',
+                              Antibiotic == 'Piperacillin/Tazobactam' ~ 'Penicillin and BL Inhibitor',
+                              Antibiotic == 'Aztreonam' ~ 'Monobactam',
+                              TRUE ~ 'Other')) %>% 
+  filter(SIR != 'S') %>% 
+  group_by(Isolate, Category) %>% summarise() %>% 
+  group_by(Isolate) %>% summarise(numCategoryNotSusceptible = n()) %>% 
+  filter(numCategoryNotSusceptible >= 3))
+nMDRIsolates
+
+'Percent MDR Isolates'
+nMDRIsolates/numIsolates * 100
+
+'Isolates susceptible to 7 antimicrobials'
+numS_all <- nrow(isolates_tidy_resistance_profiles %>%
+  filter(Antibiotic %in% c('Amikacin','Ciprofloxacin','Cefepime','Gentamicin','Piperacillin/Tazobactam','Tobramycin','Meropenem')) %>% 
+  filter(SIR == 'S') %>% group_by(Isolate) %>% summarise(nS = n()) %>% filter(nS == 7))
+numS_all
+numS_all/numIsolates * 100
+
+'Isolates in patients on no antimicrobials (n and percent)'
+numNoABX <- isolates_tidy_antibiotic_treatment_duration %>% filter(Antibiotic == 'noabx') %>% group_by(Antibiotic) %>% summarise(n = n())
+numNoABX
+numNoABX$n/numIsolates * 100
+
+'Isolates in patients on >=1 antimicrobial (n and percent)'
+numOnABX <- nrow(isolates_tidy_antibiotic_treatment_duration %>% filter(Antibiotic != 'noabx') %>% group_by(Isolate) %>% summarise())
+numOnABX
+numOnABX/numIsolates * 100
+
+
+```
+
+## Figure 1
+
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE, fig.height=8.75, fig.width=7.5}
+# A. Age and Sex by patients (commented out due to IRB)
+# panel_a <- isolates_tidy %>%
+#   group_by(Patient_index, Sex) %>%
+#   summarise(Median_Patient_Age = median(Age)) %>%
+#   ggplot(aes(Median_Patient_Age, fill = Sex)) + geom_histogram(color = 'black', size = 0.25, binwidth = 5) + facet_wrap(~Sex, nrow = 2) + #alpha was 0.5
+#   # scale_fill_manual(values = c('red', 'blue')) +
+#   scale_fill_manual(values = c('grey80', 'grey80')) +
+#   xlab('Age') + ylab('Number of Patients') + theme_pubr() +
+#   theme(axis.title = element_text(size = 6.5),
+#         # title = element_text(size = 6),
+#         axis.text = element_text(size = 6.5),
+#         legend.position = 'None',
+#         strip.background = element_rect(fill="white"),
+#         strip.text.x = element_text(size = 6.5, margin = margin( b = 0.5, t = 0.5)))
+
+
+# B. Number of isolates per patient
+panel_b <- isolates_tidy %>% group_by(Patient_index) %>% summarise(numIsolatesPerPatient = n()) %>% 
+  ggplot(aes(numIsolatesPerPatient)) + geom_histogram(color = 'black', size = 0.25, fill = 'grey80', binwidth = 1) +
+  xlab('Number of Isolates') + ylab('Number of Patients') + theme_pubr() +
+  theme(axis.title = element_text(size = 6.5), axis.text = element_text(size = 6.5))
+
+# C. Comorbidities (pDB as no diabetes)
+panel_c <- isolates_tidy %>% 
+  mutate(comorbid = case_when(diabetes == 'nodb' ~ 'No Diabetes',
+                              diabetes != 'nodb' ~ 'Diabetes',
+                              TRUE ~ 'unknown')) %>% 
+  mutate(comorbid = factor(comorbid, levels = c('No Diabetes', 'Diabetes'), ordered = TRUE)) %>% 
+  group_by(Patient_index, diabetes, comorbid) %>% summarise() %>% 
+  ggplot(aes(comorbid)) + geom_bar(color = 'black',size = 0.25, fill = 'grey80') +
+  xlab('Comorbidities') + ylab('Number of Patients') + theme_pubr() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.title = element_text(size = 6.5), axis.text = element_text(size = 6.5))
+  
+# D. Isolation Site
+panel_d <- isolates_tidy %>% ggplot(aes(SITE_BROAD, fill = SITE_BROAD)) + geom_bar(color = 'black', size = 0.25) +
+  xlab('Isolate Source') + ylab('Number of Isolates') + theme_pubr() + 
+  scale_fill_manual(values = cbPalette) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.title = element_text(size = 6.5), axis.text = element_text(size = 6.5), 
+        legend.position = 'none')
+
+# E. Other Organisms (top specific organisms...need to adjust cutoff) NOTE: n > numIsolates some isolates had >1 pathogens
+panel_e <- isolates_tidy_co_infecting_organisms %>% 
+  select(Isolate, Organism, Classification, SITE_BROAD) %>% ungroup() %>% 
+  group_by(Organism) %>% mutate(numOccurances = n()) %>% 
+  mutate(OrganismCategory = ifelse(numOccurances < 7, 'Other', Organism)) %>%
+  ungroup() %>% group_by(OrganismCategory) %>% 
+  summarise(numOccurancesCategory = n()) %>% 
+  filter(OrganismCategory != 'None') %>% #Jason recommended filtering out cases with no co-infecction to make it easier to see co infection data
+  ggplot(aes(reorder(OrganismCategory, -numOccurancesCategory),numOccurancesCategory)) + geom_col(fill = 'grey80', color = 'black') +
+  theme_pubr() + ylab('Number of Isolates') + xlab('Co-Isolated Organisms') +
+  theme(axis.title = element_text(size = 6.5), axis.text.x = element_text(size = 6.5, angle = 50, hjust = 1), axis.text.y = element_text(size = 6.5))
+
+# F. Mucoidy
+panel_f <- isolates_tidy %>% ggplot(aes(MUCOIDY, fill = MUCOIDY)) + geom_bar(color = 'black', size = 0.25) +
+  xlab('Mucoidy') + ylab('Number of Isolates') + theme_pubr() + 
+  scale_fill_manual(values = c('white','black')) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.title.x = element_blank(), title = element_text(size = 6.5), axis.text = element_text(size = 6.5),
+        legend.position = 'none')
+
+# G. Metallic Sheen
+panel_g <- isolates_tidy %>% ggplot(aes(METALLIC, fill = METALLIC)) + geom_bar(color = 'black', size = 0.25) +
+  xlab('Metallic Sheen') + ylab('Number of Isolates') + theme_pubr() + 
+  scale_fill_manual(values = c('white','black')) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.title.x = element_blank(), title = element_text(size = 6.5), axis.text = element_text(size = 6.5),
+        legend.position = 'none')
+
+# H. Hemolysis
+panel_h <- isolates_tidy %>% ggplot(aes(HEMOLYSIS, fill = HEMOLYSIS)) + geom_bar(color = 'black', size = 0.25) +
+  xlab('Hemolysis') + ylab('Number of Isolates') + theme_pubr() + 
+  scale_fill_manual(values = c('white','black')) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.title.x = element_blank(), title = element_text(size = 6.5), axis.text = element_text(size = 6.5),
+        legend.position = 'none')
+
+# I. Pigment
+panel_i <- isolates_tidy %>% ggplot(aes(PIGMENT, fill = PIGMENT)) + geom_bar(color = 'black', size = 0.25) +
+  xlab('Pigmentation') + ylab('Number of Isolates') + theme_pubr() + 
+  scale_fill_manual(values = c('green','turquoise3','red','black','white')) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.title = element_text(size = 6.5), axis.text = element_text(size = 6.5),
+        legend.position = 'none')
+
+# J. Numter of Antibiotics (num antibiotics/isolate; counts duplicate treatments of same abx as 1 occurance; e.g. how many unique abx was each isolate on)
+panel_j <- isolates_tidy_antibiotic_treatment_duration %>% 
+  # calulcate the number of antibiotics per isolate (counts duplicate treatments of same abx once...using this in current figure)
+  group_by(Isolate,Antibiotic) %>% summarise() %>% 
+  ungroup() %>% group_by(Isolate) %>% 
+  mutate(numAntibiotics = case_when(Antibiotic == 'noabx' ~ 0,
+                                    TRUE ~ as.numeric(n()))) %>% 
+  ungroup() %>% 
+  group_by(Isolate, numAntibiotics) %>% summarise() %>% ungroup() %>% 
+  ggplot(aes(numAntibiotics)) + geom_bar(fill = 'grey80',color = 'black') +
+  scale_x_continuous(breaks=c(0,2,4,6,8,10)) +
+  theme_pubr() + xlab('Number of Prescribed Antimicrobials') + ylab('Number of Isolates') + 
+  theme(axis.title = element_text(size = 6.5), axis.text = element_text(size = 6.5))
+
+# K. Number of isolates on each antibiotic (if same isolate has 2 treatments of 1 abx, counted only once, grouped abx with <10 prescriptions as 'other')
+panel_2k_dat <- inner_join(isolates_tidy_antibiotic_treatment_duration, anti_pseudomonal, by = c('Antibiotic', 'AntibioticAbbreviation','AntibioticClass'))
+panel_2k_dat$anti_pseudomonal <- factor(panel_2k_dat$anti_pseudomonal, levels = c('noabx','no','yes'), labels = c('None','Non-Antipseudomonal','Antipseudomonal'), ordered = TRUE)
+panel_k <- unique(unique(panel_2k_dat %>% select(Isolate, Antibiotic, AntibioticAbbreviation, anti_pseudomonal)) %>% 
+  group_by(Antibiotic, anti_pseudomonal) %>% mutate(numOccurances = n()) %>% select(-Isolate)) %>% 
+  mutate(AntibioticCategory = ifelse(numOccurances < 20, 'Other', AntibioticAbbreviation)) %>%
+  ungroup() %>% group_by(AntibioticCategory, anti_pseudomonal) %>% 
+  summarise(numOccurancesCategory = sum(numOccurances)) %>% 
+  ungroup() %>% group_by(AntibioticCategory) %>% mutate(totalCategory = sum(numOccurancesCategory)) %>% 
+  ungroup() %>% 
+  mutate(AntibioticCategory = ifelse(AntibioticCategory == 'noabx', 'None', AntibioticCategory)) %>% 
+  ggplot(aes(reorder(AntibioticCategory, -totalCategory), numOccurancesCategory, fill = anti_pseudomonal)) + geom_col(color = 'black') +
+  theme_pubr() + ylab('Number of Isolates') + xlab('Prescribed Antimicrobial') +
+  scale_fill_brewer(palette = 'Purples') +
+  theme(axis.title = element_text(size = 6.5), axis.text = element_text(size = 6.5), axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.title = element_blank(), legend.position = c(0.75,0.75), legend.text = element_text(size = 6.5), legend.key.size = unit(0.1, 'in'))
+
+# M1. Frequency AST Not Sensitive (goes to right of heatmap)
+# Filter profiles to remove abx without SIR data for all isolates
+isolates_tidy_resistance_profiles_7 <- isolates_tidy_resistance_profiles %>% 
+  group_by(Antibiotic) %>% mutate(numAST = n()) %>% 
+  ungroup() %>% filter(numAST == numIsolates) %>% 
+  select(-numAST)
+panel_m1_dat <- isolates_tidy_resistance_profiles_7  # factor antibiotics to appear in the correct order
+panel_m1_dat$Antibiotic <- factor(panel_m1_dat$Antibiotic, levels = c("Tobramycin",'Piperacillin/Tazobactam','Meropenem','Gentamicin','Ciprofloxacin','Cefepime','Amikacin'), ordered = TRUE)
+
+panel_m1 <- panel_m1_dat %>% 
+  filter(SIR == 'S') %>% 
+  group_by(Antibiotic, SIR) %>% 
+  summarise(numSIR = n(), frequency_not_sensitive = 1 - n()/numIsolates) %>% 
+  ggplot(aes(Antibiotic, frequency_not_sensitive, fill = SIR),color = 'black') + geom_col(color = 'black', size = 0.25, fill = 'grey80') + 
+  theme_pubr() + ylab('Frequency I or R') +
+  theme(axis.title.y = element_blank(), title = element_text(size = 6), axis.text = element_text(size = 6.5), axis.text.y = element_blank(), plot.margin = unit(c(0,5.5,33,0),'pt')) +
+  coord_flip()
+
+# L. Number of isolates resistant/intermediate to each number of antibiotics
+panel_l <- isolates_tidy_resistance_profiles_7 %>%
+  group_by(Isolate, SIR) %>% 
+  summarise(numSensitive = n(), numNotSensitive = 7 - numSensitive) %>%
+  complete(Isolate, SIR, fill = list(numSensitive = 0, numNotSensitive = 7)) %>% filter(SIR == 'S') %>% 
+  ggplot(aes(numNotSensitive)) + geom_bar(fill = 'grey80',color = 'black') +
+  scale_x_continuous(breaks=c(0,1,2,3,4,5,6,7)) +
+  theme_pubr() + ylab('Number of Isolates') + xlab('Number of I or R Antimicrobials') +
+  theme(axis.title = element_text(size = 6.5), axis.text = element_text(size = 6.5))
+
+# M3. AST of all isolates clustered with Gower clustering
+# Gower clustering is more appropriate for categorical clustering
+# Each abx is clustered s.t S < I < R
+# See this link for more info: https://towardsdatascience.com/hierarchical-clustering-on-categorical-data-in-r-a27e578f2995 
+panel_m_dat <- isolates_tidy_resistance_profiles_7 %>%
+  # mutate(SIR = factor(SIR, levels = c("R","I","S"), ordered = TRUE)) %>%
+  select(-SusceptibilityMethod) %>%
+  spread(Antibiotic,SIR) %>% 
+  arrange(Isolate)
+# Caluclate gower dissimilarity for categorical data 
+isolate_dist <- daisy(panel_m_dat[,4:ncol(panel_m_dat)], metric = c("gower"))
+# Cluster (agglomerative with complete linkage)
+clust.res<-hclust(isolate_dist, method = 'complete')
+# Make Dendrogram
+hcdata <- dendro_data(clust.res, type="rectangle")
+dendrogram_2m <- ggplot() +
+  geom_segment(data=segment(hcdata), aes(x=x, y=y, xend=xend, yend=yend), size = 0.25) +
+  ylab('Gower Distance') + theme_pubr() +
+  theme(axis.line = element_blank(),axis.text.y=element_text(size = 6), axis.ticks=element_blank(), axis.title.x=element_blank(), axis.text.x = element_blank(), axis.title.y=element_text(size=6.5), plot.margin = unit(c(5.5,-13,-2.9,35),'pt')) # was (5.5,-13,-3.25,27)
+
+# Factor isolates in accordance with the dendrogram and antibiotics alphabetically:
+panel_m_dat_ordered <- isolates_tidy_resistance_profiles_7 %>% arrange(Isolate)
+panel_m_dat_ordered$Isolate <- factor(panel_m_dat_ordered$Isolate, levels = c((panel_m_dat_ordered$Isolate %>% unique())[as.numeric((hcdata$labels)$label)]), ordered = TRUE)
+panel_m_dat_ordered$Antibiotic <- factor(panel_m_dat_ordered$Antibiotic, levels = c('Tobramycin', 'Piperacillin/Tazobactam','Meropenem','Gentamicin','Ciprofloxacin','Cefepime','Amikacin'), ordered = TRUE)
+
+label_isolateNum <- paste("n =", numIsolates, "isolates")
+label_patientNum <- paste("p =", numPatients, "patients")
+
+panel_m <- panel_m_dat_ordered %>% 
+  ggplot(aes(Isolate, Antibiotic, fill = SIR)) + geom_tile(color = NA) + theme_bw() + # color was black
+  scale_fill_manual(values = c('blue','grey90','red')) +
+  scale_x_discrete(breaks=NULL) +
+  theme(legend.position = 'bottom',
+        axis.text.x = element_blank(), 
+        axis.text.y = element_text(size = 6.5), 
+        axis.title.x = element_text(size = 8),
+        axis.title.y = element_blank(),
+        legend.title = element_blank(), 
+        legend.text = element_text(size = 6.5), 
+        legend.spacing.x = unit(0.05, 'in'),
+        plot.margin = unit(c(0,5.5,5.5,5.5),'pt'),
+        panel.border = element_rect(fill = NA, 
+            colour = "grey20", size = 0.35)) +
+  coord_cartesian(clip = 'off')
+
+# New Figure 2a
+panel_aNew <- readPNG('data/figure2a_rough.png')
+panel_aNew <- rasterGrob(panel_aNew)
+
+# Assemble Figure 1:
+
+Figure1 <- arrangeGrob(panel_b,
+                       panel_c,
+                       panel_d,
+                       panel_e,
+                       panel_f,
+                       panel_g,
+                       panel_h,
+                       panel_i,
+                       panel_j,
+                       panel_k,
+                       panel_l,
+                       panel_m1,
+                       dendrogram_2m,
+                       panel_m,
+                       panel_aNew,
+                       ncol = 9,
+                       nrow = 6,
+                       heights = c(0.07892308, 0.23,0.23,0.23, 0.096, 0.24),
+                       widths = c(0.25,0.083,0.083,0.083,0.083,0.083,0.083,0.1,0.15),
+                       layout_matrix = rbind(c(15,15,15,15,15,15,15,15,15),
+                                             c(NA,1,1,1,2,2,2,3,3), 
+                                             c(4,5,5,6,6,7,7,8,8),
+                                             c(9, 10, 10, 10,10,10,10,11,11), 
+                                             c(13,13,13,13,13,13,13,13 ,NA),
+                                             c(14,14,14,14,14,14,14,14,12)))
+
+ Figure1 <- as_ggplot(Figure1) +
+   draw_plot_label(label = c("A","B", "C", "D", "E","F","G","H", "I", "J","K","L","M", "N"), size = 9,
+                  x = c(0, 0, 0.25,0.49,0.74,0, 0.25,0.416, 0.592 ,0.75,0, 0.25,0.75,0), y = c(1,0.921, 0.921, 0.921, 0.921, 0.721, 0.721,0.721,0.721,0.721,0.511, 0.511,0.511,0.311))
+ Figure1
+
+ggsave('figures/Figure1.jpg',Figure1, dpi = 300, height = 8.75, width = 7.5, units = 'in')
+
+```
+
+**Figure 1. A total of 971 clinical *Pseudomonas aeruginosa* isolates from 590 patients collected during one year at the UVA Health System.** 
+A.	Outline of data types collected. 
+B.	Age distributions of 590 patients separated by sex. 
+C.	Histogram of the number of isolates collected per patient. 
+D.	Number of patients with cystic fibrosis or diabetes. CF removed from this script to de-identify data but is available in manuscript.
+E.	Distribution of isolate sources. 
+F.	Distribution of co-isolating pathogens identified at the time of *P. aeruginosa* isolation. Pathogens beyond the top 10 most common are accounted for in ‘Other.’ All isolates not shown had no co-isolating pathogens on the day of P. aeruginosa isolation. 
+G.	Distribution of mucoid and non-mucoid isolates on blood agar.
+H.	Distribution of isolates with and without a metallic sheen on blood agar. 
+I.	Distribution of hemolytic and non-hemolytic isolates on blood agar. 
+J.	Distribution of pigment production on cetrimide agar.
+K.	Number of unique antimicrobials the patient of each isolate was prescribed up to 60 days prior to isolate collection. Multiple prescriptions of the same antimicrobial are counted as a single prescription. 
+L.	Number of isolates from patients prescribed each antimicrobial up to 60 days prior to isolate collection. Multiple prescriptions of the same antimicrobial are counted as a single prescription. Antimicrobial abbreviations are consistent with those outlined by the American Society for Microbiology with the exception of dapsone (DDS), imipenem/cilstatin (IPMC), metronidazole (MTZ), and rifaximin (RIFX) which were excluded from these guidelines. Antimicrobials prescribed fewer than 20 times were grouped into ‘Other’. Antimicrobials are colored by antipseudomonal activity 
+M.	Distribution of the number of resistant or intermediate antimicrobial susceptibility results per isolate. Susceptibility testing was performed on seven antimicrobials for each isolate.
+N.	Susceptibility profiles of all isolates and population-level frequencies of resistance or intermediate resistance to each measured antimicrobial. Susceptibility profiles were clustered by Gower distance with complete linkage. Isolates are colored by susceptibility to each measured antimicrobial (S = susceptible, I = intermediately resistant, R = resistant).
+
+
+## Plot Figure 4
+
+Code for this figure is available below but it had to be commented out/will not run because CF was removed from publicly shareable data to comply with HIPAA
+
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE, fig.height = 6.5, fig.width = 6}
+# # Plot Figure 3.5 - Infection Site and prescription history
+# # TO DO: Double check code; stats on violin plot
+# 
+# # Set up dataframe with sitebroad lung broken up into CF and NonCF
+# figure3_5_dat <- isolates_tidy_antibiotic_treatment_duration %>% 
+#   inner_join(anti_pseudomonal, by = c('Antibiotic','AntibioticAbbreviation','AntibioticClass')) %>%  # inner join with anti_pseudomonal list
+#   inner_join((isolates_tidy %>% select(Isolate, SITE_BROAD)), by = 'Isolate') %>%  # inner join to get isolation site
+#   group_by(Isolate, anti_pseudomonal, SITE_BROAD) %>% summarise() %>% # summarise to see if each isolate was on a NAP, AP, both, none
+#   group_by(Isolate) %>% 
+#   # Mutate to categorize each isolate as being on no antibiotics, antipseudomonals (>=1), non-antipseudomonals (>=1), or both
+#   mutate(numOptions = n(), 
+#          pseudomonalCategory = case_when(anti_pseudomonal == 'noabx' ~ 'None',
+#                                          anti_pseudomonal == 'yes' & numOptions == 2 ~ 'Both',
+#                                          anti_pseudomonal == 'no' & numOptions == 2 ~ 'Both',
+#                                          anti_pseudomonal == 'yes' & numOptions == 1 ~ 'AP',
+#                                          TRUE ~ 'NAP')) %>% 
+#   group_by(Isolate, pseudomonalCategory, SITE_BROAD) %>% summarise() %>% # summarise to get a dataframe of isolates with pseudomonal category
+#   inner_join((isolates_tidy %>% select(Isolate, cystic_fibrosis)), by = 'Isolate') %>% 
+#   mutate(SITE_BROAD = case_when(SITE_BROAD == 'Lung/Trachea' & cystic_fibrosis == 'cf' ~ 'CF Lung/Trachea',
+#                                  SITE_BROAD == 'Lung/Trachea' & cystic_fibrosis == 'nocf' ~ 'Non-CF Lung/Trachea',
+#                                  TRUE ~ as.character(SITE_BROAD))) 
+# figure3_5_dat$pseudomonalCategory <- factor(figure3_5_dat$pseudomonalCategory, levels = c('None','NAP','AP','Both'), labels = c('None','Non-Antipseudomonal','Antipseudomonal','Both'), ordered = TRUE)
+# 
+# # A. Violin plot of #Rx by infection site 
+# # Calculate the number of treatments (unique antibiotics) for each isolate
+#   # Note: If patient given two courses of vancomycin within 60 days, counted as 1 treatment because one type of antibiotic
+# figure3_5_a_dat <- isolates_tidy_antibiotic_treatment_duration %>% 
+#   group_by(Isolate,Antibiotic) %>% 
+#   summarise() %>% ungroup() %>% 
+#   group_by(Isolate) %>% 
+#   mutate(numAntibioticTreatments = ifelse(Antibiotic == 'noabx', 0, n())) %>% 
+#   group_by(Isolate, numAntibioticTreatments) %>% summarise() %>% 
+#   inner_join((figure3_5_dat %>% ungroup() %>% select(Isolate, SITE_BROAD)), by = 'Isolate') %>% 
+#   filter(SITE_BROAD %in% c('CF Lung/Trachea','Non-CF Lung/Trachea','Urine/Catheter','Skin/Wound'))
+# 
+# # Perform Wilcoxon signed rank test with BH correction for multple comparisons
+#   # All pairwise combinations of cf lung/trachea, non-cf lung/tracea, skin/wound, urine/catheter
+# figure3_5_a_pvalues <- figure3_5_a_dat %>% ungroup() %>% 
+#   filter(SITE_BROAD %in% c('CF Lung/Trachea','Non-CF Lung/Trachea')) %>% mutate(SITE_BROAD = factor(SITE_BROAD, levels = c('CF Lung/Trachea','Non-CF Lung/Trachea'))) %>% 
+#   summarise(pvalue_wilcoxon = wilcox.test(numAntibioticTreatments~SITE_BROAD, exact = FALSE)$p.value) %>% mutate(site1 = 'CF Lung/Trachea',site2 = 'Non-CF Lung/Trachea') %>% 
+#   rbind(figure3_5_a_dat %>% ungroup() %>% 
+#   filter(SITE_BROAD %in% c('CF Lung/Trachea','Skin/Wound')) %>% mutate(SITE_BROAD = factor(SITE_BROAD, levels = c('CF Lung/Trachea','Skin/Wound'))) %>% 
+#   summarise(pvalue_wilcoxon = wilcox.test(numAntibioticTreatments~SITE_BROAD, exact = FALSE)$p.value) %>% mutate(site1 = 'CF Lung/Trachea',site2 = 'Skin/Wound')) %>% 
+#   rbind(figure3_5_a_dat %>% ungroup() %>% 
+#   filter(SITE_BROAD %in% c('CF Lung/Trachea','Urine/Catheter')) %>% mutate(SITE_BROAD = factor(SITE_BROAD, levels = c('CF Lung/Trachea','Urine/Catheter'))) %>% 
+#   summarise(pvalue_wilcoxon = wilcox.test(numAntibioticTreatments~SITE_BROAD, exact = FALSE)$p.value) %>% mutate(site1 = 'CF Lung/Trachea',site2 = 'Urine/Catheter')) %>% 
+#   rbind(figure3_5_a_dat %>% ungroup() %>% 
+#   filter(SITE_BROAD %in% c('Non-CF Lung/Trachea','Skin/Wound')) %>% mutate(SITE_BROAD = factor(SITE_BROAD, levels = c('Non-CF Lung/Trachea','Skin/Wound'))) %>% 
+#   summarise(pvalue_wilcoxon = wilcox.test(numAntibioticTreatments~SITE_BROAD, exact = FALSE)$p.value) %>% mutate(site1 = 'Non-CF Lung/Trachea',site2 = 'Skin/Wound')) %>% 
+#   rbind(figure3_5_a_dat %>% ungroup() %>% 
+#   filter(SITE_BROAD %in% c('Non-CF Lung/Trachea','Urine/Catheter')) %>% mutate(SITE_BROAD = factor(SITE_BROAD, levels = c('Non-CF Lung/Trachea','Urine/Catheter'))) %>% 
+#   summarise(pvalue_wilcoxon = wilcox.test(numAntibioticTreatments~SITE_BROAD, exact = FALSE)$p.value) %>% mutate(site1 = 'Non-CF Lung/Trachea',site2 = 'Urine/Catheter')) %>% 
+#   rbind(figure3_5_a_dat %>% ungroup() %>% 
+#   filter(SITE_BROAD %in% c('Skin/Wound','Urine/Catheter')) %>% mutate(SITE_BROAD = factor(SITE_BROAD, levels = c('Skin/Wound','Urine/Catheter'))) %>% 
+#   summarise(pvalue_wilcoxon = wilcox.test(numAntibioticTreatments~SITE_BROAD, exact = FALSE)$p.value) %>% mutate(site1 = 'Skin/Wound',site2 = 'Urine/Catheter')) %>% 
+#   mutate(BH_corrected_pvalue_wilcoxon = p.adjust(pvalue_wilcoxon, method = 'BH'),
+#          BH_corrected_pvalue_wilcoxon_asterisks = case_when(BH_corrected_pvalue_wilcoxon <= 0.001 ~ '***',
+#                                                    BH_corrected_pvalue_wilcoxon <= 0.01 ~ '**',
+#                                                    BH_corrected_pvalue_wilcoxon <= 0.05 ~ '*',
+#                                                    TRUE ~ '')) %>% 
+#   filter(BH_corrected_pvalue_wilcoxon <= 0.05)
+# 
+# # Plot Fig 3.5a:
+# fig3_5a <- figure3_5_a_dat %>%
+#   ggplot(aes(SITE_BROAD, numAntibioticTreatments)) + 
+#   geom_violin(aes(fill = SITE_BROAD), size = 0.5) +
+#   scale_fill_manual(values = c(cbPalette[1], cbPalette[1],cbPalette[4],cbPalette[2])) +
+#   annotate("text",x = c(1.5,2,2.5,3), y =c(10.95,10.45,9.95,9.45), label=figure3_5_a_pvalues$BH_corrected_pvalue_wilcoxon_asterisks,size=2) +
+#   annotate('segment', x = figure3_5_a_pvalues$site1, xend = figure3_5_a_pvalues$site2, y = c(10.75,10.25,9.75,9.25), yend =c(10.75,10.25,9.75,9.25)) +
+#   stat_summary(fun=median, geom="crossbar", size=0.5, width = 0.2, color="black") +
+#   theme_bw() + 
+#   theme(legend.position = 'none', axis.title.y = element_text(size = 6.75), axis.text = element_text(size = 8), axis.text.x = element_text(angle = 45, hjust = 1),
+#         axis.title.x = element_blank()) +
+#   ylab('Number of Prescribed Antimicrobials') + ylim(c(0,11))
+# 
+# # B. Fraction of prescriptions by type (none/ap/nap/both) by infection site
+# fig3_5b <- figure3_5_dat %>% 
+#   filter(!SITE_BROAD %in% c('Blood','Other','ENT/Sinus')) %>% 
+#   group_by(SITE_BROAD) %>% 
+#   mutate(nSite = n()) %>% 
+#   group_by(SITE_BROAD, pseudomonalCategory) %>% 
+#   mutate(fracCategory = n()/nSite) %>%
+#   group_by(SITE_BROAD, pseudomonalCategory, fracCategory) %>% 
+#   summarise() %>% 
+#   ggplot(aes(x = SITE_BROAD, y = fracCategory)) + geom_bar(aes(fill = pseudomonalCategory),color = 'black', position = 'stack', stat = 'identity') +
+#   theme_bw() + 
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8), axis.title.x = element_blank(), axis.title.y = element_text(size = 7.5),
+#         legend.title = element_blank(), legend.position = 'right', legend.text = element_text(size = 6.5), legend.key.size = unit(0.1, 'in')) + 
+#   scale_fill_brewer(palette = 'Purples') + ylab('frequency of isolates')
+# 
+# # Total percent on an antipseudomonal by site
+# ' Percent on antipseudomonal by isolate source'
+# figure3_5_dat %>% 
+#   filter(!SITE_BROAD %in% c('Blood','Other','ENT/Sinus')) %>% 
+#   group_by(SITE_BROAD) %>% 
+#   mutate(nSite = n()) %>% 
+#   group_by(SITE_BROAD, pseudomonalCategory) %>% 
+#   mutate(fracCategory = n()/nSite) %>%
+#   group_by(SITE_BROAD, pseudomonalCategory, fracCategory) %>% 
+#   summarise() %>% filter(pseudomonalCategory != 'None', pseudomonalCategory != 'Non-Antipseudomonal') %>% 
+#   group_by(SITE_BROAD) %>% mutate(sum(fracCategory))
+# 
+# # Total percent on non-antipseudomonal by site
+# 'Percent on non-antipseudomonal only by site'
+# figure3_5_dat %>% 
+#   filter(!SITE_BROAD %in% c('Blood','Other','ENT/Sinus')) %>% 
+#   group_by(SITE_BROAD) %>% 
+#   mutate(nSite = n()) %>% 
+#   group_by(SITE_BROAD, pseudomonalCategory) %>% 
+#   mutate(fracCategory = n()/nSite) %>%
+#   group_by(SITE_BROAD, pseudomonalCategory, fracCategory) %>% 
+#   summarise() %>% filter(pseudomonalCategory %in% c('Non-Antipseudomonal','None')) 
+# 
+# # Fig C-F Top five antibiotic treatments per infection site colored by antipseudomonal activity
+# figure3_5_cdef_dat <- isolates_tidy_antibiotic_treatment_duration %>% 
+#   inner_join(anti_pseudomonal, by = c('Antibiotic', 'AntibioticAbbreviation','AntibioticClass')) %>% 
+#   inner_join(figure3_5_dat, by = 'Isolate')
+# figure3_5_cdef_dat$anti_pseudomonal <- factor(figure3_5_cdef_dat$anti_pseudomonal, 
+#                                               levels = c('noabx','no','yes'), 
+#                                               labels = c('none','Non-Antipseudomonal','Antipseudomonal'), ordered = TRUE)
+# # C.  CF Lung/Trachea
+# fig3_5c <- unique(unique(figure3_5_cdef_dat %>% select(Isolate, Antibiotic, AntibioticAbbreviation, anti_pseudomonal, SITE_BROAD)) %>% 
+#   filter(SITE_BROAD == 'CF Lung/Trachea') %>% filter(anti_pseudomonal != 'none') %>%  
+#   group_by(Antibiotic, anti_pseudomonal) %>% mutate(numOccurances = n()) %>% select(-Isolate)) %>% 
+#   ungroup() %>% group_by(AntibioticAbbreviation, anti_pseudomonal) %>% 
+#   summarise(numOccurancesCategory = sum(numOccurances)) %>% arrange(desc(numOccurancesCategory)) %>% 
+#   head(10) %>% 
+#   ggplot(aes(reorder(AntibioticAbbreviation, -numOccurancesCategory), numOccurancesCategory, fill = anti_pseudomonal)) + geom_col(color = 'black') +
+#   theme_pubr() + xlab('Antimicrobial') + ylab('Number of Isolates\n(CF Lung/Trachea)') + 
+#   scale_fill_manual(values = brewer.pal(5, "Purples")[2:3]) + 
+#   theme(axis.text = element_text(size = 6.5), axis.text.x = element_text(angle = 45, hjust = 1),axis.title = element_text(size = 7.5),
+#         legend.title = element_blank(), legend.position = c(0.75,0.75), legend.text = element_text(size = 6.5), legend.key.size = unit(0.1, 'in'))
+# 
+# # D.  Non-CF Lung/Trachea
+# fig3_5d <- unique(unique(figure3_5_cdef_dat %>% select(Isolate, Antibiotic, AntibioticAbbreviation, anti_pseudomonal, SITE_BROAD)) %>% 
+#   filter(SITE_BROAD == 'Non-CF Lung/Trachea') %>% filter(anti_pseudomonal != 'none') %>%  
+#   group_by(Antibiotic, anti_pseudomonal) %>% mutate(numOccurances = n()) %>% select(-Isolate)) %>% 
+#   ungroup() %>% group_by(AntibioticAbbreviation, anti_pseudomonal) %>% 
+#   summarise(numOccurancesCategory = sum(numOccurances)) %>% arrange(desc(numOccurancesCategory)) %>% 
+#   head(10) %>% 
+#   ggplot(aes(reorder(AntibioticAbbreviation, -numOccurancesCategory), numOccurancesCategory, fill = anti_pseudomonal)) + geom_col(color = 'black') +
+#   theme_pubr() + xlab('Antimicrobial') + ylab('Number of Isolates\n(Non-CF Lung/Trachea)') + 
+#   scale_fill_manual(values = brewer.pal(5, "Purples")[2:3]) +
+#   theme(axis.text = element_text(size = 6.5), axis.text.x = element_text(angle = 45, hjust = 1),axis.title = element_text(size = 7.5),
+#         legend.position = 'none')
+# 
+# # E.  Urine/Catheter
+# fig3_5e <- unique(unique(figure3_5_cdef_dat %>% select(Isolate, Antibiotic, AntibioticAbbreviation, anti_pseudomonal, SITE_BROAD)) %>% 
+#   filter(SITE_BROAD == 'Urine/Catheter') %>% filter(anti_pseudomonal != 'none') %>%  
+#   group_by(Antibiotic, anti_pseudomonal) %>% mutate(numOccurances = n()) %>% select(-Isolate)) %>% 
+#   ungroup() %>% group_by(AntibioticAbbreviation, anti_pseudomonal) %>% 
+#   summarise(numOccurancesCategory = sum(numOccurances)) %>% arrange(desc(numOccurancesCategory)) %>% 
+#   head(10) %>% 
+#   ggplot(aes(reorder(AntibioticAbbreviation, -numOccurancesCategory), numOccurancesCategory, fill = anti_pseudomonal)) + geom_col(color = 'black') +
+#   theme_pubr() + xlab('Antimicrobial') + ylab('Number of Isolates\n(Urine/Catheter)') + 
+#   scale_fill_manual(values = brewer.pal(5, "Purples")[2:3]) +
+#   theme(axis.text = element_text(size = 6.5), axis.text.x = element_text(angle = 45, hjust = 1),axis.title = element_text(size = 7.5),
+#         legend.position = 'none')
+# 
+# # F.  Skin/Wound
+# fig3_5f <- unique(unique(figure3_5_cdef_dat %>% select(Isolate, Antibiotic, AntibioticAbbreviation, anti_pseudomonal, SITE_BROAD)) %>% 
+#   filter(SITE_BROAD == 'Skin/Wound') %>% filter(anti_pseudomonal != 'none') %>%  
+#   group_by(Antibiotic, anti_pseudomonal) %>% mutate(numOccurances = n()) %>% select(-Isolate)) %>% 
+#   ungroup() %>% group_by(AntibioticAbbreviation, anti_pseudomonal) %>% 
+#   summarise(numOccurancesCategory = sum(numOccurances)) %>% arrange(desc(numOccurancesCategory)) %>% 
+#   head(10) %>% 
+#   ggplot(aes(reorder(AntibioticAbbreviation, -numOccurancesCategory), numOccurancesCategory, fill = anti_pseudomonal)) + geom_col(color = 'black') +
+#   theme_pubr() + xlab('Antimicrobial') + ylab('Number of Isolates\n(Skin/Wound)') + 
+#   scale_fill_manual(values = brewer.pal(5, "Purples")[2:3]) +
+#   theme(axis.text = element_text(size = 6.5), axis.text.x = element_text(angle = 45, hjust = 1),axis.title = element_text(size = 7.5),
+#         legend.position = 'none')
+# 
+# # Arrange Figure 3_5:
+# Figure3_5 <- arrangeGrob(fig3_5a,
+#                         fig3_5b,
+#                         fig3_5c,
+#                         fig3_5d,
+#                         fig3_5e,
+#                         fig3_5f,
+#                         ncol = 5,
+#                         nrow = 3,
+#                         heights = c(0.4,0.3,0.3),
+#                         widths = c(0.025,0.325,0.1,0.05,0.5),
+#                         layout_matrix = rbind(c(NA,1,NA,2,2),c(3,3,3,3,4),c(5,5,5,5,6)))
+# 
+#  Figure3_5 <- as_ggplot(Figure3_5) +
+#    draw_plot_label(label = c("A", "B", "C", "D","E","F"), size = 9,
+#                   x = c(0, 0.45, 0,0.5,0,0.5), y = c(1,1,0.6,0.6,0.3,0.3))
+#  Figure3_5
+# 
+# ggsave('figures/Figure4.jpg',Figure3_5, dpi = 300, height = 6.5, width = 6, units = 'in')
+
+```
+
+**Figure 4 – Isolate antimicrobial prescription history varies by source**
+A)	Number of antimicrobials prescribed up to 60 days before isolate collection by source. Multiple prescriptions of the same antimicrobial are considered a single prescription. Crossbar denotes median number of prescriptions at that isolate source. Pairwise comparisons were made with by Wilcoxon rank sum test. Asterisks denote BH corrected p-values (* < 0.05, *** < 0.001). 
+B)	Frequency of isolates prescribed no antimicrobials, antipseudomonal antimicrobials, non-antipseudomonal antimicrobials, or both antipseudomonal and non-antipseudomonal antimicrobials up to 60 days before isolate collection by source. 
+C – F) Top 10 most common antimicrobials prescribed prior to isolate collection from CF lung/trachea (C), non-CF lung/trachea (D), urine/catheter (E), and skin/wound (F).
+
+
+## Figure 2
+
+Note: Data related to age has been commented out and adjustedORAllTests.csv has been loaded which includes all logistic regression odds ratios and p values. 
+
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE, fig.height = 3.7, fig.width=7.5}
+# Figure 2:
+# ln((Pr + Pi)/Ps) = sum(bx) + b where there is a different b for each variable and x is 0,1.
+# Pearson correlations for phenotype-phenotype and ast-ast relationships
+# BH correction used for mult hypoth testing
+#### D. Adjusted odds ratios of ABX vs phenotypes (TO DO: Remove commented out lines)
+# 1. Make dataframe with factored binary variables
+  # Ages
+    # Actual age (continuous)
+  # Sex (0 = M; 1 = F)
+  # CF (0 = no; 1 = yes)
+  # DB (0 = no; 1 = yes)
+  # Site 
+    # Lung/Trachea (0 = no; 1 = yes)
+    # Urine/Catheter (0 = no; 1 = yes)
+    # Removed from logit but in pearson: ENT/Sinus (0 = no; 1 = yes)
+    # Removed from logit but in pearson: Skin/Wound (0 = no; 1 = yes)
+    # Removed from logit but in pearson: Blood (0 = no; 1 = yes)
+    # Removed from logit but in pearson: Other (0 = no; 1 = yes)
+  # Mucoidy (0 = no; 1 = yes)
+  # Metallic (0 = no; 1 = yes)
+  # Hemolysis (0 = no; 1 = yes)
+  # Pigment (0 = no; 1 = yes) (any pigment)
+  # Season 
+    # Winter (Dec-Feb) (0 = no; 1 = yes)
+    # Spring (Mar-May) (0 = no; 1 = yes)
+    # Summer (Jun-Aug) (0 = no; 1 = yes)
+    # Fall (Sept-Nov) (0 = no; 1 = yes) (not included in logit)
+  # Repeat Patient (0 = no; 1 = yes)
+  # NEW: ABX Prescription
+    # onNAP (0 = none; 1 = at least one NAP)
+    # onAP (0 = none; 1 = at least one AP)
+  # Co-infecting organism (0 = none; 1 = at least 1 organism)
+  # Output: SIR to abx (0 = all sensitive; 1 = I or R)
+# Reformat inputs age, sex, cf, db, mucoid,metal, hemolysis, pigment, season, site, and repeatPatient
+# phenotypes_metadata_logit <- isolates_tidy %>% 
+#   mutate(Sex = as.numeric(Sex == 'Female'),
+#          cystic_fibrosis = as.numeric(cystic_fibrosis == 'cf'),
+#          diabetes = as.numeric(diabetes == 'db'),
+#          MUCOIDY = as.numeric(MUCOIDY == 'Mucoid'),
+#          METALLIC = as.numeric(METALLIC == 'Metallic'),
+#          HEMOLYSIS = as.numeric(HEMOLYSIS == 'Hemolytic'),
+#          # pigment_green = as.numeric(PIGMENT == 'Green'),
+#          # pigment_blue = as.numeric(PIGMENT == 'Blue'),
+#          # pigment_red = as.numeric(PIGMENT == 'Red'),
+#          # pigment_mixed = as.numeric(PIGMENT == 'Mixed'),
+#          # pigment_none = as.numeric(PIGMENT == 'None'),
+#          PIGMENT = as.numeric(PIGMENT != 'None'),
+#          season_winter = as.numeric(IsolationMonth %in% c(12,1,2)),
+#          season_spring = as.numeric(IsolationMonth %in% c(3,4,5)),
+#          season_summer = as.numeric(IsolationMonth %in% c(6,7,8)),
+#          season_fall = as.numeric(IsolationMonth %in% c(9,10,11)),
+#          site_lung_trachea = as.numeric(SITE_BROAD == 'Lung/Trachea'),
+#          site_urine_catheter = as.numeric(SITE_BROAD == 'Urine/Catheter'),
+#          site_ent_sinus = as.numeric(SITE_BROAD == 'ENT/Sinus'),
+#          site_skin_wound = as.numeric(SITE_BROAD == 'Skin/Wound'),
+#          site_blood = as.numeric(SITE_BROAD == 'Blood'),
+#          site_other = as.numeric(SITE_BROAD == 'Other'),
+#          # age_0_14 = as.numeric(Age <= 14),
+#          # age_15_24 = as.numeric(Age > 14 & Age <= 24),
+#          # age_25_44 = as.numeric(Age > 24 & Age <= 44),
+#          # age_45_64 = as.numeric(Age > 44 & Age <= 64),
+#          repeatPatient = as.numeric(repeatPatient == 'Yes')) %>% 
+#   ungroup() %>% 
+#   select(Isolate, Patient_index, Sex, Age,
+#          # age_0_14, age_15_24, age_25_44, age_45_64, age_65,
+#          cystic_fibrosis, diabetes, MUCOIDY, METALLIC, HEMOLYSIS, PIGMENT,
+#          # pigment_green,pigment_blue,pigment_red,pigment_mixed, pigment_none,
+#          season_winter, season_spring,season_summer,season_fall, repeatPatient,
+#          site_lung_trachea,site_urine_catheter, site_ent_sinus, site_skin_wound, site_blood, site_other)
+# Input showing whether isolate followed NAP or AP abx treatment of any kind (yes = 1)
+# treatment_logit <- isolates_tidy_antibiotic_treatment_duration %>% 
+#   inner_join(anti_pseudomonal, by = c('Antibiotic','AntibioticClass','AntibioticAbbreviation')) %>% 
+#   group_by(Isolate, anti_pseudomonal) %>% 
+#   summarise(numType = n()) %>% ungroup() %>% 
+#   spread(anti_pseudomonal, numType, fill = 0) %>% 
+#   mutate(onAP = as.numeric(yes > 0),
+#          onNAP = as.numeric(no > 0)) %>% 
+#   select(Isolate, onAP, onNAP)
+# Input showing whether isolate had coinfecting organism (yes = 1)
+# coinfect_logit <- isolates_tidy_co_infecting_organisms %>% 
+#   mutate(hasCoinfecting = as.numeric(Organism != 'None')) %>% 
+#   group_by(Isolate, hasCoinfecting) %>% summarise()
+# Output dataframe containing whether each isolate was S (0) or R/I (1) to each abx and to any abx
+outputs_logit <- isolates_tidy_resistance_profiles %>% 
+  mutate(output = as.numeric(SIR !=  'S')) %>% # if R or I, 1; else if S, 0
+  filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+  group_by(Isolate) %>% mutate(anySIR = max(output)) %>% # if R or I to at least one of 7 abx, 1; else 0
+  select(-SIR,-SusceptibilityMethod, -Patient_index) %>% # removed batch
+  spread(Antibiotic,output)
+# # Inner join all to create a full dataset for logistic regression (will remove outputs not being used)
+# logit_data <- phenotypes_metadata_logit %>% 
+#   inner_join(treatment_logit, by = "Isolate") %>% 
+#   inner_join(coinfect_logit, by = "Isolate") %>% 
+#   inner_join(outputs_logit, by = "Isolate") %>% 
+#   select(-Isolate, -Patient_index) %>% 
+#   select(-season_fall, # removed because from b it looks redundant with spring
+#          -site_ent_sinus,-site_skin_wound, -site_blood, -site_other) # only kept lung and urine because most different
+#          # -pigment_green,-pigment_blue,-pigment_red,-pigment_mixed, -pigment_none) # lumped into yes/no PIGMENT
+#          # -age_0_14 -age_15_24, -age_25_44, -age_45_64, -age_65) 
+# # Subset datasets for each output that I plan on testing:
+# logit_data_anySIR <- logit_data %>% select(-Amikacin, -Cefepime,-Ciprofloxacin,-Gentamicin,-Meropenem,-`Piperacillin/Tazobactam`,-Tobramycin)
+# logit_data_amikacin <- logit_data %>% select(-anySIR, -Cefepime,-Ciprofloxacin,-Gentamicin,-Meropenem,-`Piperacillin/Tazobactam`,-Tobramycin)
+# logit_data_cefepime <- logit_data %>% select(-anySIR, -Amikacin,-Ciprofloxacin,-Gentamicin,-Meropenem,-`Piperacillin/Tazobactam`,-Tobramycin)
+# logit_data_ciprofloxacin <- logit_data %>% select(-anySIR, -Amikacin, -Cefepime,-Gentamicin,-Meropenem,-`Piperacillin/Tazobactam`,-Tobramycin)
+# logit_data_gentamicin <- logit_data %>% select(-anySIR, -Amikacin, -Cefepime,-Ciprofloxacin,-Meropenem,-`Piperacillin/Tazobactam`,-Tobramycin)
+# logit_data_meropenem <- logit_data %>% select(-anySIR, -Amikacin, -Cefepime,-Ciprofloxacin,-Gentamicin,-`Piperacillin/Tazobactam`,-Tobramycin) 
+# logit_data_pip_tazo <- logit_data %>% select(-anySIR, -Amikacin, -Cefepime,-Ciprofloxacin,-Gentamicin,-Meropenem,-Tobramycin)
+# logit_data_tobramycin <- logit_data %>% select(-anySIR, -Amikacin, -Cefepime,-Ciprofloxacin,-Gentamicin,-Meropenem,-`Piperacillin/Tazobactam`) 
+# 
+# # 2. Perform logistic regression (glm) for each of 7 abx outputs
+# model_anySIR <- glm(anySIR ~.,family=binomial(link='logit'),data=logit_data_anySIR)
+# model_amikacin <- glm(Amikacin ~.,family=binomial(link='logit'),data=logit_data_amikacin)
+# model_cefepme <- glm(Cefepime ~.,family=binomial(link='logit'),data=logit_data_cefepime)
+# model_ciprofloxacin <- glm(Ciprofloxacin ~.,family=binomial(link='logit'),data=logit_data_ciprofloxacin)
+# model_gentamicin <- glm(Gentamicin ~.,family=binomial(link='logit'),data=logit_data_gentamicin)
+# model_meropenem <- glm(Meropenem ~.,family=binomial(link='logit'),data=logit_data_meropenem)
+# model_pip_tazo <- glm(`Piperacillin/Tazobactam` ~.,family=binomial(link='logit'),data=logit_data_pip_tazo)
+# model_tobramycin <- glm(Tobramycin ~.,family=binomial(link='logit'),data=logit_data_tobramycin)
+# 
+# # 3. Calculate adjusted odds ratios from logit coefficients and evaluate p values (exp(coeff))
+#   # Age exp(coeff*[max(Age)-min(Age))
+#   # Pvalues have BH correction on each predictor and output (num predictors * num abx tested)
+# summary_amikacin <- rownames_to_column(as.data.frame(summary(model_amikacin)$coefficients), var = 'variable') %>% 
+#   mutate(SIR = 'Amikacin')
+# summary_cefepime <- rownames_to_column(as.data.frame(summary(model_cefepme)$coefficients), var = 'variable') %>% 
+#   mutate(SIR = 'Cefepime')
+# summary_ciprofloxacin <- rownames_to_column(as.data.frame(summary(model_ciprofloxacin)$coefficients), var = 'variable') %>% 
+#   mutate(SIR = 'Ciprofloxacin')
+# summary_gentamicin <- rownames_to_column(as.data.frame(summary(model_gentamicin)$coefficients), var = 'variable') %>% 
+#   mutate(SIR = 'Gentamicin')
+# summary_meropenem <- rownames_to_column(as.data.frame(summary(model_meropenem)$coefficients), var = 'variable') %>% 
+#   mutate(SIR = 'Meropenem')
+# summary_pip_tazo <- rownames_to_column(as.data.frame(summary(model_pip_tazo)$coefficients), var = 'variable') %>% 
+#   mutate(SIR = 'Piperacillin/Tazobactam')
+# summary_tobramycin <- rownames_to_column(as.data.frame(summary(model_tobramycin)$coefficients), var = 'variable') %>% 
+#   mutate(SIR = 'Tobramycin')
+# adjustedORAllTests <- bind_rows(summary_amikacin, summary_cefepime,
+#                                 summary_ciprofloxacin, summary_gentamicin, summary_meropenem, 
+#                                 summary_pip_tazo, summary_tobramycin) %>% 
+#   complete(variable,SIR) %>% 
+#   filter(variable != '(Intercept)') %>% 
+#   mutate(adjustedOR = case_when(variable == 'Age' ~ exp(Estimate * (max(logit_data$Age)-min(logit_data$Age))), 
+#                                 TRUE ~ exp(Estimate)),
+#          BH_corrected_pvalue = p.adjust(`Pr(>|z|)`, method = 'BH'), # BH correction on all tests except intercept
+#          BH_corrected_pvalue_asterisks = case_when(BH_corrected_pvalue <= 0.001 ~ '***',
+#                                                    BH_corrected_pvalue <= 0.01 ~ '**',
+#                                                    BH_corrected_pvalue <= 0.05 ~ '*',
+#                                                    TRUE ~ ''),
+#          SIR = factor(SIR, levels = c('Tobramycin', 'Piperacillin/Tazobactam','Meropenem','Gentamicin','Ciprofloxacin','Cefepime','Amikacin'), ordered = TRUE),
+#          variable = factor(variable, 
+#                            levels = c('Age','Sex','cystic_fibrosis','diabetes','repeatPatient','site_lung_trachea','site_urine_catheter',
+#                                       'onAP','onNAP','hasCoinfecting','MUCOIDY','METALLIC','HEMOLYSIS','PIGMENT','season_winter','season_spring','season_summer'),
+#                            labels = c('Age','Sex (Female)','Cystic Fibrosis','Diabetes','Repeat Patient','Source (Lung/Trachea)','Source (Urine/Catheter)',
+#                                       'Antipseudomonal', 'Non-Antipseudomonal','Co-isolated organsim','Mucoid','Metallic','Hemolytic','Pigment','Season (winter)', 'Season (spring)',
+#                                       'Season (summer)'),
+#                            ordered = TRUE)) 
+
+
+
+
+# 4. Plot odds ratios for each abx and variable and add detail for BH corrected and uncorrected pvalues
+  # NOTE: Odds ratio for age looks like 1.01 and is significant. This was a continuous variable so it's actually 1.016 per year
+# Load precalculated data to protect patient privacy
+adjustedORAllTests <- read_csv('data/adjustedORAllTests.csv')
+
+# Factor adjustedORAllTests
+adjustedORAllTests <- adjustedORAllTests %>% 
+  mutate(SIR = factor(SIR, levels = c('Tobramycin', 'Piperacillin/Tazobactam','Meropenem','Gentamicin','Ciprofloxacin','Cefepime','Amikacin'), ordered = TRUE),
+         variable = factor(variable, levels = c('Age','Sex (Female)','Cystic Fibrosis','Diabetes','Repeat Patient','Source (Lung/Trachea)','Source (Urine/Catheter)',
+                                      'Antipseudomonal', 'Non-Antipseudomonal','Co-isolated organsim','Mucoid','Metallic','Hemolytic','Pigment','Season (winter)', 'Season (spring)',
+                                      'Season (summer)'),
+                           ordered = TRUE))
+
+figure3D <- adjustedORAllTests %>% 
+  ggplot(aes(variable, SIR, fill = adjustedOR)) + geom_tile() + geom_text(aes(label = BH_corrected_pvalue_asterisks), size = 2) +
+  scale_fill_gradient2(na.value = 'grey80', high = '#8C510A',low = '#01665E',mid = 'white', trans = 'log2') +
+  # scale_fill_brewer(palette = 'BrBG',trans = 'log2') +
+  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6),
+                     axis.text.y = element_text(size = 6),
+                     axis.title = element_blank(),
+                     legend.text = element_text(size = 6),
+                     legend.title = element_text(size=6),
+                     legend.key.size = unit(0.1, 'in')) +
+  guides(fill=guide_colorbar(title="Adjusted\nOdds Ratio"))
+
+
+######################### Figure 3C Updated (4/12/21) #############################
+## Spot checked each data frame and that the figure was placing the correct asterisks in the correct spots
+## Calculate frequencies of resistance to each individual antibiotic in CF and non-CF isolates:
+#  # Originally calculated frequencies separate for CF and non-CF patients, but this assumes there is some difference in drug-drug relations in these groups
+#  # This was updated to use population-level frequencies
+#figure3C_frequencies <- isolates_tidy_resistance_profiles %>% 
+#  inner_join((isolates_tidy %>% select(Isolate, cystic_fibrosis))) %>%
+#  mutate(output = as.numeric(SIR !=  'S')) %>% # if R or I, 1; else if S, 0
+#  group_by(Antibiotic, cystic_fibrosis) %>% mutate(numCFstatus = n()) %>% 
+#  ungroup() %>% 
+#  group_by(Antibiotic, output) %>% 
+#  mutate(freqTotalPopulation = n()/971) %>% # Calculate frequencies across all samples (best practice I think)
+#  group_by(Antibiotic, output, cystic_fibrosis, numCFstatus, freqTotalPopulation) %>% summarise() %>% 
+#  filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+#  filter(output == 1) %>%  # resistance/intermediate frequencies
+#  spread(Antibiotic, freqTotalPopulation)
+
+## Calculate expected pair-wise resistant isolates (num isolates * freqR(drugA) * freqR(drugB))
+#expected <- figure3C_frequencies %>% group_by(cystic_fibrosis) %>% 
+#  summarise(Amikacin_Cefepime = Amikacin * Cefepime * numCFstatus,
+#         Amikacin_Ciprofloxacin = Amikacin * Ciprofloxacin* numCFstatus,
+#         Amikacin_Gentamicin = Amikacin * Gentamicin* numCFstatus,
+#         Amikacin_Meropenem = Amikacin * Meropenem* numCFstatus,
+#         Amikacin_PipTazo = Amikacin * `Piperacillin/Tazobactam`* numCFstatus,
+#         Amikacin_Tobramycin = Amikacin * Tobramycin* numCFstatus,
+#         Cefepime_Ciprofloxacin = Cefepime * Ciprofloxacin* numCFstatus,
+#         Cefepime_Gentamicin = Cefepime * Gentamicin* numCFstatus,
+#         Cefepime_Meropenem = Cefepime * Meropenem* numCFstatus,
+#         Cefepime_PipTazo = Cefepime * `Piperacillin/Tazobactam`* numCFstatus,
+#         Cefepime_Tobramycin = Cefepime * Tobramycin* numCFstatus,
+#         Ciprofloxacin_Gentamicin = Ciprofloxacin * Gentamicin* numCFstatus,
+#         Ciprofloxacin_Meropenem = Ciprofloxacin * Meropenem* numCFstatus,
+#         Ciprofloxacin_PipTazo = Ciprofloxacin * `Piperacillin/Tazobactam`* numCFstatus,
+#         Ciprofloxacin_Tobramycin = Ciprofloxacin * Tobramycin* numCFstatus,
+#         Gentamicin_Meropenem = Gentamicin * Meropenem* numCFstatus,
+#         Gentamicin_PipTazo = Gentamicin * `Piperacillin/Tazobactam`* numCFstatus,
+#         Gentamicin_Tobramycin = Gentamicin * Tobramycin* numCFstatus,
+#         Meropenem_PipTazo = Meropenem * `Piperacillin/Tazobactam`* numCFstatus,
+#         Meropenem_Tobramycin = Meropenem * Tobramycin* numCFstatus,
+#         PipTazo_Tobramycin = `Piperacillin/Tazobactam` * Tobramycin* numCFstatus) %>% 
+#  gather(AbxPair, expected, -cystic_fibrosis) %>% 
+#  arrange(cystic_fibrosis, AbxPair)
+
+# Create datasets that can be pulled from to make contingency tables:
+# CF
+#figure3C_dat_cf  <- isolates_tidy_resistance_profiles %>% 
+#  mutate(output = as.numeric(SIR !=  'S')) %>% # if R or I, 1; else if S, 0
+#  filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+#  inner_join((isolates_tidy %>% select(Isolate, cystic_fibrosis))) %>% 
+#  filter(cystic_fibrosis == 'cf') %>% 
+#  select(-SIR,-SusceptibilityMethod, -Patient_index, -cystic_fibrosis) %>% 
+#  spread(Antibiotic,output)
+##NonCF
+#figure3C_dat_nocf <- isolates_tidy_resistance_profiles %>% 
+#  mutate(output = as.numeric(SIR !=  'S')) %>% # if R or I, 1; else if S, 0
+#  filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+#  inner_join((isolates_tidy %>% select(Isolate, cystic_fibrosis))) %>% 
+#  filter(cystic_fibrosis != 'cf') %>% 
+#  select(-SIR,-SusceptibilityMethod, -Patient_index, -cystic_fibrosis) %>% 
+#  spread(Antibiotic,output)
+
+## Create contingency tables for all pairwise combinations for CF and non-CF isolates and perform Fisher's exact test
+#AbxPair <- c("Amikacin_Cefepime","Amikacin_Ciprofloxacin","Amikacin_Gentamicin","Amikacin_Meropenem","Amikacin_PipTazo",       
+#             "Amikacin_Tobramycin","Cefepime_Ciprofloxacin","Cefepime_Gentamicin","Cefepime_Meropenem","Cefepime_PipTazo",        
+#             "Cefepime_Tobramycin","Ciprofloxacin_Gentamicin","Ciprofloxacin_Meropenem","Ciprofloxacin_PipTazo","Ciprofloxacin_Tobramycin",
+#             "Gentamicin_Meropenem","Gentamicin_PipTazo","Gentamicin_Tobramycin","Meropenem_PipTazo","Meropenem_Tobramycin",    
+#             "PipTazo_Tobramycin","Amikacin_Cefepime","Amikacin_Ciprofloxacin","Amikacin_Gentamicin","Amikacin_Meropenem",      
+#             "Amikacin_PipTazo","Amikacin_Tobramycin","Cefepime_Ciprofloxacin","Cefepime_Gentamicin","Cefepime_Meropenem",      
+#             "Cefepime_PipTazo","Cefepime_Tobramycin","Ciprofloxacin_Gentamicin","Ciprofloxacin_Meropenem","Ciprofloxacin_PipTazo",   
+#             "Ciprofloxacin_Tobramycin","Gentamicin_Meropenem","Gentamicin_PipTazo","Gentamicin_Tobramycin","Meropenem_PipTazo",       
+#             "Meropenem_Tobramycin","PipTazo_Tobramycin")      
+#cystic_fibrosis <- c('cf','cf','cf','cf','cf','cf','cf',
+#                     'cf','cf','cf','cf','cf','cf','cf',
+#                     'cf','cf','cf','cf','cf','cf','cf',
+#                     'nocf','nocf','nocf','nocf','nocf','nocf','nocf',
+#                     'nocf','nocf','nocf','nocf','nocf','nocf','nocf',
+#                     'nocf','nocf','nocf','nocf','nocf','nocf','nocf')
+#observed <- c(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Cefepime)[4],
+#              table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Ciprofloxacin)[4],
+#              table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Gentamicin)[4],
+#              table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Meropenem)[4],
+#              table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Tobramycin)[4],
+#              table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Ciprofloxacin)[4],
+#              table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Gentamicin)[4],
+#              table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Meropenem)[4],
+#              table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Tobramycin)[4],
+#              table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Gentamicin)[4],
+#              table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Meropenem)[4],
+#              table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Tobramycin)[4],
+#              table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$Meropenem)[4],
+#              table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$Tobramycin)[4],
+#              table(figure3C_dat_cf$Meropenem, figure3C_dat_cf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_cf$Meropenem, figure3C_dat_cf$Tobramycin)[4],
+#              table(figure3C_dat_cf$`Piperacillin/Tazobactam`, figure3C_dat_cf$Tobramycin)[4],
+#              # start non cf
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Cefepime)[4],
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Ciprofloxacin)[4],
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Gentamicin)[4],
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Meropenem)[4],
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Tobramycin)[4],
+#              table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Ciprofloxacin)[4],
+#              table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Gentamicin)[4],
+#              table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Meropenem)[4],
+#              table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Tobramycin)[4],
+#              table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Gentamicin)[4],
+#              table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Meropenem)[4],
+#              table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Tobramycin)[4],
+#              table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$Meropenem)[4],
+#              table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$Tobramycin)[4],
+#              table(figure3C_dat_nocf$Meropenem, figure3C_dat_nocf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_nocf$Meropenem, figure3C_dat_nocf$Tobramycin)[4],
+#              table(figure3C_dat_nocf$`Piperacillin/Tazobactam`, figure3C_dat_nocf$Tobramycin)[4])
+#fisher_p_value <- c((fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Cefepime)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Ciprofloxacin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Ciprofloxacin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Meropenem, figure3C_dat_cf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Meropenem, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$`Piperacillin/Tazobactam`, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    # start non cf
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Cefepime)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Ciprofloxacin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Ciprofloxacin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Meropenem, figure3C_dat_nocf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Meropenem, figure3C_dat_nocf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$`Piperacillin/Tazobactam`, figure3C_dat_nocf$Tobramycin)))$p.value)
+#
+#observed_df <- data.frame(AbxPair, cystic_fibrosis, observed, fisher_p_value)
+
+## Merge observed and expected data
+#  # Calculate (O-E)/E for each pair
+#  # Calculate BH correction for multiple comparisons 
+#  # Separate Abx names and factor
+#figure_3C_dat <- inner_join(expected, observed_df, by = c('AbxPair','cystic_fibrosis')) %>% 
+#  group_by(AbxPair, cystic_fibrosis) %>% 
+#  mutate(OminusEoverE = ((observed - expected)/expected),
+#         moreOrLessThanExpected = case_when(OminusEoverE > 0 ~ 'More than Expected', TRUE ~ 'Fewer than Expected')) %>%  # binary more or less pair-wise resistant than #expected) %>% 
+#  ungroup() %>% 
+#  mutate(BH_corrected_pvalue = p.adjust(fisher_p_value, method = 'BH'), # BH correction on all tests 
+#         BH_corrected_pvalue_asterisks = case_when(BH_corrected_pvalue <= 0.001 ~ '***',
+#                                                   BH_corrected_pvalue <= 0.01 ~ '**',
+#                                                   BH_corrected_pvalue <= 0.05 ~ '*',
+#                                                   TRUE ~ '')) %>% 
+#  separate(AbxPair, sep = '_', remove = FALSE, into = c('ABX1','ABX2')) %>% 
+#  mutate(cf = case_when(cystic_fibrosis == 'cf' ~ 1, TRUE ~ 0)) %>% 
+#  mutate(ABX2 = factor(ABX2, levels = c('Tobramycin','PipTazo','Meropenem',
+#                                        'Gentamicin','Ciprofloxacin','Cefepime'),
+#                       labels = c('Tobramycin','Piperacillin/Tazobactam','Meropenem',
+#                                  'Gentamicin','Ciprofloxacin','Cefepime'),
+#                       ordered = TRUE),
+#         ABX1 = factor(ABX1, levels= c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin',
+#                                     'Meropenem','PipTazo'),
+#                       labels = c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin',
+#                                  'Meropenem','Piperacillin/Tazobactam'), 
+#                       ordered = TRUE)) %>% 
+#  arrange(ABX1,desc(ABX2))#
+
+## READ FIGURE 3C Data: values (expected, observed, (o-e)/e, p-value, BH adjusted p-value, binary call) to csv to be loaded into github script
+figure_3C_dat <- read_csv('data/figure3c_updated_co_resistance_and_pvalues.csv') %>% 
+  mutate(ABX2 = factor(ABX2, levels = c('Tobramycin','Piperacillin/Tazobactam','Meropenem',
+                                       'Gentamicin','Ciprofloxacin','Cefepime'),
+                      ordered = TRUE),
+        ABX1 = factor(ABX1, levels= c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin',
+                                    'Meropenem','Piperacillin/Tazobactam'),
+                      ordered = TRUE)) %>%
+ arrange(ABX1,desc(ABX2))
+
+# Plot Figure 3C:
+
+# Create triangles and locations
+dt.triangle <- tibble(group = rep(1:72, times=1, each=3), 
+                      polygon.x = (rep(rep(c(0.5,1.5,0.5,0.5,1.5,1.5), times=6, each=1), times = 6, each = 1) + rep(0:5, times = 1, each = 36)), 
+                      polygon.y = rep((rep(c(0.5,0.5,1.5,1.5,1.5,0.5), times=6, each=1) + rep(5:0, times=1, each=6)), times = 6, each = 1)) %>% 
+  filter(group %in% c(1,2,3,4,5,6,7,8,9,10,11,12,15,16,17,18,19,20,21,22,23,24,29,30,31,32,33,34,35,36, 43,44,45,46,47,48,57,58,59,60,71,72))
+dt.key <- tibble(group = c(100,100,100,101,101,101), x = c(6,7,6,6,7,7), y = c(3,3,4,4,4,3))
+dt.edges <- tibble(x = c(1.5,2.5,3.5,4.5,5.5,6.5), xend = c(1.5,2.5,3.5,4.5,5.5,6.5), y = c(6.5,5.5,4.5,3.5,2.5,1.5), yend = c(5.5,4.5,3.5,2.5,1.5, 0.5))
+
+# Create data frames to fill and color triangles (need three values per triangle)
+ObservedRelativeToExpected <- rep(figure_3C_dat$moreOrLessThanExpected, each = 3)
+coloring <-  rep(figure_3C_dat$OminusEoverE, each = 3)
+
+figure3C <- figure_3C_dat %>% 
+  ggplot(aes(x = ABX1, y = ABX2)) + 
+  geom_tile(fill = 'white', color = 'white') + 
+  geom_polygon(data = dt.triangle,
+               aes(x=polygon.x, y=polygon.y, group=group, fill = ObservedRelativeToExpected, color = coloring), size = 0.25) +
+  scale_fill_manual(values = c('lightblue','indianred2')) + 
+  scale_color_gradient2(low = 'grey40', high = 'grey40', mid = 'grey40', na.value = 'white', guide = 'none') +
+  geom_segment(data = dt.edges, aes(x = x, xend = xend, y = y, yend = yend), color = 'grey', size = 0.25) +
+  geom_text(aes(label = BH_corrected_pvalue_asterisks, vjust = cf, hjust = cf), size = 1.75) + # cf
+  # geom_text(aes(label = BH_corrected_pvalue_asterisks, vjust = cf, hjust = cf), size = 1.75) + # nocf
+  geom_polygon(data = dt.key, aes(x = x, y = y, group = group), color = 'black', fill = 'white') +
+  geom_text(x = 6.3, y = 3.3, label = '+', color = "black", size = 3) +
+  geom_text(x = 6.7, y = 3.7, label = '-', color = "black", size = 3) +
+  geom_text(x = 6.5, y = 4.5, label = 'CF', color = "black", size = 3.5) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6),
+        axis.title = element_blank(),
+        panel.grid.major = element_blank(),
+        axis.text.y = element_text(size = 6),
+        legend.text = element_text(size = 6),
+        legend.title = element_text(size = 6),
+        legend.key.size = unit(0.1, 'in')) +
+  guides(fill=guide_legend(title='Number of Observed\nCo-Resistant Isolates'))
+
+# # Figure 3B: Corrleations between phenotypes; Pearson correlation
+# Load precalculated data to protect patient privacy
+figure3B_dat <- read_csv('data/figure3A_dat.csv')
+
+# figure3b_dat <- phenotypes_metadata_logit %>% 
+#   inner_join(treatment_logit, by = "Isolate") %>% 
+#   inner_join(coinfect_logit, by = "Isolate") %>% 
+#   select(-Isolate, -Patient_index)
+# #, -pigment_green, -pigment_blue,-pigment_red,-pigment_mixed,-pigment_none)
+# # figure3b_dat <- figure3b_dat[ , order(names(figure3b_dat))]
+# figure3b_dat <- figure3b_dat[ , c('Age','Sex','cystic_fibrosis','diabetes','repeatPatient','site_lung_trachea','site_urine_catheter',
+#                                       'site_ent_sinus','site_skin_wound','site_blood','site_other','onAP','onNAP','hasCoinfecting',
+#                                       'MUCOIDY','METALLIC','HEMOLYSIS','PIGMENT','season_winter','season_spring','season_summer','season_fall')]
+# 
+# # Calculate the pearson correlations between each abx SIR data
+# figure3b_corr <- rcorr(as.matrix(figure3b_dat), type = 'pearson')
+# figure3b_corr$r[lower.tri(figure3b_corr$r)] <- NA
+# figure3b_corr$P[lower.tri(figure3b_corr$P)] <- NA
+# figure3b_peasrsonCorr <- rownames_to_column(as.data.frame(figure3b_corr$r), var = 'variable1') %>% gather(key = 'variable2',value = 'pearsonCorr', 2:(ncol(figure3b_corr$r)+1))
+#   figure3b_peasrsonCorr <- figure3b_peasrsonCorr %>% 
+#     filter(variable1 != variable2, !is.na(pearsonCorr)) %>% 
+#     complete(variable1,variable2) #%>% 
+#     # mutate(variable2 = factor(variable2, levels = rev(sort(unique(figure3b_peasrsonCorr$variable2))), ordered=TRUE))
+# # Adjust pvalues on correlation coefficients 
+# figure3b_pvalues <- rownames_to_column(as.data.frame(figure3b_corr$P), var = 'variable1') %>%
+#   gather(key = 'variable2',value = 'pvalue', 2:(ncol(figure3b_corr$r)+1)) %>% 
+#   filter(variable1 != variable2, !is.na(pvalue)) %>% 
+#   complete(variable1,variable2) %>% 
+#   mutate(BH_corrected_pvalue = p.adjust(pvalue, method = 'BH'),
+#                                     BH_corrected_pvalue_asterisks = case_when(BH_corrected_pvalue <= 0.001 ~ '***',
+#                                                    BH_corrected_pvalue <= 0.01 ~ '**',
+#                                                    BH_corrected_pvalue <= 0.05 ~ '*',
+#                                                    TRUE ~ ''))
+# # Combine pvalues and pearcon corr and factor
+# figure3B_dat <- inner_join(figure3b_peasrsonCorr, figure3b_pvalues, by = c('variable1','variable2')) %>%
+#   mutate(variable1 = factor(variable1, levels = c('Age','Sex','cystic_fibrosis','diabetes','repeatPatient','site_lung_trachea','site_urine_catheter',
+#                                       'site_ent_sinus','site_skin_wound','site_blood','site_other','onAP','onNAP','hasCoinfecting',
+#                                       'MUCOIDY','METALLIC','HEMOLYSIS','PIGMENT','season_winter','season_spring','season_summer'),
+#                             labels = c('Age','Sex (Female)','Cystic Fibrosis','Diabetes','Repeat Patient','Source (Lung/Trachea)','Source (Urine/Catheter)',
+#                                        'Source (ENT/Sinus)','Source (Skin/Wound)','Source (Blood)','Source (Other)','Antipseudomonal','Non-Antipseudomonal',
+#                                        'Co-isolated organism','Mucoid','Metallic','Hemolytic','Pigment','Season (winter)','Season (spring)', 'Season (summer)'),
+#                             ordered = TRUE),
+#          variable2 = factor(variable2,
+#                             levels = rev(c('Sex','cystic_fibrosis','diabetes','repeatPatient','site_lung_trachea','site_urine_catheter',
+#                                       'site_ent_sinus','site_skin_wound','site_blood','site_other','onAP','onNAP','hasCoinfecting',
+#                                       'MUCOIDY','METALLIC','HEMOLYSIS','PIGMENT','season_winter','season_spring','season_summer','season_fall')),
+#                             labels = rev(c('Sex (Female)','Cystic Fibrosis','Diabetes','Repeat Patient','Source (Lung/Trachea)','Source (Urine/Catheter)',
+#                                        'Source (ENT/Sinus)','Source (Skin/Wound)','Source (Blood)','Source (Other)','Antipseudomonal','Non-Antipseudomonal',
+#                                        'Co-isolated organism','Mucoid','Metallic','Hemolytic','Pigment','Season (winter)','Season (spring)', 'Season (summer)', 'Season (fall)')),
+#                             ordered = TRUE))
+
+# Factor figure3B_dat 
+figure3B_dat <- figure3B_dat %>%
+  mutate(variable1 = factor(variable1, levels = c('Age','Sex (Female)','Cystic Fibrosis','Diabetes','Repeat Patient','Source (Lung/Trachea)','Source (Urine/Catheter)',
+                                       'Source (ENT/Sinus)','Source (Skin/Wound)','Source (Blood)','Source (Other)','Antipseudomonal','Non-Antipseudomonal',
+                                       'Co-isolated organism','Mucoid','Metallic','Hemolytic','Pigment','Season (winter)','Season (spring)', 'Season (summer)'),
+                            ordered = TRUE),
+         variable2 = factor(variable2, levels = rev(c('Sex (Female)','Cystic Fibrosis','Diabetes','Repeat Patient','Source (Lung/Trachea)','Source (Urine/Catheter)',
+                                       'Source (ENT/Sinus)','Source (Skin/Wound)','Source (Blood)','Source (Other)','Antipseudomonal','Non-Antipseudomonal',
+                                       'Co-isolated organism','Mucoid','Metallic','Hemolytic','Pigment','Season (winter)','Season (spring)', 'Season (summer)', 'Season (fall)')),
+                            ordered = TRUE))
+
+
+
+# Plot correlation coefficients
+dt.edges2 <- tibble(x = c(0.5,0.5, seq(0.5,20.5,1), seq(1.5,21.5,1)), xend = c(0.5,21.5,seq(1.5,21.5,1), seq(1.5,21.5,1)), 
+                        y = c(0.5,0.5, seq(21.5, 1.5, -1), seq(21.5,1.5,-1)), yend = c(21.5,0.5,seq(21.5, 1.5, -1), seq(20.5,0.5,-1)))
+figure3B <- figure3B_dat %>% 
+  ggplot(aes(variable1, variable2)) + geom_tile(aes(fill = pearsonCorr)) +
+  geom_text(aes(label = BH_corrected_pvalue_asterisks), size = 2) +
+  scale_fill_gradient2(low = 'blue',high = 'red',mid = 'white',midpoint = 0, na.value = 'white', limits = c(-1,1)) + 
+  geom_segment(data = dt.edges2, aes(x = x, xend = xend, y = y, yend = yend), color = 'grey', size = 0.25) +
+  theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6),
+                          axis.title = element_blank(),
+                          axis.text.y = element_text(size = 6),
+                          legend.text = element_text(size = 6),
+                          legend.title = element_text(size = 6),
+                          legend.key.size = unit(0.1, 'in'),
+                          legend.position = c(0.9,0.5)) +
+  guides(fill=guide_colorbar(title="Pearson\nCorrelation"))
+
+# Arrange Figure 3:
+
+Figure3_2 <- arrangeGrob(figure3B,
+                       figure3C,
+                       figure3D,
+                       ncol = 4,
+                       nrow = 2,
+                       heights = c(0.5,0.5),
+                       widths = c(0.25,0.25,0.25,0.25),
+                       layout_matrix = rbind(c(1,1,2,2), c(1,1,3,3)))
+
+ Figure3_2 <- as_ggplot(Figure3_2) +
+   draw_plot_label(label = c("A","B", "C"), size = 9,
+                  x = c(0, 0.5,0.5), y = c(1, 1, 0.5))
+ Figure3_2
+
+ggsave('figures/Figure2.jpg',Figure3_2, dpi = 300, height = 3.7, width = 7.5, units = 'in')
+
+```
+
+**Figure 2 – Pairwise relationships between demographic, phenotypic, and antimicrobial susceptibility data.**
+A.	Pearson correlation coefficients between different phenotypic and demographic measurements of all clinical isolates. Asterisks denote BH corrected p-values (* < 0.05, ** < 0.01, *** < 0.001). 
+B.	Pearson correlation coefficients across antimicrobial susceptibility data for isolates resistant to at least one antimicrobial (n = 354 isolates). Coefficients calculated for isolates from patients with (bottom) and without (top) CF. Intermediately resistant isolates were considered resistant. Asterisks denote BH corrected p-values (* < 0.05, ** < 0.01, *** < 0.001).
+C.	Adjusted odds ratios between measured features and susceptibility data across all isolates. Adjusted odds ratios were calculated from logistic regression models (one model per antimicrobial, see methods). Asterisks denote BH corrected p-values (* < 0.05, ** < 0.01, *** < 0.001).
+
+
+## Figure S1
+
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE, fig.height=5, fig.width=7.5}
+# Code for Figure S1 and S4 (note FigS1 10/11th profiles for b and c are tied...only showing one of these at random)
+#### Figure ZA - Distance matrix between all isolates (considering phenotypes and AST)
+  # Phenotype Data
+    # Mucoidy, Metallic, Pigment (green/red/blue/none/mixed), Hemolysis
+figZa_dat1 <- isolates_tidy %>% select(Isolate, Patient_index, MUCOIDY, METALLIC, PIGMENT, HEMOLYSIS) %>%
+  mutate(PIGMENT = factor(PIGMENT ,ordered = FALSE),
+         HEMOLYSIS = factor(HEMOLYSIS, ordered = FALSE)) %>%
+  arrange(Isolate) %>% ungroup()
+
+ # SIR Data (S/I/R ordered factors)
+ figZa_dat2 <- isolates_tidy_resistance_profiles %>% 
+  filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+  group_by(Isolate) %>% 
+  select(-SusceptibilityMethod) %>% # removed batch
+  spread(Antibiotic,SIR) %>% ungroup() 
+
+  # Combine SIR and Phenotype data
+figZa_dat <- inner_join(figZa_dat1, figZa_dat2, by = c('Isolate', 'Patient_index')) %>% arrange(Isolate)
+  
+  # Calculate gower distance, cluster with complete linkage, and convert to dataframe (SIR is ordered)
+figZa_gower_dist_raw <- daisy((figZa_dat %>% select(-Isolate, -Patient_index)), metric = c("gower"))
+clust.res<-hclust(figZa_gower_dist_raw, method = 'complete')
+hcdata <- dendro_data(clust.res, type="rectangle")
+figZa_gower <- as.data.frame(as.matrix(figZa_gower_dist_raw)) %>%
+  rownames_to_column("Isolate1") %>% 
+  gather("Isolate2", "gowerDist", -Isolate1) %>% 
+  mutate(Isolate1 = factor(Isolate1, levels = c((Isolate1 %>% unique())[as.numeric((hcdata$labels)$label)]), ordered = TRUE),
+         Isolate2 = as.numeric(Isolate2),
+         Isolate2 = factor(Isolate2, levels = c((Isolate2 %>% unique())[as.numeric((hcdata$labels)$label)]), ordered = TRUE))
+
+# Plot all isolate distances:
+figZa <- figZa_gower %>% ggplot(aes(Isolate1, Isolate2, fill = gowerDist)) +
+  geom_tile() + theme_bw() + scale_fill_gradient2(low = 'grey90',high = 'red') +
+  theme(axis.text = element_blank(), axis.title = element_blank(),
+        legend.position = 'right',
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size=6.5),
+        legend.key.size = unit(0.1, 'in')) +
+  guides(fill=guide_colorbar(title="Gower\nDistance"))
+        # plot.margin = unit(c(5.5,20,5.5,5.5),'pt')) 
+
+# Plot Isolates vs SITE_BROAD factored to be in order of clustering
+figZa_site_dat <- isolates_tidy %>% 
+  select(Isolate, SITE_BROAD) %>% 
+  arrange(Isolate) %>% 
+  rownames_to_column("IsolateNum") %>% 
+  mutate(Y = 'Y') %>% 
+  mutate(Isolate = factor(Isolate, levels = c((Isolate %>% unique())[as.numeric((hcdata$labels)$label)]), ordered = TRUE))
+# Vertical
+figZa_site_y <- figZa_site_dat %>% 
+  ggplot(aes(Y, Isolate, fill = SITE_BROAD)) +
+  geom_tile() +
+  theme_bw() +
+  scale_fill_manual(values = cbPalette) + 
+  theme(axis.text = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 7.5),
+        legend.text = element_text(size = 6.5),
+        legend.title = element_text(size=6.5),
+        legend.key.size = unit(0.075, 'in')) + 
+  ylab("Isolate 2") + 
+  guides(fill=guide_legend(title="Isolate Source"))
+  
+# Horizontal
+figZa_site_x <- figZa_site_dat %>% 
+  ggplot(aes(Isolate, Y, fill = SITE_BROAD)) +
+  geom_tile() +
+  scale_fill_manual(values = cbPalette) + 
+  theme(axis.text = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_text(size = 7.5),
+        legend.position = 'None') + 
+  xlab('Isolate 1')
+# Legends:
+figZa_legend1 <- get_legend(figZa)
+figZa_legend2 <- get_legend(figZa_site_y)
+
+############## Figure S1a -> All co-infecting organisms broken down by infection SITE ##################
+figS1a <- isolates_tidy_co_infecting_organisms %>% 
+  mutate(SITE_BROAD = factor(SITE_BROAD, levels = c('Lung/Trachea','Urine/Catheter','ENT/Sinus','Skin/Wound','Blood','Other'), ordered = TRUE)) %>% 
+  select(Isolate, Organism, Classification, SITE_BROAD) %>% ungroup() %>% 
+  filter(Organism != 'None') %>% #Jason recommended filtering out cases with no co-infecction to make it easier to see co infection data
+  mutate(Organism = factor(Organism, levels = rev(sort(unique(Organism))), ordered = TRUE)) %>% 
+  ggplot(aes(Organism)) + geom_bar(aes(fill = SITE_BROAD), color = 'black', stat = 'count') + 
+  scale_fill_manual(values = cbPalette) + 
+  theme_pubr() + ylab('Number of Isolates') + xlab('Co-Isolated Organisms') +
+  theme(axis.title = element_text(size = 6.5), axis.text.x = element_text(size = 6), axis.text.y = element_text(size = 6), legend.title = element_blank(),
+        legend.position = c(0.75,0.75)) +
+  coord_flip()
+
+#### Figure ZBCD - Top 10 most common isolate profiles in a heatmap with a histogram of num isolates per profile (colored by isolation site?)
+## Figure Zb - Most common SIR+Phenotype profiles:
+  # Calculate number of isolates per profile:
+figZb_dat <- figZa_dat %>% 
+  mutate_all(as.character) %>%
+  ungroup() %>% 
+  group_by(Amikacin, Cefepime, Ciprofloxacin, Gentamicin, Meropenem, `Piperacillin/Tazobactam`, Tobramycin, MUCOIDY, METALLIC, HEMOLYSIS, PIGMENT) %>%
+  summarise(numSameProfile = n()) %>% arrange(desc(numSameProfile)) %>% ungroup() %>% 
+  rownames_to_column("profile") %>% mutate(profile = factor(profile, levels = c(rev(unique(profile))), ordered = TRUE)) %>% 
+  gather('Variable','Value', 2:12) %>% 
+  mutate(Value = factor(Value, 
+                        levels = c("S","I","R", "Mucoid","Non-Mucoid","Metallic","Non-Metallic","Hemolytic","Non-Hemolytic","Green","Blue","Red","Mixed","None"),
+                        labels = c("Sensitive","Intermediate","Resistant", 
+                                   "Mucoid","Non-Mucoid","Metallic","Non-Metallic","Hemolytic","Non-Hemolytic","Green","Blue","Red","Mixed","No Pigment"), 
+                        ordered = TRUE),
+         Variable = factor(Variable, levels = c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin','Meropenem','Piperacillin/Tazobactam','Tobramycin',
+                                                'MUCOIDY','METALLIC','HEMOLYSIS','PIGMENT'),
+                           labels = c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin','Meropenem','Piperacillin/Tazobactam','Tobramycin',
+                                                'Mucoid','Metallic','Hemolysis','Pigment'),
+                           ordered = TRUE))
+  # Plot top 10 complete profiles
+figZb1 <- figZb_dat %>% # heatmap
+  filter(profile %in% c('1','2','3','4','5','6','7','8','9','10')) %>% 
+  ggplot(aes(Variable, profile, fill = Value)) + geom_tile(color = 'black') +
+  scale_fill_manual(values = c('blue','black','white','black','white','black','white','green','turquoise3','black','white')) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6), axis.text.y = element_text(size = 6),
+        plot.title = element_text(size = 7, hjust = 0.5), axis.title = element_blank()) +
+  ggtitle('Top 10 Complete Profiles')
+  
+  # Plot histogram of num isolates per complete profile
+figZb2 <- figZb_dat %>% 
+  filter(profile %in% c('1','2','3','4','5','6','7','8','9','10')) %>% 
+  group_by(profile, numSameProfile) %>% summarise() %>% 
+  ggplot(aes(profile, numSameProfile)) + geom_col(color = 'black',fill = 'grey80') + coord_flip() + 
+  theme_bw() + theme(axis.title = element_blank(), axis.text = element_text(size = 6), plot.title = element_text(size = 7, hjust = 0.5)) +
+  ggtitle('count') + scale_y_continuous(breaks = c(0, 100, 200))
+
+## Figure Zc Most common SIR profiles (excluding all susceptible)
+# Calculate number of isolates per profile:
+figZc_dat <- figZa_dat %>% # number of isolates with each profile
+  mutate_all(as.character) %>%
+  ungroup() %>% 
+  group_by(Amikacin, Cefepime, Ciprofloxacin, Gentamicin, Meropenem, `Piperacillin/Tazobactam`, Tobramycin) %>%
+  summarise(numSameProfile = n()) %>% arrange(desc(numSameProfile)) %>% ungroup() %>% 
+  filter(numSameProfile != max(numSameProfile)) %>% 
+  rownames_to_column("profile") %>% mutate(profile = factor(profile, levels = c(rev(unique(profile))), ordered = TRUE)) %>%
+  gather('Variable','Value', 2:8) %>% 
+  mutate(Value = factor(Value, 
+                        levels = c("S","I","R"),
+                        labels = c("Sensitive","Intermediate","Resistant"), 
+                        ordered = TRUE),
+         Variable = factor(Variable, levels = c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin','Meropenem','Piperacillin/Tazobactam','Tobramycin'), ordered = TRUE))
+
+   # Plot top 10 SIR profiles
+figZc1 <- figZc_dat %>% # heatmap
+  filter(profile %in% c('1','2','3','4','5','6','7','8','9','10')) %>% 
+  ggplot(aes(Variable, profile, fill = Value)) + geom_tile(color = 'black') +
+  scale_fill_manual(values = c('blue','grey90','red')) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6), axis.text.y = element_text(size = 6),
+        plot.title = element_text(size = 7, hjust = 0.5), axis.title = element_blank()) +
+  ggtitle('Top 10 Resistance Profiles')
+   
+  # Plot histogram of num isolates per complete profile
+figZc2 <- figZc_dat %>% 
+  filter(profile %in% c('1','2','3','4','5','6','7','8','9','10')) %>% 
+  group_by(profile, numSameProfile) %>% summarise() %>% 
+  ggplot(aes(profile, numSameProfile)) + geom_col(color = 'black', fill = 'grey80') + coord_flip() + 
+  theme_bw()+ theme(axis.title = element_blank(), axis.text = element_text(size = 6), plot.title = element_text(size = 7, hjust = 0.5)) +
+  ggtitle('count') + scale_y_continuous(breaks = c(0, 10,20,30,40))
+
+## Figure Zd Most common phenotype profiles:
+  #  Calculate number of isolates per profile:
+figZd_dat <- figZa_dat %>% 
+  mutate_all(as.character) %>%
+  ungroup() %>% 
+  group_by(MUCOIDY, METALLIC, HEMOLYSIS, PIGMENT) %>%
+  summarise(numSameProfile = n()) %>% arrange(desc(numSameProfile)) %>% ungroup() %>% 
+  rownames_to_column("profile") %>% mutate(profile = factor(profile, levels = c(rev(unique(profile))), ordered = TRUE)) %>%
+  gather('Variable','Value', 2:5) %>% 
+  mutate(Value = factor(Value, 
+                        levels = c("Mucoid","Non-Mucoid","Metallic","Non-Metallic","Hemolytic","Non-Hemolytic","Green","Blue","Red","Mixed","None"),
+                        labels = c("Mucoid","Non-Mucoid","Metallic","Non-Metallic","Hemolytic","Non-Hemolytic","Green","Blue","Red","Mixed","No Pigment"), 
+                        ordered = TRUE),
+         Variable = factor(Variable, 
+                           levels = c('MUCOIDY','METALLIC','HEMOLYSIS','PIGMENT'),
+                           labels = c('Mucoid','Metallic','Hemolysis','Pigment'), ordered = TRUE))
+
+  # Plot 10 phenotypic profiles
+figZd1 <- figZd_dat %>% # heatmap
+  filter(profile %in% c('1','2','3','4','5','6','7','8','9','10')) %>% 
+  ggplot(aes(Variable, profile, fill = Value)) + geom_tile(color = 'black') +
+  scale_fill_manual(values = c('black','white','black','white','black','white','green','turquoise3','black','white')) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6), axis.text.y = element_text(size = 6),
+        plot.title = element_text(size = 7, hjust = 0.5), axis.title = element_blank()) +
+  ggtitle('Top 10 Morphological Profiles')
+
+  # Plot histogram of num isolates per complete profile 
+figZd2 <- figZd_dat %>% 
+  filter(profile %in% c('1','2','3','4','5','6','7','8','9','10')) %>% 
+  group_by(profile, numSameProfile) %>% summarise() %>% 
+  ggplot(aes(profile, numSameProfile)) + geom_col(color = 'black', fill = 'grey80') + coord_flip() + 
+  theme_bw() + theme(axis.title = element_blank(), axis.text = element_text(size = 6), plot.title = element_text(size = 7, hjust = 0.5)) +
+  ggtitle('count') + scale_y_continuous(breaks = c(0, 150, 300))
+ 
+ # Figure S1: Coinfection by site and most common isolate profiles
+ FigureS1 <- arrangeGrob(figS1a,
+                        figZb1 + theme(legend.position = 'none'),
+                        figZb2,
+                        figZc1 + theme(legend.position = 'none'),
+                        figZc2,
+                        figZd1 + theme(legend.position = 'none'),
+                        figZd2,
+                        ncol = 3,
+                        nrow = 7,
+                        heights = c(0.2285, 0.1215, 0.2285, 0.1215, 0.2,0.0375,0.0625),
+                        widths = c(2.0, 0.67,0.33),
+                        layout_matrix = rbind(c(1,2,3), c(1,2,NA), c(1,4,5), c(1,4,NA), c(1,6,7),c(1,6,7), c(1,6,NA)))
+
+ FigureS1 <- as_ggplot(FigureS1) +
+   draw_plot_label(label = c("A","B", "C", "D"), size = 9,
+                  x = c(0,0.66, 0.66, 0.66), y = c(1,1,0.65,0.3))
+ ggsave('supplement/FigureS1.jpg',FigureS1, dpi = 300, height = 5, width = 7.5, units = 'in')
+ 
+ # Figure S3: Isolate distance matrix: 
+  FigureS3 <- arrangeGrob(figZa + theme(legend.position = 'none'),
+                        figZa_site_y + theme(legend.position = 'none'),
+                        figZa_site_x,
+                        figZa_legend1,
+                        figZa_legend2,
+                        ncol = 3,
+                        nrow = 7,
+                        heights = c(0.2285, 0.1215, 0.2285, 0.1215, 0.2,0.0375,0.0625),
+                        widths = c(0.2,1.48,0.32),
+                        layout_matrix = rbind(c(2,1,4), c(2,1,4), c(2,1,5), c(2,1,5), c(2,1,NA),c(NA,3,NA), c(NA,3,NA)))
+
+ FigureS3 <- as_ggplot(FigureS3) 
+ 
+ ggsave('supplement/FigureS4.jpg',FigureS3, dpi = 300, height = 4.5, width = 5, units = 'in')
+ 
+ FigureS1
+
+```
+
+**Figure S1. Co-isolating organisms by isolate source and most common isolate susceptibility and phenotypic profiles.**
+(A) All co-isolating organisms grouped by isolate source. (B-D) The ten most common complete profiles (B), resistance profiles (C), and phenotypic profiles (D) seen across all 971 isolates. Histograms provide number of isolates with each profile. Resistance profiles exclude isolates that were susceptible to all antimicrobials. Susceptibility profiles include SIR calls (susceptible = blue, intermediate = white, resistant = red) for seven antimicrobials. Phenotypic profiles include presence (black) or absence (white) of the mucoid phenotype, metallic sheen, and hemolysis on blood agar, and observed pigment production on cetrimide agar (green pigment = green, blue pigment = blue, red pigment = red, mixed pigment = black, no pigment = grey). Complete profiles include both susceptibility and phenotypic information. 
+
+## Figure S4 (code in above chunk)
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE, fig.height=4.5,fig.width=5}
+ FigureS3
+
+```
+
+**Figure S4. Isolate-isolate distance matrix**
+Gower distances between all isolate pairs. Distance calculated on isolate susceptibility and phenotypic profiles. Distance matrix clustered by hierarchical clustering with complete linkage. Gower distance of zero indicates that two isolates had identical profiles. Source of each isolate is shown.
+
+## Figure 3 
+
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE,fig.height=6,fig.width=6}
+#### Figure Z4 A PCoA of All Sites #######
+#### Build Starting Dataframe To Measure Isolate Distances ######
+  # CONTENTS:
+    # Factored and ordered S/I/R Data for 7 antibiotics
+    # Factored pigment data (green/blue/red/mixed/none)
+    # Factored data for mucoidy, metallic sheen, and hemolysis
+
+# Phenotype information
+figZ3_dat1 <- isolates_tidy %>% select(Isolate, Patient_index, MUCOIDY, METALLIC, PIGMENT, HEMOLYSIS, SITE_BROAD) %>%
+  mutate(PIGMENT = factor(PIGMENT ,ordered = FALSE),
+         HEMOLYSIS = factor(HEMOLYSIS, ordered = FALSE)) %>%
+  arrange(Isolate) %>% ungroup()
+
+ # SIR Data (S/I/R ordered factors)
+ figZ3_dat2 <- isolates_tidy_resistance_profiles %>% 
+  filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+  group_by(Isolate) %>% 
+  select(-SusceptibilityMethod) %>% #removed batch
+  spread(Antibiotic,SIR) %>% ungroup() 
+
+  # Combine SIR and Phenotype data (lung, urine, skin only)
+figZ3_dat <- inner_join(figZ3_dat1, figZ3_dat2, by = c('Isolate', 'Patient_index')) %>% 
+  filter(SITE_BROAD %in% c('Lung/Trachea','Urine/Catheter','Skin/Wound')) %>% 
+  arrange(Isolate)
+  
+
+#### Calculate distances and PCoA clustering ########
+## 1. All Isolates; Lung/trachea, Skin/Wound/ urine/catheter
+# Data
+figZ3a_dat <- figZ3_dat
+# Gower Distance
+figZ3a_dat_gower <- daisy((figZ3a_dat %>% select(-Isolate, -Patient_index, -SITE_BROAD)), metric = 'gower')
+# Classes (with and without separating out CF and Non-CF isolates)
+figZ3a_dat_class <- figZ3a_dat %>% select(Isolate, SITE_BROAD)
+# PCoA 
+solPCoAa <- pcoa(figZ3a_dat_gower)
+# Calculate Percent Variance of PC1 and PC2
+  # Eigenvalue/sum(abs(all eigenvalues))
+  # Conservative calculation due to negative eigenvalues of large magnitude
+figZ3a_percentVar <- round(solPCoAa$values$Eigenvalues[1:2]/sum(abs(solPCoAa$values$Eigenvalues)) * 100, 2)
+# PERMANOVA
+figZ3a_permanova <- adonis2(figZ3a_dat_gower ~ SITE_BROAD, data = figZ3a_dat_class)
+# figZ3b_permanova <- adonis2(figZ3a_dat_gower ~ cystic_fibrosis, data = figZ3a_dat_class)
+### Convert to Dataframe and Plot ###
+figZ3a <- as.data.frame(solPCoAa$vectors[,1:2]) %>% 
+  cbind(figZ3a_dat_class) %>% 
+  ggplot(aes(Axis.1, Axis.2)) + 
+  geom_point(shape = 21, color = 'black', aes(fill = SITE_BROAD), size = 1.5, alpha = 0.75) +
+  annotate("text", Inf, -Inf, label = paste('P = ', figZ3a_permanova$`Pr(>F)`[1]), hjust = 1.25, vjust = -1.5, size = 2, color = 'black') +
+  theme_bw() +
+  scale_fill_manual(values = c(cbPalette[1], cbPalette[2], cbPalette[4])) +
+  xlab(paste('PC 1 (',figZ3a_percentVar[1], '%)')) +
+  ylab(paste('PC 2 (',figZ3a_percentVar[2], '%)')) + 
+  theme(legend.position = c(0.14,0.95), legend.title = element_blank(), 
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        legend.text = element_text(size = 6),
+        legend.key.size = unit(0.05, 'in'),
+        axis.title = element_text(size = 7.5),
+        axis.text = element_text(size = 7),
+        legend.background = element_blank())
+
+# figZ3b <- as.data.frame(solPCoAa$vectors[,1:2]) %>% 
+#   cbind(figZ3a_dat_class) %>% 
+#   ggplot(aes(Axis.1, Axis.2)) + 
+#   geom_point(shape = 21, color = 'black', aes(fill = cystic_fibrosis), size = 1.5, alpha = 0.75) +
+#   annotate("text", Inf, -Inf, label = paste('P = ', figZ3b_permanova$`Pr(>F)`[1]), hjust = 1.25, vjust = -1.5, size = 2, color = 'black') +
+#   theme_bw() +
+#   scale_fill_manual(values = c('white','black'), labels = c('CF', 'Non-CF')) +
+#   xlab(paste('PC 1 (',figZ3a_percentVar[1], '%)')) +
+#   ylab(paste('PC 2 (',figZ3a_percentVar[2], '%)')) + 
+#   theme(legend.position = c(0.1,0.97), legend.title = element_blank(), 
+#         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+#         legend.text = element_text(size = 6),
+#         legend.key.size = unit(0.05, 'in'),
+#         axis.title = element_text(size = 7.5),
+#         axis.text = element_text(size = 7),
+#         legend.background = element_blank())
+
+####### Figure Z2 CD - > Radar plots of phenotypes/SIR percentage by isolation site #########
+# Note: Percent resistant includes I/R; Percent pigment is percent any pigment color. 
+
+# 1. Build Dataframes to pull from
+#   # Frequency of each phenotype by isolate site
+# a_site_dat <- isolates_tidy %>% mutate(SITE_BROAD2 = case_when(SITE_BROAD == 'Lung/Trachea' & cystic_fibrosis == 'cf' ~ 'CF Lung',
+#                                                                SITE_BROAD == 'Lung/Trachea' & cystic_fibrosis == 'nocf' ~'Non-CF Lung',
+#                                                                TRUE ~ as.character(SITE_BROAD)))
+# a_site <- a_site_dat %>% group_by(SITE_BROAD2, MUCOIDY) %>% summarise(n = n()) %>% ungroup() %>% group_by(SITE_BROAD2) %>% 
+#   mutate(mucoid = 1 - n/sum(n)) %>% filter(MUCOIDY == 'Non-Mucoid') %>% select(SITE_BROAD2, mucoid) %>% 
+#   inner_join((a_site_dat %>% group_by(SITE_BROAD2, METALLIC) %>% summarise(n = n()) %>% ungroup() %>% group_by(SITE_BROAD2) %>% 
+#                 mutate(metallic = 1 - n/sum(n)) %>% filter(METALLIC == 'Non-Metallic') %>% select(SITE_BROAD2, metallic)), by = 'SITE_BROAD2') %>% 
+#   inner_join((a_site_dat %>% group_by(SITE_BROAD2, HEMOLYSIS) %>% summarise(n = n()) %>% ungroup() %>% group_by(SITE_BROAD2) %>%
+#                 mutate(hemolysis = 1 - n/sum(n)) %>% filter(HEMOLYSIS == 'Non-Hemolytic') %>% select(SITE_BROAD2, hemolysis)), by = 'SITE_BROAD2') %>% 
+#   inner_join((a_site_dat %>% group_by(SITE_BROAD2, PIGMENT) %>% summarise(n = n()) %>% ungroup() %>% group_by(SITE_BROAD2) %>% 
+#                 mutate(pigment = 1 - n/sum(n)) %>% filter(PIGMENT == 'None') %>% select(SITE_BROAD2, pigment)),by = 'SITE_BROAD2') %>% 
+#   inner_join((isolates_tidy_resistance_profiles %>% inner_join((a_site_dat %>% select(Isolate, SITE_BROAD2)), by = 'Isolate') %>% 
+#                 group_by(SITE_BROAD2, Antibiotic, SIR) %>% summarise(n = n()) %>% ungroup() %>% group_by(SITE_BROAD2, Antibiotic) %>%
+#                 mutate(fracSIR = 1 - n/sum(n)) %>% 
+#                 filter(SIR == 'S', Antibiotic %in% c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin','Meropenem','Piperacillin/Tazobactam','Tobramycin')) %>% 
+#                 select(SITE_BROAD2, fracSIR, Antibiotic) %>% spread(Antibiotic, fracSIR)),by = 'SITE_BROAD2')
+# # Min/Max frequencies allowed
+# b_site <- data.frame("SITE_BROAD2" = c('max','min'),
+#                 "mucoid" = c(1,0),
+#                 "metallic" = c(1,0),
+#                 "hemolysis" = c(1,0),
+#                 "pigment" = c(1,0),
+#                 "Amikacin" = c(0.4,0),
+#                 "Cefepime" = c(0.4,0),
+#                 "Ciprofloxacin" = c(0.4,0),
+#                 "Gentamicin" = c(0.4,0),
+#                 "Meropenem" = c(0.4,0),
+#                 "`Piperacillin/Tazobactam`" = c(0.4,0),
+#                 "Tobramycin" = c(0.4,0))
+# colnames(b_site)[11] <- c('Piperacillin/Tazobactam')
+# # Bind dataframe to be consistent with radarchart input requirements
+# figZ3_dat_site <- rbind(b_site,a_site)
+
+# Read in figZ3_dat_site to preserve PPI
+figZ3_dat_site <- read_csv('data/fig3CDdat.csv')
+
+#### 2. Create radar plots with fmsb package ###
+# Figure Z3c - CF Lung vs Non CF Lung vs Urine vs Skin/Wound - Phenotypes
+png("figures/figZ3c4.png",  width = 1400, height = 1400, units = "px")
+names(figZ3_dat_site)[names(figZ3_dat_site) == "mucoid"] <- "Mucoid\n(Frequency)"
+names(figZ3_dat_site)[names(figZ3_dat_site) == "metallic"] <- "Metallic"
+names(figZ3_dat_site)[names(figZ3_dat_site) == "hemolysis"] <- "Hemolysis"
+names(figZ3_dat_site)[names(figZ3_dat_site) == "pigment"] <- "Pigment"
+radarchart((figZ3_dat_site %>% filter(SITE_BROAD2 %in% c('max','min','CF Lung','Non-CF Lung','Skin/Wound', 'Urine/Catheter')) %>% 
+              select(`Mucoid\n(Frequency)`, Metallic, Hemolysis, Pigment)),
+           plwd=4 , plty=1,
+           pcol=c("grey40",'black',cbPalette[4],cbPalette[2]), pfcol = (alpha(c(cbPalette[1],cbPalette[1],cbPalette[4],cbPalette[2]), 0.15)),
+           cglcol="grey20", cglty=1, axislabcol="grey20", caxislabels=seq(0,1,.25), cglwd=2,
+           vlcex=3, axistype=1, calcex = 3)
+legend(x=-1.25, y=-0.75, legend = c('CF Lung/Trachea','Non-CF Lung/Trachea','Urine/Catheter', 'Skin/Wound'),
+       bty = "n", pch=21 , col=c("grey40",'black',cbPalette[2],cbPalette[4]),
+       pt.bg =(alpha(c(cbPalette[1],cbPalette[1],cbPalette[2],cbPalette[4]), 0.15)),
+       text.col = "black", cex=3, pt.cex=5, pt.lwd = 6)
+dev.off()
+figZ3c <- readPNG('figures/figZ3c4.png')
+figZ3c <- rasterGrob(figZ3c)
+
+# Figure Z3d - CF Lung vs Non CF Lung vs Urine vs Skin/Wound - SIR
+png("figures/figZ3d4.png",  width = 1200, height = 1200, units = "px")
+names(figZ3_dat_site)[names(figZ3_dat_site) == "Amikacin"] <- "Amikacin\n(Frequency I or R)"
+names(figZ3_dat_site)[names(figZ3_dat_site) == "Piperacillin/Tazobactam"] <- "Piperacillin/\nTazobactam"
+radarchart((figZ3_dat_site %>% filter(SITE_BROAD2 %in% c('max','min','CF Lung','Non-CF Lung','Skin/Wound', 'Urine/Catheter')) %>%
+              # mutate(`Piperacillin/\nTazobactam` = `Piperacillin/Tazobactam`, `Tobramycin ` = Tobramycin, `Amikacin\n(Freq I or R)` = Amikacin) %>% 
+              select(-SITE_BROAD2, -`Mucoid\n(Frequency)`,-Metallic,-Hemolysis,-Pigment)),
+           plwd=4 , plty=1,
+           pcol=c("grey40",'black',cbPalette[4],cbPalette[2]), pfcol = (alpha(c(cbPalette[1],cbPalette[1],cbPalette[4],cbPalette[2]), 0.15)),
+           cglcol="grey20", cglty=1, axislabcol="grey20", caxislabels=c(0,0.1,0.2,0.3,0.4), cglwd=2,
+           vlcex=2.2, axistype=1, calcex = 3)
+dev.off()
+figZ3d <- readPNG('figures/figZ3d4.png')
+figZ3d <- rasterGrob(figZ3d)
+
+# Arrange Figure Z3:
+FigureZ3_4 <- arrangeGrob(figZ3a,
+                        figZ3a,
+                        figZ3c,
+                        figZ3d,
+                        ncol = 2,
+                        nrow = 2,
+                        heights = c(0.5,0.5),
+                        widths = c(0.5,0.5),
+                        layout_matrix = rbind(c(1, 2), c(3,4)))
+
+ FigureZ3_4 <- as_ggplot(FigureZ3_4) +
+   draw_plot_label(label = c("A","B","C","D"), size = 9,
+                  x = c(0,0.5, 0, 0.5), y = c(1, 1,0.5,0.5))
+ FigureZ3_4
+
+ggsave('figures/Figure3.jpg',FigureZ3_4, dpi = 300, height =6, width = 6, units = 'in')
+
+```
+
+**Figure 3. *P. aeruginosa* morphologies and antimicrobial susceptibility profiles vary across isolate sources.** PCoA of Gower distances between isolate susceptibility profiles and phenotype profiles colored by isolate source (A) and whether a patient had CF (B). NOTE HAD TO REMOVE B FOR PRIVACY REASONS. Significant differences were calculated by PERMANOVA. Radar plots show the fraction of phenotype-expressing (C) or intermediate and resistant (D) isolates. CF lung isolates (gray, yellow fill), non-CF lung isolates (black, yellow fill), skin/wound isolates (pink) and urine/catheter isolates (blue) are compared.  
+
+## Supplemental Figure 2
+
+Commented code is available below, but cannot run due to having to remove cystic fibrosis status for HIPAA reasons.
+
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE, fig.height=3.6, fig.width=6}
+# # Supplemental Figure 2
+# ############## Plot distribution of distances between isolates from within and across sites #################
+# # 1. Add sites to distance matrix and convert to data frame
+# 
+# #### Build Starting Dataframe To Measure Isolate Distances ######
+#   # CONTENTS:
+#     # Factored and ordered S/I/R Data for 7 antibiotics
+#     # Factored pigment data (green/blue/red/mixed/none)
+#     # Factored data for mucoidy, metallic sheen, and hemolysis
+# 
+# # Phenotype information
+# figZ3_dat1 <- isolates_tidy %>% select(Isolate, Patient_index, MUCOIDY, METALLIC, PIGMENT, HEMOLYSIS, SITE_BROAD, cystic_fibrosis) %>%
+#   mutate(PIGMENT = factor(PIGMENT ,ordered = FALSE),
+#          HEMOLYSIS = factor(HEMOLYSIS, ordered = FALSE)) %>%
+#   arrange(Isolate) %>% ungroup()
+# 
+#  # SIR Data (S/I/R ordered factors)
+#  figZ3_dat2 <- isolates_tidy_resistance_profiles %>% 
+#   filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+#   group_by(Isolate) %>% 
+#   select(-SusceptibilityMethod) %>% #removed batch
+#   spread(Antibiotic,SIR) %>% ungroup() 
+# 
+#   # Combine SIR and Phenotype data (lung, urine, skin only)
+# figZ3a_dat <- inner_join(figZ3_dat1, figZ3_dat2, by = c('Isolate', 'Patient_index')) %>% 
+#   filter(SITE_BROAD %in% c('Lung/Trachea','Urine/Catheter','Skin/Wound')) %>% 
+#   arrange(Isolate)
+# # Classes (with and without separating out CF and Non-CF isolates)
+# figZ3a_dat_class <- figZ3a_dat %>% select(Isolate, SITE_BROAD, cystic_fibrosis)
+# 
+# # Convert to matrix
+# figZ3a_dat_gower_mat <- as.matrix(daisy((figZ3a_dat %>% select(-Isolate, -Patient_index, -SITE_BROAD, -cystic_fibrosis)), metric = 'gower'))
+# #Set top half of distance matrix to NA
+# figZ3a_dat_gower_mat[upper.tri(figZ3a_dat_gower_mat)] <- NA
+# # Convert matrices to dataframes and inner join with Isolate and Patient information and remove top half and diagonal (NAs)
+# figZ3a_dat_gower_df <- as.data.frame(as.matrix(figZ3a_dat_gower_mat)) %>%
+#   rownames_to_column("IsolateNum1") %>% 
+#   gather("IsolateNum2", "gowerDist", -IsolateNum1) %>% 
+#   mutate(Isolate1 = figZ3a_dat_class$Isolate[as.numeric(IsolateNum1)],
+#          Isolate2 = figZ3a_dat_class$Isolate[as.numeric(IsolateNum2)],
+#          SITE1 = figZ3a_dat_class$SITE_BROAD[as.numeric(IsolateNum1)],
+#          SITE2 = figZ3a_dat_class$SITE_BROAD[as.numeric(IsolateNum2)],
+#          cf1 = figZ3a_dat_class$cystic_fibrosis[as.numeric(IsolateNum1)],
+#          cf2 = figZ3a_dat_class$cystic_fibrosis[as.numeric(IsolateNum2)],
+#          compSITE = case_when(SITE1 == SITE2 ~ as.character(SITE1), TRUE ~ 'cross site'),
+#          compCF = case_when(cf1 == cf2 ~ as.character(cf1), TRUE ~ 'cross cf')) %>% 
+#   filter(Isolate1 != Isolate2, !is.na(gowerDist)) # remove diagonal and upper triangle
+# 
+# # 2. Stats between distances for each group (Wilcoxon; a has BH correction, b does not (one comparison only))
+# # Figure A stats:
+# figS3a_stats <- figZ3a_dat_gower_df %>% 
+#   filter(compSITE %in% c('Lung/Trachea','Urine/Catheter')) %>% 
+#   summarise(pvalue_wilcoxon = wilcox.test(gowerDist~compSITE, exact = FALSE)$p.value,
+#             Cluster1 = '      Lung/Trachea',Cluster2 = 'Urine/Catheter') %>% 
+#   rbind(figZ3a_dat_gower_df %>% 
+#   filter(compSITE %in% c('Skin/Wound','Urine/Catheter')) %>% 
+#   summarise(pvalue_wilcoxon = wilcox.test(gowerDist~compSITE, exact = FALSE)$p.value,
+#             Cluster1 = 'Skin/Wound',Cluster2 = 'Urine/Catheter')) %>% 
+#   rbind(figZ3a_dat_gower_df %>% 
+#   filter(compSITE %in% c('Lung/Trachea','Skin/Wound')) %>% 
+#   summarise(pvalue_wilcoxon = wilcox.test(gowerDist~compSITE, exact = FALSE)$p.value,
+#             Cluster1 = '      Lung/Trachea',Cluster2 = 'Skin/Wound')) %>% 
+#   mutate(BH_corrected_pvalue_wilcoxon = p.adjust(pvalue_wilcoxon, method = 'BH'),
+#          BH_corrected_pvalue_wilcoxon_asterisks = case_when(BH_corrected_pvalue_wilcoxon <= 0.001 ~ '***',
+#                                                    BH_corrected_pvalue_wilcoxon <= 0.01 ~ '**',
+#                                                    BH_corrected_pvalue_wilcoxon <= 0.05 ~ '*',
+#                                                    TRUE ~ ''))
+# # Figure B stats
+# figS3b_stats <- figZ3a_dat_gower_df %>% 
+#   filter(compCF %in% c('cf','nocf')) %>% 
+#   summarise(pvalue_wilcoxon = wilcox.test(gowerDist~compCF, exact = FALSE)$p.value,
+#             Cluster1 = 'Cystic Fibrosis',Cluster2 = 'No Cystic Fibrosis') %>% 
+#   mutate(asterisks = case_when(pvalue_wilcoxon <= 0.001 ~ '***',
+#                                                    pvalue_wilcoxon <= 0.01 ~ '**',
+#                                                    pvalue_wilcoxon <= 0.05 ~ '*',
+#                                                    TRUE ~ ''))
+# 
+# # 3. Plot violin plots of distance distributions( A) lung/lung, skin/skin, urine/urine AND B) CF/CF, nonCF/nonCF)
+# # A) Violin plot of distances between isolates from the same infection site
+# figS32_a <- figZ3a_dat_gower_df %>%
+#   filter(compSITE != 'cross site') %>%  # filter out cross site isolate comparisons
+#   mutate(compSITE = factor(compSITE, 
+#                            levels = c('Lung/Trachea','Urine/Catheter','Skin/Wound'), 
+#                            labels = c('      Lung/Trachea','Urine/Catheter','Skin/Wound'),
+#                            ordered = TRUE)) %>% 
+#   ggplot(aes(compSITE, gowerDist)) + geom_violin(aes(fill = compSITE)) +
+#   stat_summary(fun=median, geom="crossbar", size=0.5, width = 0.2, color="black") +
+#   annotate("text",x = c(1.5,2.5,2), y =c(1.07,1.02,1.12), label=figS3a_stats$BH_corrected_pvalue_wilcoxon_asterisks,size=2) +
+#   annotate('segment', x = figS3a_stats$Cluster1, xend = figS3a_stats$Cluster2, y = c(1.05,1.0,1.1), yend =c(1.05,1.0,1.1)) +
+#   scale_fill_manual(values = c(cbPalette[1],cbPalette[2],cbPalette[4])) +
+#   xlab('Cluster') + ylab('Gower Distance') + 
+#   scale_y_continuous(breaks = c(0,0.2,0.4,0.6,0.8,1)) +
+#   theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = 'none')
+# # B) Violin plot of distances between isolates with the same CF status
+# figS32_b <- figZ3a_dat_gower_df %>% 
+#   filter(compCF != 'cross cf') %>% # filter out cross cf isolate comparisons
+#   mutate(compCF = factor(compCF, levels = c('cf','nocf'), labels = c('Cystic Fibrosis','No Cystic Fibrosis'))) %>% 
+#   ggplot(aes(compCF, gowerDist)) + geom_violin(aes(fill = compCF)) +
+#   stat_summary(fun=median, geom="crossbar", size=0.5, width = 0.2, aes(color = compCF)) +
+#   annotate("text",x = c(1.5), y =c(1.12), label=figS3b_stats$asterisks,size=2) +
+#   annotate('segment', x = figS3b_stats$Cluster1, xend = figS3b_stats$Cluster2, y = c(1.1), yend =c(1.1)) +
+#   scale_fill_manual(values = c('white','black')) +
+#   scale_color_manual(values = c('black','white')) +
+#   scale_y_continuous(breaks = c(0,0.2,0.4,0.6,0.8,1)) +
+#   xlab('Cluster') + ylab('Gower Distance') +
+#   theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = 'none')
+# 
+# # Arrange Figure:
+# FigureS3_2 <- arrangeGrob(figS32_a,
+#                         figS32_b,
+#                         ncol = 2,
+#                         nrow = 1,
+#                         heights = c(1), 
+#                         widths = c(0.5,0.5),
+#                         layout_matrix = rbind(c(1, 2)))
+# 
+# # Convert to ggplot device with as_ggplot and add panel labels with draw_plot_label
+#  FigureS3_2 <- as_ggplot(FigureS3_2) +
+#    draw_plot_label(label = c("A","B"), size = 9,
+#                   x = c(0,0.5), y = c(1, 1))
+# FigureS3_2
+# 
+# # Save the figure
+# ggsave('supplement/FigureS2.jpg',FigureS3_2, dpi = 300, height =3.5, width = 6, units = 'in')
+```
+
+**Figure S2. Distributions of isolate-isolate distances within PCoA clusters.**
+Distributions of Gower distances between isolates from the same source (A) or with the same cystic fibrosis status (B). Crossbar denotes median Gower distances between isolates from the same source. Pairwise comparisons were made with by Wilcoxon rank sum test. Asterisks denote BH corrected (A) or uncorrected (B) p-values (*** < 0.001). 
+
+## Figure 5
+
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE, fig.height=5.882692, fig.width=7.5}
+# Figure 5 
+### 1. Build data frames to calculate gower distances from for phenotypes and SIR profiles (separate dist)
+  # Mucoidy, Metallic, Pigment (green/red/blue/none/mixed), Hemolysis
+figZ2a_dat1 <- isolates_tidy %>% select(Isolate, Patient_index, MUCOIDY, METALLIC, PIGMENT, HEMOLYSIS) %>%
+  mutate(PIGMENT = factor(PIGMENT ,ordered = FALSE),
+         HEMOLYSIS = factor(HEMOLYSIS, ordered = FALSE)) %>%
+  arrange(Isolate) %>% ungroup()
+
+ # SIR Data (S/I/R ordered factors)
+figZ2a_dat2 <- isolates_tidy_resistance_profiles %>% 
+  filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+  group_by(Isolate) %>% 
+  select(-SusceptibilityMethod) %>% #removed batch
+  spread(Antibiotic,SIR) %>% ungroup() %>% arrange(Isolate) 
+
+# Combine data for use in patient specific exampless
+figZ2a_dat <- inner_join(figZ2a_dat1, figZ2a_dat2, by = c('Patient_index', 'Isolate')) 
+
+### 2. Build gower distance matrices and dataframes for phenotypes and SIR profiles
+## 1. Phenotypes
+figZ2a_gower_dist_raw_phenotype <- as.matrix(daisy((figZ2a_dat1 %>% select(-Isolate, -Patient_index)), metric = c("gower")))
+# Set top half of distance matrix to NA
+figZ2a_gower_dist_raw_phenotype[upper.tri(figZ2a_gower_dist_raw_phenotype)] <- NA
+## 2. SIR Profiles
+figZ2a_gower_dist_raw_SIR <- as.matrix(daisy((figZ2a_dat2 %>% select(-Isolate, -Patient_index)), metric = c("gower")))
+#Set top half of distance matrix to NA
+figZ2a_gower_dist_raw_SIR[upper.tri(figZ2a_gower_dist_raw_SIR)] <- NA
+# 3. Convert matrices to dataframes and inner join with Isolate and Patient information and remove top half and diagonal (NAs)
+figZ2a_gower_dist_phenotype <- as.data.frame(as.matrix(figZ2a_gower_dist_raw_phenotype)) %>%
+  rownames_to_column("IsolateNum1") %>% 
+  gather("IsolateNum2", "gowerDist", -IsolateNum1) %>% 
+  mutate(Isolate1 = figZ2a_dat1$Isolate[as.numeric(IsolateNum1)],
+         Isolate2 = figZ2a_dat1$Isolate[as.numeric(IsolateNum2)],
+         Patient_index1 = figZ2a_dat1$Patient_index[as.numeric(IsolateNum1)],
+         Patient_index2 = figZ2a_dat1$Patient_index[as.numeric(IsolateNum2)]) %>% 
+  filter(Isolate1 != Isolate2, !is.na(gowerDist)) # remove diagonal and upper triangle
+figZ2a_gower_dist_SIR <- as.data.frame(as.matrix(figZ2a_gower_dist_raw_SIR)) %>%
+  rownames_to_column("IsolateNum1") %>% 
+  gather("IsolateNum2", "gowerDist", -IsolateNum1) %>% 
+  mutate(Isolate1 = figZ2a_dat1$Isolate[as.numeric(IsolateNum1)],
+         Isolate2 = figZ2a_dat1$Isolate[as.numeric(IsolateNum2)],
+         Patient_index1 = figZ2a_dat1$Patient_index[as.numeric(IsolateNum1)],
+         Patient_index2 = figZ2a_dat1$Patient_index[as.numeric(IsolateNum2)]) %>% 
+  filter(Isolate1 != Isolate2, !is.na(gowerDist)) # remove diagonal and upper triangle
+
+### 3. Calculate median and IQR distance (phenotypic and SIR) for each patient with multiple isolates
+figZ2a_gower_dist_phenotype_stats <- figZ2a_gower_dist_phenotype %>% 
+  filter(Patient_index1 == Patient_index2) %>%
+  group_by(Patient_index1, Patient_index2) %>% 
+  summarise(medianPhenotypicDistance = median(gowerDist),
+            IQ25P = quantile(gowerDist, 0.25), IQ75P = quantile(gowerDist, 0.75))
+
+figZ2a_gower_dist_SIR_stats <- figZ2a_gower_dist_SIR %>% 
+  filter(Patient_index1 == Patient_index2) %>%
+  group_by(Patient_index1, Patient_index2) %>% 
+  summarise(numIsolates = n(), medianSIRDistance = median(gowerDist),
+            IQ25S = quantile(gowerDist, 0.25), IQ75S = quantile(gowerDist, 0.75))
+
+figZ2a_dist_summary <- inner_join(figZ2a_gower_dist_phenotype_stats,figZ2a_gower_dist_SIR_stats, by = c('Patient_index1','Patient_index2'))
+
+### 4. Calculate median and IQR distance across all isolate pairs
+figZ2a_gower_dist_phenotype_all_isolates <- figZ2a_gower_dist_phenotype %>% 
+  summarise(medianPhenotypicDistance = median(gowerDist))
+
+figZ2a_gower_dist_SIR_all_isolates <- figZ2a_gower_dist_SIR %>% 
+  summarise(medianSIRDistance = median(gowerDist))
+
+### 4.5 Calculate Pearson correlation coefficient between phenotype distance and SIR distance across all isolate-isolate pairs
+figZ2a_gower_dist_allIsolates <- figZ2a_gower_dist_phenotype %>% mutate(phenDist = gowerDist) %>% select(-gowerDist) %>% 
+  inner_join((figZ2a_gower_dist_SIR %>% mutate(SIRDist = gowerDist) %>% select(-gowerDist))) %>% 
+  select(phenDist,SIRDist)
+figZ2a_pearsonCorr_allIsolates <- rcorr(as.matrix(figZ2a_gower_dist_allIsolates), type = 'pearson')
+'Pvalues for correlation between susceptibility distance and phenotype distance'
+figZ2a_pearsonCorr_allIsolates$P
+'Correlation coefficients between susceptibility distance and phenotype distance'
+figZ2a_pearsonCorr_allIsolates$r
+
+# Number of patients in each quadrant (counting at population level as above dashed lines)
+# Quadrant 1
+'Number of Patients in Bottom Left Quadrant'
+figZ2a_dist_summary %>% 
+  filter(medianPhenotypicDistance < figZ2a_gower_dist_phenotype_all_isolates$medianPhenotypicDistance, medianSIRDistance < figZ2a_gower_dist_SIR_all_isolates$medianSIRDistance) %>% 
+  ungroup() %>% summarise(n())
+#Quadrant 2
+'Number of Patients in Top Right Quadrant'
+figZ2a_dist_summary %>% 
+  filter(medianPhenotypicDistance >= figZ2a_gower_dist_phenotype_all_isolates$medianPhenotypicDistance, medianSIRDistance >= figZ2a_gower_dist_SIR_all_isolates$medianSIRDistance) %>% 
+  ungroup() %>% summarise(n())
+#Quadrant 3
+'Number of Patients in Bottom Right Quadrant'
+figZ2a_dist_summary %>% 
+  filter(medianPhenotypicDistance >= figZ2a_gower_dist_phenotype_all_isolates$medianPhenotypicDistance, medianSIRDistance < figZ2a_gower_dist_SIR_all_isolates$medianSIRDistance) %>% 
+  ungroup() %>% summarise(n())
+# Quadrant 4
+'Number of Patients in Top Left Quadrant'
+figZ2a_dist_summary %>% 
+  filter(medianPhenotypicDistance < figZ2a_gower_dist_phenotype_all_isolates$medianPhenotypicDistance, medianSIRDistance >= figZ2a_gower_dist_SIR_all_isolates$medianSIRDistance) %>% 
+  ungroup() %>% summarise(n())
+
+### 5. Plot Figure Z2a + b
+
+# Fig Z2a - Explanatory diagram for b 
+arrowlocations <- tibble(xstart = c(0.36, 0.42,0.12), ystart = c(0.2,0.5,0.28), xstop = c(0.36,0.47,0.12), ystop = c(0.1,0.5,0.37))
+arrowlocations2 <- tibble(xstart = c(0.24, 0.26,0.64,0.66,0.24,0.26,0.64,0.66), ystart = c(0.74,0.7, 0.7,0.7,0.06,0.06,0.02,0.06),
+                             xstop = c(0.24,0.26,0.64,0.66,0.24,0.26,0.64,0.66), ystop = c(0.70,0.74,0.74,0.74,0.02,0.02,0.06,0.02))
+
+figZ2a <- figZ2a_dist_summary %>% 
+  # filter(medianSIRDistance <= 0.6) %>% 
+  ggplot(aes(medianPhenotypicDistance, medianSIRDistance)) +
+  stat_density_2d(aes(fill = ..density..), geom = "raster", contour = FALSE) +
+  scale_fill_gradient2(high = 'white',low = 'white') +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  geom_hline(yintercept = figZ2a_gower_dist_SIR_all_isolates$medianSIRDistance, linetype="dashed", color = 'black') +
+  geom_vline(xintercept = figZ2a_gower_dist_phenotype_all_isolates$medianPhenotypicDistance, linetype="dashed", color = 'black') +
+  theme_bw() + theme(legend.position = 'none', axis.title = element_text(size = 7), axis.text = element_text(size = 6.5)) +
+  ylab('Median Isolate-Isolate Distance \n(Susceptibility)') + xlab('Median Isolate-Isolate Distance \n(Phenotype)') +
+  geom_segment(data=arrowlocations, mapping=aes(x=xstart, y=ystart, xend=xstop, yend=ystop), arrow=arrow(length = unit(0.1, "cm"), type = 'closed'), size=0.5, color="black") +
+  geom_text(aes(x = 0.36, y = 0.26), label = 'population median\n(susceptibility)', size = 2) +
+  geom_text(aes(x = 0.30,y = 0.5), label = 'population median\n(phenotype)', size = 2) +
+  geom_point(aes(x = 0.12, y = 0.4), color = 'black', alpha = 1, size = 1.25) +
+  geom_text(aes(x = 0.12,y = 0.2), label = 'median dist\nb/t isolates from\nPatient X', size = 2) +
+  geom_segment(data=arrowlocations2, mapping=aes(x=xstart, y=ystart, xend=xstop, yend=ystop), arrow=arrow(length = unit(0.075, "cm"), type = 'closed'), size=0.5,
+               color = c('blue','red','red','red','blue','blue','red','blue')) +
+  geom_text(aes(x = 0.25, y = 0.78), label = '(Phenotype, Susceptibility)', size = 2)
+
+  
+# Fig Z2b - Density plot of median isolate-isolate distances within patients
+figZ2b <- figZ2a_dist_summary %>% 
+  # filter(medianSIRDistance <= 0.6) %>% 
+  ggplot(aes(x = medianPhenotypicDistance, y = medianSIRDistance)) +
+  stat_density_2d(aes(fill = ..density..), geom = "raster", contour = FALSE) +
+  # geom_bin2d () +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  # ylim(c(0,0.6)) +
+  scale_fill_viridis(direction = 1) +  
+  geom_hline(yintercept = figZ2a_gower_dist_SIR_all_isolates$medianSIRDistance, linetype="dashed", color = 'white') +
+  geom_vline(xintercept = figZ2a_gower_dist_phenotype_all_isolates$medianPhenotypicDistance, linetype="dashed", color = 'white') +
+  geom_point(data = (figZ2a_dist_summary %>% filter(Patient_index1 %in% c('P348'))), aes(medianPhenotypicDistance, medianSIRDistance), color = 'orange3', alpha = 1, size = 1.25) +
+  geom_point(data = (figZ2a_dist_summary %>% filter(Patient_index1 %in% c('P199'))), aes(medianPhenotypicDistance, medianSIRDistance), color = 'purple', alpha = 1, size = 1.25) +
+  geom_point(data = (figZ2a_dist_summary %>% filter(Patient_index1 %in% c('P323'))), aes(medianPhenotypicDistance, medianSIRDistance), color = 'yellowgreen', alpha = 1, size = 1.25) +
+  geom_text(data = (figZ2a_dist_summary %>% filter(Patient_index1 %in% c('P199', 'P348', 'P323'))) ,aes(label=Patient_index1),hjust=-0.25, vjust=-0.25, size = 4, color = 'white') +
+  theme_bw() + theme(legend.position = 'none', axis.title = element_text(size = 7), axis.text = element_text(size = 6.5)) +
+  ylab('Median Isolate-Isolate Distance \n(Susceptibility)') + xlab('Median Isolate-Isolate Distance \n(Phenotype)')
+
+# Histogram of phenotype distances
+figZ2a_top <- figZ2a_dist_summary %>% ggplot(aes(medianPhenotypicDistance)) + geom_histogram(binwidth = 0.1, color = 'black', fill = 'grey80') +
+  geom_vline(xintercept = figZ2a_gower_dist_phenotype_all_isolates$medianPhenotypicDistance, linetype="dashed", color = 'black') +
+  theme_pubr() + theme( axis.title.x = element_blank(), axis.title.y = element_text(size = 7.5), axis.text = element_text(size = 6.5),
+                      plot.margin = margin(b = -5, l = 0,r = 5.5)) +
+  scale_y_continuous(expand = c(0,0), breaks = c(0, 30, 60)) + ylab('\ncount') +
+  scale_x_continuous(expand = c(0, 0))
+# Histogram of SIR distances
+figZ2a_right <- figZ2a_dist_summary %>% ggplot(aes(medianSIRDistance)) + geom_histogram(binwidth = 0.05, color = 'black', fill = 'grey80') +
+  geom_vline(xintercept = figZ2a_gower_dist_SIR_all_isolates$medianSIRDistance, linetype="dashed", color = 'black') +
+  theme_pubr() + coord_flip() + theme(axis.title.y = element_blank(), axis.title.x = element_text(size = 7.5), axis.text = element_text(size = 6.5),
+                                      plot.margin = margin(l = -5, r = -10, t = 5.5, b = 2, unit = 'pt')) +
+  scale_x_continuous(expand = c(0,0), breaks = c(0,0.2,0.4,0.6,0.8)) + 
+  scale_y_continuous(expand = c(0,0), breaks = c(0, 40, 80)) + ylab('count\n ')
+
+# Table of information for Patients in B-D (double check before publishing and also code it in instead of by hand)
+figZ2a_paper <- data.frame(x = 1, y = c(4.5,4.75,5,5.25,5.5,6,6.75))
+figZ2_table <- cbind(`Patient`=c("P348","P199","P323"), 
+                     `Number of Isolates` = c(15, 10, 8), 
+                     `Median Dist (Susceptibility)` = c(round((figZ2a_dist_summary %>% filter(Patient_index1 == 'P348'))$medianSIRDistance,2),
+                                           round((figZ2a_dist_summary %>% filter(Patient_index1 == 'P199'))$medianSIRDistance,2),
+                                           round((figZ2a_dist_summary %>% filter(Patient_index1 == 'P323'))$medianSIRDistance,2)),
+                     `Median Dist (Phenotype)` = c(round((figZ2a_dist_summary %>% filter(Patient_index1 == 'P348'))$medianPhenotypicDistance,2),
+                                           round((figZ2a_dist_summary %>% filter(Patient_index1 == 'P199'))$medianPhenotypicDistance,2),
+                                           round((figZ2a_dist_summary %>% filter(Patient_index1 == 'P323'))$medianPhenotypicDistance,2)))
+
+figZ2_table_fig <- figZ2a_paper %>% ggplot(aes(x, y)) + geom_tile(fill = 'white') + 
+  annotation_custom(tableGrob(figZ2_table, theme = ttheme_minimal(base_size = 7, colhead = list(fg_params=list(rot=90, hjust = c(2,0.73,0.5,0.55)))))) +
+  theme_void() + theme(plot.margin = margin(t = -40))
+
+
+# Figure Z2B  - Heatmap of isolates from P348 (most number of isolates, 15) arranged by date
+
+  # Data of complete phenotypes for all patients
+figZ2b_dat <- figZ2a_dat %>% 
+  mutate_all(as.character) %>%
+  inner_join((isolates_tidy %>% select(Isolate, Patient_index, rankedDate)), by = c('Patient_index','Isolate')) %>% 
+  ungroup() %>% 
+  gather('Variable','Value', 3:13) %>% 
+  mutate(Value = factor(Value, 
+                        levels = c("S","I","R", "Mucoid","Non-Mucoid","Metallic","Non-Metallic","Hemolytic","Non-Hemolytic","Green","Blue","Red","Mixed","None"),
+                        labels = c("Susceptible","Intermediate","Resistant", 
+                                   "Mucoid","Non-Mucoid","Metallic","Non-Metallic","Hemolytic","Non-Hemolytic","Green Pigment","Blue Pigment","Red Pigment","Mixed Pigment","No Pigment"), 
+                        ordered = TRUE),
+         Variable = factor(Variable, levels = c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin','Meropenem','Piperacillin/Tazobactam','Tobramycin',
+                                                'MUCOIDY','METALLIC','HEMOLYSIS','PIGMENT'), 
+                           labels = c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin','Meropenem','Piperacillin/Tazobactam','Tobramycin',
+                                                'Mucoid','Metallic','Hemolysis','Pigment'),
+                           ordered = TRUE),
+        Isolate = factor(Isolate, levels=unique(Isolate[order(Patient_index)]), ordered=TRUE))
+  
+# Heatmap of isolates from P348 in order of ranked date
+figZ2b1 <- figZ2b_dat %>% filter(Patient_index == 'P348') %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE)) %>% 
+  ggplot(aes(Variable, Isolate, fill = Value)) + geom_tile(color = 'black') +
+  scale_fill_manual(values = c('blue','grey90','red','black','white','white','black','white','green','turquoise3','brown','white')) +
+  scale_x_discrete(position = "top") +
+  theme_bw() + theme(axis.text.x = element_text(angle = -45, hjust = 1), legend.position = 'bottom', legend.title = element_blank(),
+                     legend.text = element_text(size = 7), legend.key.size = unit(0.1, 'in'),
+                     axis.title = element_blank(),
+                     axis.text.y = element_blank(), plot.margin = unit(c(5.5,5.5,5.5,-1),'pt'))
+  # Heatmap of ranked dates of each isolate (same color = isolate collected on same day). First visit on the top
+figZ2b2 <- figZ2b_dat %>% filter(Patient_index == 'P348') %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE),
+         rankedDate = factor(rankedDate, ordered = TRUE),
+         Patient_index = 'Piperacillin/Tazobactam') %>% 
+  ggplot(aes(Patient_index, Isolate, fill = rankedDate)) + geom_tile(color = 'black') + 
+  scale_x_discrete(position = "top") +
+  scale_fill_brewer(palette = 'Set3') +
+  # scale_fill_distiller(direction = 1, palette = 'YlGnBu') +
+  theme_bw() + theme(axis.text.x = element_text(angle = -45, hjust = 1, color = 'white'), legend.position = 'none', axis.title.x = element_blank(), axis.text.y = element_blank(),
+                     plot.margin = unit(c(5.5,5.5,5.5,5.5),'pt'), axis.title.y = element_text(size = 7.5, color = 'orange3')) + ylab('Isolation Date (Patient 348)')
+
+# Figure Z2C: Heatmap of isolates from P199 (similar age/sex/cf/phenotype uniqueness to P348, very different SIR uniqueness) arranged by date
+figZ2c1 <- figZ2b_dat %>% filter(Patient_index %in% c('P199')) %>%
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE)) %>% 
+  ggplot(aes(Variable, Isolate, fill = Value)) + geom_tile(color = 'black') + 
+  scale_fill_manual(values = c('blue','grey90','black','white','white','black','white','green','brown','white')) +
+  scale_x_discrete(position = "top") +
+  theme_bw() + theme(axis.text.x = element_text(angle = -45, hjust = 1), legend.position = 'None', axis.title = element_blank(),
+                     axis.text.y = element_blank(), plot.margin = unit(c(5.5,5.5,5.5,-1),'pt'))
+ # Heatmap of ranked dates of each isolate (same color = isolate collected on same day). First visit on the top
+figZ2c2 <- figZ2b_dat %>% filter(Patient_index == 'P199') %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE),
+         rankedDate = factor(rankedDate, ordered = TRUE),
+         Patient_index = 'Piperacillin/Tazobactam') %>% 
+  ggplot(aes(Patient_index, Isolate, fill = rankedDate)) + geom_tile(color = 'black') + 
+  scale_fill_brewer(palette = 'Set3') + 
+  scale_x_discrete(position = "top") +
+  theme_bw() + theme(axis.text.x = element_text(angle = -45, hjust = 1, color = 'white'), legend.position = 'none', axis.title.x = element_blank(), axis.text.y = element_blank(),
+                     plot.margin = unit(c(5.5,5.5,5.5,5.5),'pt'), axis.title.y = element_text(size = 7.5, color = 'purple')) + ylab('Isolation Date (Patient 199)')
+
+# Figure Z2D: Heatmap of isolates from P323 (high SIR uniqueness, low phenotype uniqueness, 27M CF)
+figZ2d1 <- figZ2b_dat %>% filter(Patient_index %in% c('P323')) %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE)) %>% 
+  ggplot(aes(Variable, Isolate, fill = Value)) + geom_tile(color = 'black') + 
+  scale_fill_manual(values = c('blue','grey90','red','black','white','white','green','white')) +
+  scale_x_discrete(position = "top") +
+  theme_bw() + theme(axis.text.x = element_text(angle = -45, hjust = 1), legend.position = 'None', axis.title = element_blank(),
+                     axis.text.y = element_blank(), plot.margin = unit(c(5.5,5.5,5.5,-1),'pt'))
+ # Heatmap of ranked dates of each isolate (same color = isolate collected on same day). First visit on the top
+figZ2d2 <- figZ2b_dat %>% filter(Patient_index == 'P323') %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE),
+         rankedDate = factor(rankedDate, ordered = TRUE),
+         Patient_index = 'Piperacillin/Tazobactam') %>% 
+  ggplot(aes(Patient_index, Isolate, fill = rankedDate)) + geom_tile(color = 'black') + 
+  scale_fill_brewer(palette = 'Set3') + 
+  scale_x_discrete(position = "top") +
+  theme_bw() + theme(axis.text.x = element_text(angle = -45, hjust = 1, color = 'white'), legend.position = 'none', axis.title.x = element_blank(), axis.text.y = element_blank(),
+                     plot.margin = unit(c(5.5,5.5,5.5,5.5),'pt'), axis.title.y = element_text(size = 7.5, color = 'forestgreen')) + ylab('Isolation Date (Patient 323)')
+
+# Legend:
+fig5_legend_phenotype <- figZ2b_dat %>%  
+  filter(!Value %in% c('Red Pigment', 'Blue Pigment','Green Pigment','Mixed Pigment','No Pigment', 'Susceptible','Intermediate','Resistant')) %>% 
+  ggplot(aes(Variable, Isolate, fill = Value)) + geom_tile(color = 'black') + 
+  scale_fill_manual(values = c('black','white','black','white','black','white')) +
+  theme_bw() + theme(legend.position = 'bottom', legend.title = element_blank(),
+                     legend.text = element_text(size = 7), legend.key.size = unit(0.075, 'in'),
+                     legend.background  = element_rect(colour = "transparent", fill = "transparent")) +
+  guides(fill = guide_legend(nrow = 2))
+
+fig5_legend_phenotype2 <- figZ2b_dat %>%  
+  filter(Value %in% c('Blue Pigment','Green Pigment','Mixed Pigment','No Pigment')) %>% 
+  ggplot(aes(Variable, Isolate, fill = Value)) + geom_tile(color = 'black') + 
+  scale_fill_manual(values = c('green','turquoise3','brown','white')) +
+  theme_bw() + theme(legend.position = 'bottom', legend.title = element_blank(),
+                     legend.text = element_text(size = 7), legend.key.size = unit(0.075, 'in'),
+                     legend.background  = element_rect(colour = "transparent", fill = "transparent")) +
+  guides(fill = guide_legend(nrow = 4))
+
+fig5_legend_SIR <- figZ2b_dat %>%  
+  filter(Value %in% c('Susceptible','Intermediate','Resistant')) %>% 
+  ggplot(aes(Variable, Isolate, fill = Value)) + geom_tile(color = 'black') + 
+  scale_fill_manual(values = c('blue','grey90','red')) +
+  theme_bw() + theme(legend.position = 'bottom', legend.title = element_blank(),
+                     legend.text = element_text(size = 7), legend.key.size = unit(0.075, 'in'),
+                     legend.background  = element_rect(colour = "transparent", fill = "transparent")) +
+  guides(fill = guide_legend(nrow = 3))
+
+
+
+fig5_legend_phenotype <- get_legend(fig5_legend_phenotype)
+fig5_legend_phenotype2 <- get_legend(fig5_legend_phenotype2)
+fig5_legend_SIR <- get_legend(fig5_legend_SIR)
+ 
+ # Figure Z2: Intrapatient heterogeneties
+ FigureZ2_3 <- arrangeGrob(figZ2a, # replace with explanatory pic
+                       figZ2b,
+                       figZ2_table_fig,
+                       figZ2b2,
+                       figZ2b1 + theme(legend.position = 'none'),
+                       figZ2c2,
+                       figZ2c1,
+                       figZ2d2,
+                       figZ2d1,
+                       figZ2a_top,
+                       figZ2a_right,
+                       fig5_legend_SIR,
+                       fig5_legend_phenotype,
+                       fig5_legend_phenotype2,
+                       ncol = 9,
+                       nrow = 5,
+                       heights = c(1,0.15,0.15,0.2,0.7),
+                       widths = c(0.2,0.5,0.3,0.2,0.6,0.2, 0.2,0.2,0.6),
+                       layout_matrix = rbind(c(4,5,5,6,7,7, 8, 9,9), c(13,13,12,13,13,13,14,14,13),c(NA,NA,NA,NA,NA,NA,NA,NA,NA), c(1,1,1,10,10,NA, 3,3,3),c(1,1,1,2,2,11, 3,3,3)))
+
+
+ FigureZ2_3 <- as_ggplot(FigureZ2_3) +
+   draw_plot_label(label = c("A","B", "C", "D", "E", "F"), size = 9,
+                  x = c(0, 0.33,0.67, 0,0.33,0.7), y = c(0.85,0.85,0.85,0.42,0.42,0.42))
+FigureZ2_3
+
+ggsave('figures/Figure5.jpg',FigureZ2_3, dpi = 300, height = 5.882692, width = 7.5, units = 'in')
+
+```
+
+**Figure 5 – Intra-patient isolates display heterogeneous phenotypes and antimicrobial susceptibility profiles.**
+A-C) Susceptibility and phenotypes of isolates from Patient 348 (A), Patient 199 (B), and Patient 323 (C). Isolates are arranged in chronological order of collection with the earliest isolate on top (left). Susceptibility seven antimicrobials to (susceptible = blue, intermediate = white, resistant = red), presence (black) or absence (white) of the mucoid phenotype, metallic sheen, and hemolysis on blood agar, and observed pigment production on cetrimide agar (green pigment = green, blue pigment = blue, mixed pigment = black, no pigment = grey). 
+D)	Key to density of median intra-patient isolate-isolate distances. Dashed lines denote median isolate-isolate distances across all isolate pairs. Aside from population medians, median distances were measured across isolate pairs within isolates from the same patient. Arrows denote whether patients in a given quadrant have higher (red) or lower (blue) variability in phenotype (first arrow) or susceptibility (second arrow) relative to the whole population. 
+E)	Density of median intra-patient isolate-isolate distances. Gower distances were calculated separately for phenotypes and susceptibility profiles. Areas of high patient density are shown in yellow. Dashed lines denote the median distances across all isolate pairs. Patient 348 (orange), Patient 199 (purple), and Patient 323 (green) are highlighted.
+F)	Patient metadata and median isolate-isolate distances.
+
+## Supplemental Figure 3:
+
+```{r, message=FALSE, warning=TRUE,result=FALSE,echo=FALSE, fig.height=3, fig.width=7.5}
+# Figure S3 (related to maintext Figure 5)
+# Create dataframe: Unique prescriptions, ranked date, isolates, patient index, antipseudomonal status
+figS4_dat <- figZ2b_dat %>% 
+  mutate_all(as.character) %>% 
+  mutate(rankedDate = as.numeric(rankedDate)) %>% 
+  group_by(Isolate,Patient_index, rankedDate) %>% summarise() %>% 
+  inner_join((unique(isolates_tidy_antibiotic_treatment_duration %>% 
+                       select(Isolate, Patient_index, AntibioticAbbreviation))), by = c('Isolate','Patient_index')) %>% 
+  inner_join((anti_pseudomonal), by = c('AntibioticAbbreviation'))
+
+# Figure S4 A (Patient 348 ranked date and prescriptions)
+  #Prescription heatmap
+ figS4a <- figS4_dat %>%  filter(Patient_index %in% c('P348')) %>% ungroup() %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE),
+         rankedDate = factor(rankedDate, ordered = TRUE)) %>% 
+  ggplot(aes(AntibioticAbbreviation, Isolate, fill = anti_pseudomonal)) + 
+  geom_rect(aes(xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf), fill="white") +
+  geom_tile(color = 'black') + 
+  scale_fill_manual(values = brewer.pal(5, "Purples")[2:3]) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.title = element_blank(), legend.title = element_blank(), axis.text.y = element_blank(), legend.position = 'none')
+  # ranked date heatmap
+figS4a2 <- figZ2b_dat %>% filter(Patient_index == 'P348') %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE),
+         rankedDate = factor(rankedDate, ordered = TRUE),
+         Patient_index = 'VAN') %>% 
+  ggplot(aes(Patient_index, Isolate, fill = rankedDate)) + geom_tile(color = 'black') + 
+  scale_fill_brewer(palette = 'Set3') + 
+  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1, color = 'white'), legend.position = 'none', axis.title.x = element_blank(), axis.text.y = element_blank(),
+                     plot.margin = unit(c(5.5,5.5,5.5,5.5),'pt'), axis.title.y = element_text(size = 7.5, color = 'orange3')) + ylab('Isolation Date (Patient 348)')
+
+ # Figure S4 B (Patient 199 ranked date and prescriptions)
+  #Prescription heatmap
+ figS4b <- figS4_dat %>%  filter(Patient_index %in% c('P199')) %>% ungroup() %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE),
+         rankedDate = factor(rankedDate, ordered = TRUE)) %>% 
+  ggplot(aes(AntibioticAbbreviation, Isolate, fill = anti_pseudomonal)) + 
+  geom_rect(aes(xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf), fill="white") +
+  geom_tile(color = 'black') + 
+  scale_fill_manual(values = brewer.pal(5, "Purples")[2:3], labels = c('non-antipseudomonal','antipseudomonal')) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.title = element_blank(), legend.title = element_blank(), axis.text.y = element_blank(), legend.position = 'top')
+  # ranked date heatmap
+figS4b2 <- figZ2b_dat %>% filter(Patient_index == 'P199') %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE),
+         rankedDate = factor(rankedDate, ordered = TRUE),
+         Patient_index = 'VAN') %>% 
+  ggplot(aes(Patient_index, Isolate, fill = rankedDate)) + geom_tile(color = 'black') + 
+  scale_fill_brewer(palette = 'Set3') + 
+  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1, color = 'white'), legend.position = 'none', axis.title.x = element_blank(), axis.text.y = element_blank(),
+                     plot.margin = unit(c(5.5,5.5,5.5,5.5),'pt'), axis.title.y = element_text(size = 7.5, color = 'purple')) + ylab('Isolation Date (Patient 199)')
+
+# Figure S4 C (Patient 323 ranked date and prescriptions)
+  #Prescription heatmap
+ figS4c <- figS4_dat %>%  filter(Patient_index %in% c('P323')) %>% ungroup() %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE),
+         rankedDate = factor(rankedDate, ordered = TRUE)) %>% 
+  ggplot(aes(AntibioticAbbreviation, Isolate, fill = anti_pseudomonal)) + 
+  geom_rect(aes(xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf), fill="white") +
+  geom_tile(color = 'black') + 
+  scale_fill_manual(values = brewer.pal(5, "Purples")[2:3], labels = c('non-antipseudomonal','antipseudomonal'))  +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.title = element_blank(), legend.title = element_blank(), axis.text.y = element_blank(), legend.position = 'none')
+  # ranked date heatmap
+figS4c2 <- figZ2b_dat %>% filter(Patient_index == 'P323') %>% 
+  mutate(Isolate = factor(Isolate, levels=rev(unique(Isolate[order(rankedDate)])), ordered=TRUE),
+         rankedDate = factor(rankedDate, ordered = TRUE),
+         Patient_index = 'VAN') %>% 
+  ggplot(aes(Patient_index, Isolate, fill = rankedDate)) + geom_tile(color = 'black') + 
+  scale_fill_brewer(palette = 'Set3') + 
+  theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1, color = 'white'), legend.position = 'none', axis.title.x = element_blank(), axis.text.y = element_blank(),
+                     plot.margin = unit(c(5.5,5.5,5.5,5.5),'pt'), axis.title.y = element_text(size = 7.5, color = 'forestgreen')) + ylab('Isolation Date (Patient 323)')
+
+# Legend:
+figS5_legend = get_legend(figS4b)
+
+ # Figure S4: Intrapatient heterogeneties treatments
+ FigureS5 <- arrangeGrob(figS4a2, # replace with explanatory pic
+                       figS4a,
+                       figS4b2,
+                       figS4b + theme(legend.position = 'none'),
+                       figS4c2,
+                       figS4c,
+                       figS5_legend,
+                       ncol = 8,
+                       nrow = 3,
+                       heights = c(0.05,1,0.2),
+                       widths = c(0.2,0.5,0.3,0.2,0.6,0.2, 0.2,0.8),
+                       layout_matrix = rbind(c(NA,NA,NA,NA,NA,NA,NA,NA),c(1,2,2,3,4,4, 5, 6), c(7,7,7,7,7,7,7,7)))
+
+
+ FigureS5 <- as_ggplot(FigureS5) +
+   draw_plot_label(label = c("A","B", "C"), size = 9,
+                  x = c(0, 0.33,0.67), y = c(1,1,1))
+FigureS5
+
+ggsave('supplement/FigureS3.jpg',FigureS5, dpi = 300, height = 3, width = 7.5, units = 'in')
+
+```
+
+**Figure S3. Antimicrobial prescription histories for three patients.**
+History of antimicrobial prescriptions in the 60 days prior to isolate collection for isolates from Patient 348 (A), Patient 199 (B), and Patient 323 (C). Isolates are arranged in chronological order of collection with the earliest isolate on top (left). Prescriptions are colored by antipseudomonal activity. Isolates collected on the same date have identical prescription histories. 
+
+## Supplemental Tables and Data 
+
+The following are exported as csv files: (Table S1 and Table S2 data are generated earlier in the script)
+
+- **Table S3.** Complete list of antimicrobials considered in this study arranged by antimicrobial class in descending frequency of prescription. 
+- **Table S4.** Complete list of co-isolating pathogens observed in this study.
+- **Data S1.** CSV of adjusted P-values, correlation coefficients, and regression coefficients.
+- **Data S2.** CSV of all isolate morphological phenotypes and paired patient metadata. 
+- **Data S3.** CSV of antimicrobial susceptibility profiles of all isolates.
+- **Data S4.** CSV of antimicrobial prescription data for all isolates.
+- **Data S5.** CSV of co-isolated organisms.
+
+```{r, message=FALSE, warning=TRUE, result=FALSE, echo=FALSE}
+
+# Supplemental Table X: All antibiotics used in this study
+SX_table <- inner_join(isolates_tidy_antibiotic_treatment_duration, anti_pseudomonal, by = c('Antibiotic','AntibioticAbbreviation','AntibioticClass')) %>% 
+  group_by(Isolate, Antibiotic, AntibioticAbbreviation, AntibioticClass, anti_pseudomonal) %>%
+  summarise() %>% 
+  ungroup() %>% group_by(Antibiotic) %>% mutate(numRx = n()) %>%
+  group_by(Antibiotic, AntibioticAbbreviation, AntibioticClass, anti_pseudomonal, numRx) %>% 
+  summarise() %>% ungroup() %>% 
+  mutate(Activity = factor(anti_pseudomonal, levels = c('yes','no'), labels = c('Antipseudomonal','Non-Antipseudomonal'))) %>% 
+  select(Antibiotic, AntibioticAbbreviation, AntibioticClass, Activity, numRx) %>% arrange(AntibioticClass, desc(numRx)) %>% filter(Antibiotic != 'noabx')
+write_csv(SX_table, 'supplement/SupplementalTable3.csv')
+
+# Supplemental Table XX: All coinfecting pathogens in this study
+SXX_table <- isolates_tidy_co_infecting_organisms %>% group_by(Organism, Classification) %>% summarise(`Number of Occurances` = n()) %>% filter(Organism != 'None')
+write_csv(SXX_table, 'supplement/SupplementalTable4.csv')
+
+# Data S1: Coefficients, Pvalues, BH adjusted pvalues for all Pearson and LR models and pvalues for all other statistical tests:
+  # Figure 2A - Pearson Coeff
+  # Figure 2B - Pearson Coeff (CF)
+  # Figure 2B - Pearson Coeff (No CF)
+  # Figure 2C - LR AOR
+  # Figure 4A - Wilcoxon BH adjusted pvalues
+  # Figure S3A - Wilcoxon adjusted pvalues
+  # Figure S3B - Wilcoxon raw pvalues (1 test)
+data_S1_p1 <- adjustedORAllTests %>%
+  mutate(pvalue = `Pr(>|z|)`, Figure = 'Figure 2C', Metric = 'Adjusted Odds Ratio', Value = adjustedOR, variable1 = SIR, variable2 = variable) %>% 
+  select(Figure, variable1, variable2, Metric, Value,pvalue, BH_corrected_pvalue, BH_corrected_pvalue_asterisks)
+data_S1_p2 <- figure3B_dat %>% filter(!is.na(pearsonCorr)) %>% 
+  mutate(Figure = 'Figure 2A', Metric = 'Pearson Correlation Coefficient', Value = pearsonCorr) %>% 
+  select(Figure, variable1, variable2, Metric, Value, pvalue, BH_corrected_pvalue, BH_corrected_pvalue_asterisks) %>% 
+  arrange(variable1, variable2)
+data_S1_p3 <- figure_3C_dat %>% 
+  ungroup() %>% 
+  filter(cystic_fibrosis == 'cf') %>% 
+  mutate(Figure = 'Figure 2B CF', 
+         Metric = '(Observed Co-resistant - Expected Co-resistant)/Observed Co-resistant', 
+         Value = OminusEoverE, 
+         variable1 = ABX1, variable2 = ABX2,
+         pvalue = fisher_p_value) %>% 
+  select(Figure, variable1, variable2, Metric, Value, pvalue, BH_corrected_pvalue, BH_corrected_pvalue_asterisks) %>% 
+  arrange(variable1, variable2)
+data_S1_p4 <- figure_3C_dat %>% 
+  ungroup() %>% 
+  filter(cystic_fibrosis == 'nocf') %>% 
+  mutate(Figure = 'Figure 2B Non-CF', 
+         Metric = '(Observed Co-resistant - Expected Co-resistant)/Observed Co-resistant', 
+         Value = OminusEoverE, 
+         variable1 = ABX1, variable2 = ABX2,
+         pvalue = fisher_p_value) %>% 
+  select(Figure, variable1, variable2, Metric, Value, pvalue, BH_corrected_pvalue, BH_corrected_pvalue_asterisks) %>% 
+  arrange(variable1, variable2)
+data_S1_p5 <- read_csv('data/figure3_5_a_pvalues.csv') %>% 
+  mutate(Figure = 'Figure 4A', Metric = 'Wilcoxon Rank Sum Test', Value = NA, variable1 = site1, variable2 = site2, 
+         pvalue = pvalue_wilcoxon, BH_corrected_pvalue = BH_corrected_pvalue_wilcoxon,
+         BH_corrected_pvalue_asterisks = BH_corrected_pvalue_wilcoxon_asterisks) %>% 
+  select(Figure, variable1, variable2, Metric, Value, pvalue, BH_corrected_pvalue, BH_corrected_pvalue_asterisks) %>% 
+  arrange(variable1, variable2)
+data_S1_p6 <- read_csv('data/figS3a_stats.csv') %>% 
+   mutate(Figure = 'Figure S3A', Metric = 'Wilcoxon Rank Sum Test', Value = NA, variable1 = Cluster1, variable2 = Cluster2, 
+         pvalue = pvalue_wilcoxon, BH_corrected_pvalue = BH_corrected_pvalue_wilcoxon,
+         BH_corrected_pvalue_asterisks = BH_corrected_pvalue_wilcoxon_asterisks) %>% 
+  select(Figure, variable1, variable2, Metric, Value, pvalue, BH_corrected_pvalue, BH_corrected_pvalue_asterisks) %>% 
+  arrange(variable1, variable2)
+data_S1_p7 <-  read_csv('data/figS3b_stats.csv') %>% 
+   mutate(Figure = 'Figure S3B', Metric = 'Wilcoxon Rank Sum Test', Value = NA, variable1 = Cluster1, variable2 = Cluster2, 
+         pvalue = pvalue_wilcoxon, BH_corrected_pvalue = NA,
+         BH_corrected_pvalue_asterisks = asterisks) %>% 
+  select(Figure, variable1, variable2, Metric, Value, pvalue, BH_corrected_pvalue, BH_corrected_pvalue_asterisks) %>% 
+  arrange(variable1, variable2)
+# Combine all p-values, coefficients and write to csv
+data_S1 <- data_S1_p1 %>% rbind(data_S1_p2) %>% rbind(data_S1_p3) %>% rbind(data_S1_p4) %>%  rbind(data_S1_p5) %>% rbind(data_S1_p6) %>% rbind(data_S1_p7) %>% 
+  mutate(Significance = BH_corrected_pvalue_asterisks) %>% select(-BH_corrected_pvalue_asterisks) %>% 
+  arrange(Figure, variable1, variable2)
+write_csv(data_S1, 'supplement/DataS1.csv')
+
+# Data S2 - CSV of all isolates, patient ID, age, sex, CF, diabetes, phenotypes, isolation month, whether isolate was a repeat patient
+data_S2 <- isolates_tidy %>% 
+  mutate(IsolationSite = SITE_BROAD, PatientIndex = Patient_index, RepeatPatient = repeatPatient, 
+         RankedDate = rankedDate, Diabetes = diabetes, Mucoidy = MUCOIDY, Metallic = METALLIC, Hemolysis = HEMOLYSIS, Pigment = PIGMENT) %>% 
+  select(Isolate, PatientIndex, RepeatPatient, Season, RankedDate, Age, Sex, Diabetes, IsolationSite, Mucoidy, Metallic,Hemolysis, Pigment, ColorNote) %>% 
+  arrange(Isolate, PatientIndex)
+write_csv(data_S2, 'supplement/DataS2.csv')
+
+# Data S3 - CSV of resistance profiles of all isolates
+data_S3 <- isolates_tidy_resistance_profiles %>% mutate(PatientIndex = Patient_index) %>% 
+  select(Isolate, PatientIndex, SusceptibilityMethod, Antibiotic, SIR) %>% 
+  arrange(Isolate, PatientIndex, Antibiotic, SIR)
+write_csv(data_S3, 'supplement/DataS3.csv')
+
+# Data S4 - CSV of antibiotic prescriptions of all isolates
+data_S4 <- isolates_tidy_antibiotic_treatment_duration %>% 
+  mutate(PatientIndex = Patient_index) %>% 
+  group_by(Isolate, PatientIndex, Antibiotic, AntibioticAbbreviation, AntibioticClass) %>% 
+  summarise() %>% 
+  arrange(Isolate, PatientIndex, AntibioticClass, Antibiotic)
+write_csv(data_S4, 'supplement/DataS4.csv')
+
+# Data S5 - CSV of organisms co-isolated with each isolate
+data_S5 <- isolates_tidy_co_infecting_organisms %>% 
+  mutate(PatientIndex = Patient_index, IsolationSite = SITE_BROAD) %>% 
+  select(Isolate, PatientIndex, IsolationSite, Organism, Classification) %>% 
+  arrange(Isolate, PatientIndex, Organism)
+write_csv(data_S5, 'supplement/DataS5.csv')
+```
