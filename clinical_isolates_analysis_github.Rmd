@@ -985,111 +985,240 @@ figure3D <- adjustedORAllTests %>%
   guides(fill=guide_colorbar(title="Adjusted\nOdds Ratio"))
 
 
-# Figure 3C: Abx cross resistance: Note that logistic regression of all abx in one model did not converge
-  # Only in isolates with >= 1 I/R and separated by CF and non CF isolates
-# Data with all sensitive isolates removed:
-# figure3c_dat <- outputs_logit %>% ungroup() %>% filter(anySIR != 0) %>%  select(-anySIR, -Isolate)
-# ### CF Isolates
-# figure3c_dat_cf <- outputs_logit %>% ungroup() %>% filter(anySIR != 0) %>%
-#   inner_join((isolates_tidy %>% select(Isolate, cystic_fibrosis))) %>%
-#   filter(cystic_fibrosis == 'cf') %>%
-#   select(-anySIR, -Isolate, -cystic_fibrosis)
-# # Calculate the pearson correlations between each abx SIR data
-# figure3c_corr <- rcorr(as.matrix(figure3c_dat_cf), type = 'pearson')
-# figure3c_corr$r[lower.tri(figure3c_corr$r)] <- NA
-# figure3c_corr$P[lower.tri(figure3c_corr$P)] <- NA
-# figure3c_peasrsonCorr_cf <- rownames_to_column(as.data.frame(figure3c_corr$r), var = 'ABX1') %>% gather(key = 'ABX2',value = 'pearsonCorr', 2:8) %>% 
-#   filter(ABX1 != ABX2) %>%
-#   complete(ABX1, ABX2) %>% 
-#   mutate(ABX2 = factor(ABX2, levels = c('Tobramycin', 'Piperacillin/Tazobactam','Meropenem',
-#                                         'Gentamicin','Ciprofloxacin','Cefepime','Amikacin'), ordered = TRUE)) %>% 
-#   mutate(cystic_fibrosis = 'cf')
-# # Adjust pvalues on correlation coefficients (if <0.05 would indicate something wrong; all are <0.05 so can judge by strength of corr coeff)
-# figure3c_pvalues_cf <- rownames_to_column(as.data.frame(figure3c_corr$P), var = 'ABX1') %>% 
-#   gather(key = 'ABX2',value = 'pvalue', 2:8) %>% 
-#   filter(ABX1 != ABX2, !is.na(pvalue)) %>% 
-#   complete(ABX1,ABX2) %>% 
-#   mutate(BH_corrected_pvalue = p.adjust(pvalue, method = 'BH'),
-#                                     BH_corrected_pvalue_asterisks = case_when(BH_corrected_pvalue <= 0.001 ~ '***',
-#                                                    BH_corrected_pvalue <= 0.01 ~ '**',
-#                                                    BH_corrected_pvalue <= 0.05 ~ '*',
-#                                                    TRUE ~ '')) %>% 
-#   mutate(cystic_fibrosis = 'cf')
-# 
-# ## Non CF Isolates
-# figure3c_dat_nocf <- outputs_logit %>% ungroup() %>% filter(anySIR != 0) %>%
-#   inner_join((isolates_tidy %>% select(Isolate, cystic_fibrosis))) %>%
-#   filter(cystic_fibrosis == 'nocf') %>%
-#   select(-anySIR, -Isolate, -cystic_fibrosis)
-# # Calculate the pearson correlations between each abx SIR data
-# figure3c_corr <- rcorr(as.matrix(figure3c_dat_nocf), type = 'pearson')
-# figure3c_corr$r[lower.tri(figure3c_corr$r)] <- NA
-# figure3c_corr$P[lower.tri(figure3c_corr$P)] <- NA
-# figure3c_peasrsonCorr_nocf <- rownames_to_column(as.data.frame(figure3c_corr$r), var = 'ABX1') %>% gather(key = 'ABX2',value = 'pearsonCorr', 2:8) %>% 
-#   filter(ABX1 != ABX2) %>%
-#   complete(ABX1, ABX2) %>% 
-#   mutate(ABX2 = factor(ABX2, levels = c('Tobramycin', 'Piperacillin/Tazobactam','Meropenem',
-#                                         'Gentamicin','Ciprofloxacin','Cefepime','Amikacin'), ordered = TRUE)) %>% 
-#   mutate(cystic_fibrosis = 'nocf')
-# # Adjust pvalues on correlation coefficients (if <0.05 would indicate something wrong; all are <0.05 so can judge by strength of corr coeff)
-# figure3c_pvalues_nocf <- rownames_to_column(as.data.frame(figure3c_corr$P), var = 'ABX1') %>% 
-#   gather(key = 'ABX2',value = 'pvalue', 2:8) %>% 
-#   filter(ABX1 != ABX2, !is.na(pvalue)) %>% 
-#   complete(ABX1,ABX2) %>% 
-#   mutate(BH_corrected_pvalue = p.adjust(pvalue, method = 'BH'),
-#                                     BH_corrected_pvalue_asterisks = case_when(BH_corrected_pvalue <= 0.001 ~ '***',
-#                                                    BH_corrected_pvalue <= 0.01 ~ '**',
-#                                                    BH_corrected_pvalue <= 0.05 ~ '*',
-#                                                    TRUE ~ '')) %>% 
-#   mutate(cystic_fibrosis = 'nocf')
-# 
-# # Combine cf and noncf datasets and arrange appropriately
-# figure3c_peasrsonCorr2 <- rbind(figure3c_peasrsonCorr_cf,figure3c_peasrsonCorr_nocf) %>% arrange(ABX1, desc(ABX2), cystic_fibrosis)
+######################### Figure 3C Updated (4/12/21) #############################
+## Spot checked each data frame and that the figure was placing the correct asterisks in the correct spots
+## Calculate frequencies of resistance to each individual antibiotic in CF and non-CF isolates:
+#  # Originally calculated frequencies separate for CF and non-CF patients, but this assumes there is some difference in drug-drug relations in these groups
+#  # This was updated to use population-level frequencies
+#figure3C_frequencies <- isolates_tidy_resistance_profiles %>% 
+#  inner_join((isolates_tidy %>% select(Isolate, cystic_fibrosis))) %>%
+#  mutate(output = as.numeric(SIR !=  'S')) %>% # if R or I, 1; else if S, 0
+#  group_by(Antibiotic, cystic_fibrosis) %>% mutate(numCFstatus = n()) %>% 
+#  ungroup() %>% 
+#  group_by(Antibiotic, output) %>% 
+#  mutate(freqTotalPopulation = n()/971) %>% # Calculate frequencies across all samples (best practice I think)
+#  group_by(Antibiotic, output, cystic_fibrosis, numCFstatus, freqTotalPopulation) %>% summarise() %>% 
+#  filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+#  filter(output == 1) %>%  # resistance/intermediate frequencies
+#  spread(Antibiotic, freqTotalPopulation)
 
-### FIGURE 3B ####
-# Read in correlation coefficients and p values (for patient privacy)
-figure3c_peasrsonCorr2 <- read_csv('data/figure3c_peasrsonCorr2.csv')
-figure3c_pvalues_cf <- read_csv('data/figure3c_pvalues_cf.csv')
-figure3c_pvalues_nocf <- read_csv('data/figure3c_pvalues_nocf.csv')
-# Factor antibiotics:
-figure3c_peasrsonCorr2 <- figure3c_peasrsonCorr2 %>% mutate(ABX2 = factor(ABX2, levels = c('Tobramycin', 'Piperacillin/Tazobactam','Meropenem',
-                                        'Gentamicin','Ciprofloxacin','Cefepime','Amikacin'), ordered = TRUE))
+## Calculate expected pair-wise resistant isolates (num isolates * freqR(drugA) * freqR(drugB))
+#expected <- figure3C_frequencies %>% group_by(cystic_fibrosis) %>% 
+#  summarise(Amikacin_Cefepime = Amikacin * Cefepime * numCFstatus,
+#         Amikacin_Ciprofloxacin = Amikacin * Ciprofloxacin* numCFstatus,
+#         Amikacin_Gentamicin = Amikacin * Gentamicin* numCFstatus,
+#         Amikacin_Meropenem = Amikacin * Meropenem* numCFstatus,
+#         Amikacin_PipTazo = Amikacin * `Piperacillin/Tazobactam`* numCFstatus,
+#         Amikacin_Tobramycin = Amikacin * Tobramycin* numCFstatus,
+#         Cefepime_Ciprofloxacin = Cefepime * Ciprofloxacin* numCFstatus,
+#         Cefepime_Gentamicin = Cefepime * Gentamicin* numCFstatus,
+#         Cefepime_Meropenem = Cefepime * Meropenem* numCFstatus,
+#         Cefepime_PipTazo = Cefepime * `Piperacillin/Tazobactam`* numCFstatus,
+#         Cefepime_Tobramycin = Cefepime * Tobramycin* numCFstatus,
+#         Ciprofloxacin_Gentamicin = Ciprofloxacin * Gentamicin* numCFstatus,
+#         Ciprofloxacin_Meropenem = Ciprofloxacin * Meropenem* numCFstatus,
+#         Ciprofloxacin_PipTazo = Ciprofloxacin * `Piperacillin/Tazobactam`* numCFstatus,
+#         Ciprofloxacin_Tobramycin = Ciprofloxacin * Tobramycin* numCFstatus,
+#         Gentamicin_Meropenem = Gentamicin * Meropenem* numCFstatus,
+#         Gentamicin_PipTazo = Gentamicin * `Piperacillin/Tazobactam`* numCFstatus,
+#         Gentamicin_Tobramycin = Gentamicin * Tobramycin* numCFstatus,
+#         Meropenem_PipTazo = Meropenem * `Piperacillin/Tazobactam`* numCFstatus,
+#         Meropenem_Tobramycin = Meropenem * Tobramycin* numCFstatus,
+#         PipTazo_Tobramycin = `Piperacillin/Tazobactam` * Tobramycin* numCFstatus) %>% 
+#  gather(AbxPair, expected, -cystic_fibrosis) %>% 
+#  arrange(cystic_fibrosis, AbxPair)
 
+# Create datasets that can be pulled from to make contingency tables:
+# CF
+#figure3C_dat_cf  <- isolates_tidy_resistance_profiles %>% 
+#  mutate(output = as.numeric(SIR !=  'S')) %>% # if R or I, 1; else if S, 0
+#  filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+#  inner_join((isolates_tidy %>% select(Isolate, cystic_fibrosis))) %>% 
+#  filter(cystic_fibrosis == 'cf') %>% 
+#  select(-SIR,-SusceptibilityMethod, -Patient_index, -cystic_fibrosis) %>% 
+#  spread(Antibiotic,output)
+##NonCF
+#figure3C_dat_nocf <- isolates_tidy_resistance_profiles %>% 
+#  mutate(output = as.numeric(SIR !=  'S')) %>% # if R or I, 1; else if S, 0
+#  filter(!Antibiotic %in% c('Aztreonam','Ceftazidime','Ceftazidime/Avibactam','Ceftolozane/Tazobactam')) %>% 
+#  inner_join((isolates_tidy %>% select(Isolate, cystic_fibrosis))) %>% 
+#  filter(cystic_fibrosis != 'cf') %>% 
+#  select(-SIR,-SusceptibilityMethod, -Patient_index, -cystic_fibrosis) %>% 
+#  spread(Antibiotic,output)
+
+## Create contingency tables for all pairwise combinations for CF and non-CF isolates and perform Fisher's exact test
+#AbxPair <- c("Amikacin_Cefepime","Amikacin_Ciprofloxacin","Amikacin_Gentamicin","Amikacin_Meropenem","Amikacin_PipTazo",       
+#             "Amikacin_Tobramycin","Cefepime_Ciprofloxacin","Cefepime_Gentamicin","Cefepime_Meropenem","Cefepime_PipTazo",        
+#             "Cefepime_Tobramycin","Ciprofloxacin_Gentamicin","Ciprofloxacin_Meropenem","Ciprofloxacin_PipTazo","Ciprofloxacin_Tobramycin",
+#             "Gentamicin_Meropenem","Gentamicin_PipTazo","Gentamicin_Tobramycin","Meropenem_PipTazo","Meropenem_Tobramycin",    
+#             "PipTazo_Tobramycin","Amikacin_Cefepime","Amikacin_Ciprofloxacin","Amikacin_Gentamicin","Amikacin_Meropenem",      
+#             "Amikacin_PipTazo","Amikacin_Tobramycin","Cefepime_Ciprofloxacin","Cefepime_Gentamicin","Cefepime_Meropenem",      
+#             "Cefepime_PipTazo","Cefepime_Tobramycin","Ciprofloxacin_Gentamicin","Ciprofloxacin_Meropenem","Ciprofloxacin_PipTazo",   
+#             "Ciprofloxacin_Tobramycin","Gentamicin_Meropenem","Gentamicin_PipTazo","Gentamicin_Tobramycin","Meropenem_PipTazo",       
+#             "Meropenem_Tobramycin","PipTazo_Tobramycin")      
+#cystic_fibrosis <- c('cf','cf','cf','cf','cf','cf','cf',
+#                     'cf','cf','cf','cf','cf','cf','cf',
+#                     'cf','cf','cf','cf','cf','cf','cf',
+#                     'nocf','nocf','nocf','nocf','nocf','nocf','nocf',
+#                     'nocf','nocf','nocf','nocf','nocf','nocf','nocf',
+#                     'nocf','nocf','nocf','nocf','nocf','nocf','nocf')
+#observed <- c(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Cefepime)[4],
+#              table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Ciprofloxacin)[4],
+#              table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Gentamicin)[4],
+#              table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Meropenem)[4],
+#              table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Tobramycin)[4],
+#              table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Ciprofloxacin)[4],
+#              table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Gentamicin)[4],
+#              table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Meropenem)[4],
+#              table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Tobramycin)[4],
+#              table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Gentamicin)[4],
+#              table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Meropenem)[4],
+#              table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Tobramycin)[4],
+#              table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$Meropenem)[4],
+#              table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$Tobramycin)[4],
+#              table(figure3C_dat_cf$Meropenem, figure3C_dat_cf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_cf$Meropenem, figure3C_dat_cf$Tobramycin)[4],
+#              table(figure3C_dat_cf$`Piperacillin/Tazobactam`, figure3C_dat_cf$Tobramycin)[4],
+#              # start non cf
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Cefepime)[4],
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Ciprofloxacin)[4],
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Gentamicin)[4],
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Meropenem)[4],
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Tobramycin)[4],
+#              table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Ciprofloxacin)[4],
+#              table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Gentamicin)[4],
+#              table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Meropenem)[4],
+#              table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Tobramycin)[4],
+#              table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Gentamicin)[4],
+#              table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Meropenem)[4],
+#              table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Tobramycin)[4],
+#              table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$Meropenem)[4],
+#              table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$Tobramycin)[4],
+#              table(figure3C_dat_nocf$Meropenem, figure3C_dat_nocf$`Piperacillin/Tazobactam`)[4],
+#              table(figure3C_dat_nocf$Meropenem, figure3C_dat_nocf$Tobramycin)[4],
+#              table(figure3C_dat_nocf$`Piperacillin/Tazobactam`, figure3C_dat_nocf$Tobramycin)[4])
+#fisher_p_value <- c((fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Cefepime)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Ciprofloxacin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Amikacin, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Ciprofloxacin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Cefepime, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Ciprofloxacin, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Gentamicin, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Meropenem, figure3C_dat_cf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$Meropenem, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_cf$`Piperacillin/Tazobactam`, figure3C_dat_cf$Tobramycin)))$p.value,
+#                    # start non cf
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Cefepime)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Ciprofloxacin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Amikacin, figure3C_dat_nocf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Ciprofloxacin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Cefepime, figure3C_dat_nocf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Gentamicin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Ciprofloxacin, figure3C_dat_nocf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$Meropenem)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Gentamicin, figure3C_dat_nocf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Meropenem, figure3C_dat_nocf$`Piperacillin/Tazobactam`)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$Meropenem, figure3C_dat_nocf$Tobramycin)))$p.value,
+#                    (fisher.test(table(figure3C_dat_nocf$`Piperacillin/Tazobactam`, figure3C_dat_nocf$Tobramycin)))$p.value)
+#
+#observed_df <- data.frame(AbxPair, cystic_fibrosis, observed, fisher_p_value)
+
+## Merge observed and expected data
+#  # Calculate (O-E)/E for each pair
+#  # Calculate BH correction for multiple comparisons 
+#  # Separate Abx names and factor
+#figure_3C_dat <- inner_join(expected, observed_df, by = c('AbxPair','cystic_fibrosis')) %>% 
+#  group_by(AbxPair, cystic_fibrosis) %>% 
+#  mutate(OminusEoverE = ((observed - expected)/expected),
+#         moreOrLessThanExpected = case_when(OminusEoverE > 0 ~ 'More than Expected', TRUE ~ 'Fewer than Expected')) %>%  # binary more or less pair-wise resistant than #expected) %>% 
+#  ungroup() %>% 
+#  mutate(BH_corrected_pvalue = p.adjust(fisher_p_value, method = 'BH'), # BH correction on all tests 
+#         BH_corrected_pvalue_asterisks = case_when(BH_corrected_pvalue <= 0.001 ~ '***',
+#                                                   BH_corrected_pvalue <= 0.01 ~ '**',
+#                                                   BH_corrected_pvalue <= 0.05 ~ '*',
+#                                                   TRUE ~ '')) %>% 
+#  separate(AbxPair, sep = '_', remove = FALSE, into = c('ABX1','ABX2')) %>% 
+#  mutate(cf = case_when(cystic_fibrosis == 'cf' ~ 1, TRUE ~ 0)) %>% 
+#  mutate(ABX2 = factor(ABX2, levels = c('Tobramycin','PipTazo','Meropenem',
+#                                        'Gentamicin','Ciprofloxacin','Cefepime'),
+#                       labels = c('Tobramycin','Piperacillin/Tazobactam','Meropenem',
+#                                  'Gentamicin','Ciprofloxacin','Cefepime'),
+#                       ordered = TRUE),
+#         ABX1 = factor(ABX1, levels= c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin',
+#                                     'Meropenem','PipTazo'),
+#                       labels = c('Amikacin','Cefepime','Ciprofloxacin','Gentamicin',
+#                                  'Meropenem','Piperacillin/Tazobactam'), 
+#                       ordered = TRUE)) %>% 
+#  arrange(ABX1,desc(ABX2))#
+
+## READ FIGURE 3C Data: values (expected, observed, (o-e)/e, p-value, BH adjusted p-value, binary call) to csv to be loaded into github script
+figure_3C_dat <- read_csv(figure_3C_dat, 'data/figure3c_updated_co_resistance_and_pvalues.csv')
+
+# Plot Figure 3C:
 
 # Create triangles and locations
-dt.triangle <- tibble(group = rep(1:98, times=1, each=3), 
-                          polygon.x = (rep(rep(c(0.5,1.5,0.5,0.5,1.5,1.5), times=7, each=1), times = 7, each = 1) + rep(0:6, times = 1, each = 42)), 
-                          polygon.y = rep((rep(c(0.5,0.5,1.5,1.5,1.5,0.5), times=7, each=1) + rep(6:0, times=1, each=6)), times = 7, each = 1))
+dt.triangle <- tibble(group = rep(1:72, times=1, each=3), 
+                      polygon.x = (rep(rep(c(0.5,1.5,0.5,0.5,1.5,1.5), times=6, each=1), times = 6, each = 1) + rep(0:5, times = 1, each = 36)), 
+                      polygon.y = rep((rep(c(0.5,0.5,1.5,1.5,1.5,0.5), times=6, each=1) + rep(5:0, times=1, each=6)), times = 6, each = 1)) %>% 
+  filter(group %in% c(1,2,3,4,5,6,7,8,9,10,11,12,15,16,17,18,19,20,21,22,23,24,29,30,31,32,33,34,35,36, 43,44,45,46,47,48,57,58,59,60,71,72))
 dt.key <- tibble(group = c(100,100,100,101,101,101), x = c(6,7,6,6,7,7), y = c(3,3,4,4,4,3))
 dt.edges <- tibble(x = c(1.5,2.5,3.5,4.5,5.5,6.5), xend = c(1.5,2.5,3.5,4.5,5.5,6.5), y = c(6.5,5.5,4.5,3.5,2.5,1.5), yend = c(5.5,4.5,3.5,2.5,1.5, 0.5))
 
-# Create dataframes to fill and color triangles (need three values per triangle)
-pearsonCorr2 <- rep(figure3c_peasrsonCorr2$pearsonCorr, each = 3)
-coloring <-  rep(figure3c_peasrsonCorr2$pearsonCorr, each = 3)
+# Create data frames to fill and color triangles (need three values per triangle)
+ObservedRelativeToExpected <- rep(figure_3C_dat$moreOrLessThanExpected, each = 3)
+coloring <-  rep(figure_3C_dat$OminusEoverE, each = 3)
 
-figure3C <- figure3c_peasrsonCorr2 %>% filter(cystic_fibrosis != 'cf') %>% 
-  filter(ABX1 != 'Tobramycin', ABX2 != 'Amikacin') %>% 
+figure3C <- figure_3C_dat %>% 
   ggplot(aes(x = ABX1, y = ABX2)) + 
   geom_tile(fill = 'white', color = 'white') + 
   geom_polygon(data = dt.triangle,
-               aes(x=polygon.x, y=polygon.y, group=group, fill = pearsonCorr2, color = coloring), size = 0.25) +
-  scale_fill_gradient2(low = 'blue',high = 'red',mid = 'white', midpoint = 0,na.value = 'white', limits = c(-1,1)) + 
-  scale_color_gradient2(low = 'grey', high = 'grey', mid = 'grey', na.value = 'white', guide = 'none') +
+               aes(x=polygon.x, y=polygon.y, group=group, fill = ObservedRelativeToExpected, color = coloring), size = 0.25) +
+  scale_fill_manual(values = c('lightblue','indianred2')) + 
+  scale_color_gradient2(low = 'grey40', high = 'grey40', mid = 'grey40', na.value = 'white', guide = 'none') +
   geom_segment(data = dt.edges, aes(x = x, xend = xend, y = y, yend = yend), color = 'grey', size = 0.25) +
-  geom_text(aes(label = figure3c_pvalues_cf$BH_corrected_pvalue_asterisks), hjust = 1, vjust = 1, size = 1.75) +
-  geom_text(aes(label = figure3c_pvalues_nocf$BH_corrected_pvalue_asterisks), hjust = 0, vjust = 0, size = 1.75) +
+  geom_text(aes(label = BH_corrected_pvalue_asterisks, vjust = cf, hjust = cf), size = 1.75) + # cf
+  # geom_text(aes(label = BH_corrected_pvalue_asterisks, vjust = cf, hjust = cf), size = 1.75) + # nocf
   geom_polygon(data = dt.key, aes(x = x, y = y, group = group), color = 'black', fill = 'white') +
   geom_text(x = 6.3, y = 3.3, label = '+', color = "black", size = 3) +
   geom_text(x = 6.7, y = 3.7, label = '-', color = "black", size = 3) +
   geom_text(x = 6.5, y = 4.5, label = 'CF', color = "black", size = 3.5) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6),
-                          axis.title = element_blank(),
-                          axis.text.y = element_text(size = 6),
-                          legend.text = element_text(size = 6),
-                          legend.title = element_text(size = 6),
-                          legend.key.size = unit(0.1, 'in')) +
-  guides(fill=guide_colorbar(title="Pearson\nCorrelation"))
+        axis.title = element_blank(),
+        panel.grid.major = element_blank(),
+        axis.text.y = element_text(size = 6),
+        legend.text = element_text(size = 6),
+        legend.title = element_text(size = 6),
+        legend.key.size = unit(0.1, 'in')) +
+  guides(fill=guide_legend(title='Number of Observed\nCo-Resistant Isolates'))
 
 # # Figure 3B: Corrleations between phenotypes; Pearson correlation
 # Load precalculated data to protect patient privacy
@@ -2244,15 +2373,24 @@ data_S1_p2 <- figure3B_dat %>% filter(!is.na(pearsonCorr)) %>%
   mutate(Figure = 'Figure 2A', Metric = 'Pearson Correlation Coefficient', Value = pearsonCorr) %>% 
   select(Figure, variable1, variable2, Metric, Value, pvalue, BH_corrected_pvalue, BH_corrected_pvalue_asterisks) %>% 
   arrange(variable1, variable2)
-data_S1_p3 <- figure3c_pvalues_cf %>% inner_join((figure3c_peasrsonCorr2 %>% filter(cystic_fibrosis == 'cf') %>% mutate(ABX2 = as.character(ABX2))), by = c('ABX1','ABX2','cystic_fibrosis')) %>% 
-  filter(!is.na(pearsonCorr)) %>% 
-  mutate(Figure = 'Figure 2B CF', Metric = 'Pearson Correlation Coefficient', Value = pearsonCorr, variable1 = ABX1, variable2 = ABX2) %>% 
+data_S1_p3 <- figure_3C_dat %>% 
+  ungroup() %>% 
+  filter(cystic_fibrosis == 'cf') %>% 
+  mutate(Figure = 'Figure 2B CF', 
+         Metric = '(Observed Co-resistant - Expected Co-resistant)/Observed Co-resistant', 
+         Value = OminusEoverE, 
+         variable1 = ABX1, variable2 = ABX2,
+         pvalue = fisher_p_value) %>% 
   select(Figure, variable1, variable2, Metric, Value, pvalue, BH_corrected_pvalue, BH_corrected_pvalue_asterisks) %>% 
   arrange(variable1, variable2)
-data_S1_p4 <- figure3c_pvalues_nocf %>% inner_join((figure3c_peasrsonCorr2 %>% filter(cystic_fibrosis != 'cf')%>% mutate(ABX2 = as.character(ABX2))), 
-                                                   by = c('ABX1','ABX2','cystic_fibrosis')) %>% 
-  filter(!is.na(pearsonCorr)) %>% 
-  mutate(Figure = 'Figure 2B No CF', Metric = 'Pearson Correlation Coefficient', Value = pearsonCorr, variable1 = ABX1, variable2 = ABX2) %>% 
+data_S1_p4 <- figure_3C_dat %>% 
+  ungroup() %>% 
+  filter(cystic_fibrosis == 'nocf') %>% 
+  mutate(Figure = 'Figure 2B Non-CF', 
+         Metric = '(Observed Co-resistant - Expected Co-resistant)/Observed Co-resistant', 
+         Value = OminusEoverE, 
+         variable1 = ABX1, variable2 = ABX2,
+         pvalue = fisher_p_value) %>% 
   select(Figure, variable1, variable2, Metric, Value, pvalue, BH_corrected_pvalue, BH_corrected_pvalue_asterisks) %>% 
   arrange(variable1, variable2)
 data_S1_p5 <- read_csv('data/figure3_5_a_pvalues.csv') %>% 
