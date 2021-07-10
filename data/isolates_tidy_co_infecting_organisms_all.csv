@@ -1,0 +1,1013 @@
+Isolate,Patient_index,SITE_BROAD,Co_colonizingBacteria,Organism,Classification
+UVA54279,P1,Urine/Catheter,Proteus mirabilis,P. mirabilis,Bacteria
+UVA42971,P1,Urine/Catheter,Proteus mirabilis,P. mirabilis,Bacteria
+UVA56563,P2,Urine/Catheter,NA,None,NA
+UVA47416,P3,Skin/Wound,NA,None,NA
+UVA48931,P4,Urine/Catheter,NA,None,NA
+UVA41002,P5,Urine/Catheter,K. pneumoniae ssp. pneumoniae,K. pneumoniae,Bacteria
+UVA26671,P6,Lung/Trachea,NA,None,NA
+UVA34764,P7,Lung/Trachea,NA,None,NA
+UVA89627,P7,Lung/Trachea,NA,None,NA
+UVA35278,P8,Urine/Catheter,NA,None,NA
+UVA18348,P9,Skin/Wound,NA,None,NA
+UVA14140,P10,Skin/Wound,MSSA,MSSA,Bacteria
+UVA54978,P11,Lung/Trachea,NA,None,NA
+UVA84616,P12,Lung/Trachea,NA,None,NA
+UVA51120_1,P13,Skin/Wound,NA,None,NA
+UVA83538,P14,Skin/Wound,MRSA,MRSA,Bacteria
+UVA66663,P15,ENT/Sinus,NA,None,NA
+UVA16261,P16,Urine/Catheter,NA,None,NA
+UVA20879,P17,Urine/Catheter,NA,None,NA
+UVA36384,P18,Lung/Trachea,NA,None,NA
+UVA14781,P19,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA83066,P19,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA69391,P20,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA12186,P21,Lung/Trachea,NA,None,NA
+UVA65935,P22,Urine/Catheter,NA,None,NA
+UVA28252,P23,Other,NA,None,NA
+UVA10470,P24,Urine/Catheter,NA,None,NA
+UVA32972,P25,Lung/Trachea,NA,None,NA
+UVA43518,P26,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA14964,P26,ENT/Sinus,NA,None,NA
+UVA88332,P27,Urine/Catheter,NA,None,NA
+UVA75761,P28,Urine/Catheter,NA,None,NA
+UVA80107,P29,Urine/Catheter,NA,None,NA
+UVA48570,P30,Blood,"S. salivarius, S. mitis/S. oralis",S. salivarius,Bacteria
+UVA67189,P31,Lung/Trachea,NA,None,NA
+UVA81119,P32,Urine/Catheter,NA,None,NA
+UVA18197,P33,Other,NA,None,NA
+UVA46447,P34,ENT/Sinus,NA,None,NA
+UVA35455,P34,Lung/Trachea,NA,None,NA
+UVA13992,P34,ENT/Sinus,NA,None,NA
+UVA85771,P34,ENT/Sinus,NA,None,NA
+UVA53478,P35,ENT/Sinus,NA,None,NA
+UVA76623,P36,Lung/Trachea,NA,None,NA
+UVA68302,P36,Lung/Trachea,Aspergillis,A. fumigatus,Fungus
+UVA71539,P36,Lung/Trachea,S. maltophilia; A. fumigatus cmplx,S. maltophilia,Bacteria
+UVA82241,P37,Lung/Trachea,NA,None,NA
+UVA73474,P38,Urine/Catheter,NA,None,NA
+UVA68106,P39,Blood,NA,None,NA
+UVA66553,P40,Skin/Wound,NA,None,NA
+UVA46036,P40,Skin/Wound,NA,None,NA
+UVA82578,P41,Lung/Trachea,"A. fumigatis species cmplx, S. aureus",A. fumigatus,Fungus
+UVA25772,P42,Skin/Wound,NA,None,NA
+UVA59781,P43,Urine/Catheter,NA,None,NA
+UVA37457,P44,ENT/Sinus,NA,None,NA
+UVA47146,P45,ENT/Sinus,NA,None,NA
+UVA65395,P46,Skin/Wound,NA,None,NA
+UVA61262,P47,ENT/Sinus,NA,None,NA
+UVA72543,P48,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA89497,P49,Skin/Wound,NA,None,NA
+UVA10601,P49,Skin/Wound,C. albicans,C. albicans,Fungus
+UVA33490,P50,Lung/Trachea,K. oxytoca,K. oxytoca,Bacteria
+UVA70884,P50,Lung/Trachea,K. oxytoca,K. oxytoca,Bacteria
+UVA48247,P51,Skin/Wound,NA,None,NA
+UVA81028,P52,Urine/Catheter,NA,None,NA
+UVA48561,P53,Lung/Trachea,NA,None,NA
+UVA31531,P54,Urine/Catheter,NA,None,NA
+UVA12424,P54,Urine/Catheter,NA,None,NA
+UVA10785,P55,Urine/Catheter,NA,None,NA
+UVA64369,P56,Lung/Trachea,NA,None,NA
+UVA13160,P57,Blood,NA,None,NA
+UVA81798,P58,Urine/Catheter,NA,None,NA
+UVA11681,P59,Lung/Trachea,NA,None,NA
+UVA41138,P59,Lung/Trachea,NA,None,NA
+UVA63869,P60,Lung/Trachea,NA,None,NA
+UVA14997,P60,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA81527,P60,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA41319,P60,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA77543,P61,Lung/Trachea,NA,None,NA
+UVA14557,P62,Urine/Catheter,K. pneumoniae ssp. pneumoniae,K. pneumoniae,Bacteria
+UVA79344,P63,Lung/Trachea,NA,None,NA
+UVA55125,P63,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA64896,P63,Lung/Trachea,NA,None,NA
+UVA22340,P64,Lung/Trachea,NA,None,NA
+UVA25865,P65,Urine/Catheter,NA,None,NA
+UVA40768,P66,Skin/Wound,NA,None,NA
+UVA55865,P67,Urine/Catheter,NA,None,NA
+UVA61815,P68,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA88471,P68,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA44517,P69,Urine/Catheter,NA,None,NA
+UVA73065,P70,Skin/Wound,NA,None,NA
+UVA12847,P71,ENT/Sinus,NA,None,NA
+UVA31454,P72,Lung/Trachea,NA,None,NA
+UVA77460,P72,Lung/Trachea,NA,None,NA
+UVA36138,P72,Lung/Trachea,NA,None,NA
+UVA57535,P73,ENT/Sinus,S. lugdunesis,S. lugdunensis,Bacteria
+UVA34914,P74,Skin/Wound,NA,None,NA
+UVA18092,P75,Urine/Catheter,NA,None,NA
+UVA71283,P76,Lung/Trachea,NA,None,NA
+UVA61143,P76,Lung/Trachea,NA,None,NA
+UVA50254,P76,Lung/Trachea,NA,None,NA
+UVA79998,P76,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA45791,P77,Other,NA,None,NA
+UVA29628,P78,Skin/Wound,S. epidermidis,S. epidermidis,Bacteria
+UVA86678,P79,Urine/Catheter,Enterococcus faecalis,E. faecalis,Bacteria
+UVA12942,P80,Urine/Catheter,NA,None,NA
+UVA35471,P81,Urine/Catheter,NA,None,NA
+UVA17964,P82,Skin/Wound,NA,None,NA
+UVA58245,P83,Urine/Catheter,Providencia stuartii,P. stuartii,Bacteria
+UVA53341,P84,Urine/Catheter,NA,None,NA
+UVA10556,P85,Urine/Catheter,NA,None,NA
+UVA17076,P86,Urine/Catheter,NA,None,NA
+UVA20279,P87,Urine/Catheter,NA,None,NA
+UVA27889,P88,Urine/Catheter,NA,None,NA
+UVA37752,P88,Urine/Catheter,NA,None,NA
+UVA49803,P89,Skin/Wound,NA,None,NA
+UVA53246,P89,Other,NA,None,NA
+UVA44618,P90,Lung/Trachea,MSSA,MSSA,Bacteria
+UVA40576,P91,Urine/Catheter,NA,None,NA
+UVA33312,P92,Skin/Wound,MRSA,MRSA,Bacteria
+UVA19055,P93,Urine/Catheter,NA,None,NA
+UVA77786,P93,Urine/Catheter,NA,None,NA
+UVA18093,P94,ENT/Sinus,S. lugdunesis,S. lugdunensis,Bacteria
+UVA40480,P95,Urine/Catheter,Enterococcus faecalis,E. faecalis,Bacteria
+UVA58765,P96,Urine/Catheter,E. coli,E. coli,Bacteria
+UVA22266,P97,Skin/Wound,NA,None,NA
+UVA63406,P98,ENT/Sinus,NA,None,NA
+UVA20661,P99,Urine/Catheter,S. marcescens,S. marcescens,Bacteria
+UVA58957,P100,ENT/Sinus,NA,None,NA
+UVA82568,P101,Urine/Catheter,NA,None,NA
+UVA35756,P102,Urine/Catheter,NA,None,NA
+UVA46121,P103,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA89465,P103,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA55415,P104,Lung/Trachea,NA,None,NA
+UVA50799,P105,ENT/Sinus,NA,None,NA
+UVA36569,P106,Urine/Catheter,NA,None,NA
+UVA18277,P107,Urine/Catheter,NA,None,NA
+UVA17287,P108,Lung/Trachea,NA,None,NA
+UVA63437,P108,Lung/Trachea,NA,None,NA
+UVA69323,P109,Blood,NA,None,NA
+UVA72153,P110,Urine/Catheter,NA,None,NA
+UVA54886,P111,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA24785,P112,ENT/Sinus,NA,None,NA
+UVA70295,P113,Lung/Trachea,NA,None,NA
+UVA36752,P114,ENT/Sinus,S. marcescens,S. marcescens,Bacteria
+UVA26058,P115,Lung/Trachea,NA,None,NA
+UVA45734,P116,Lung/Trachea,NA,None,NA
+UVA33570,P116,Lung/Trachea,NA,None,NA
+UVA51434,P116,Lung/Trachea,NA,None,NA
+UVA53683,P117,Urine/Catheter,NA,None,NA
+UVA11164,P118,Skin/Wound,NA,None,NA
+UVA57990,P119,Lung/Trachea,NA,None,NA
+UVA69691,P119,Lung/Trachea,NA,None,NA
+UVA83300,P120,Other,NA,None,NA
+UVA57167,P121,Lung/Trachea,NA,None,NA
+UVA68557,P122,ENT/Sinus,NA,None,NA
+UVA11021,P123,Urine/Catheter,E. coli,E. coli,Bacteria
+UVA71788,P124,Skin/Wound,NA,None,NA
+UVA75697,P125,Lung/Trachea,NA,None,NA
+UVA88299,P126,Urine/Catheter,NA,None,NA
+UVA55663,P127,Urine/Catheter,NA,None,NA
+UVA77257,P128,Skin/Wound,NA,None,NA
+UVA19031,P129,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA36820,P129,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA74343,P129,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA71424,P129,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA82046,P129,Lung/Trachea,mrsa,MRSA,Bacteria
+UVA62934,P129,Lung/Trachea,NA,None,NA
+UVA68128,P129,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA21683,P129,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA57534,P130,Skin/Wound,NA,None,NA
+UVA95285,P130,Blood,NA,None,NA
+UVA38221,P131,Skin/Wound,NA,None,NA
+UVA79533,P131,Skin/Wound,B. fragilis,B. fragilis,Bacteria
+UVA75571,P132,Lung/Trachea,NA,None,NA
+UVA83350,P133,ENT/Sinus,NA,None,NA
+UVA35882,P134,Lung/Trachea,NA,None,NA
+UVA15030,P135,Skin/Wound,NA,None,NA
+UVA66990,P135,Blood,NA,None,NA
+UVA13172,P135,Blood,NA,None,NA
+UVA72389,P136,Other,E. faecalis; K. oxytoca,E. faecalis,Bacteria
+UVA36411,P138,Lung/Trachea,Haemophilus influenzae,H. influenzae,Bacteria
+UVA73498,P139,Lung/Trachea,Aspergillus fumigatus cmplx,A. fumigatus,Fungus
+UVA39594,P139,Lung/Trachea,Aspergillis,A. fumigatus,Fungus
+UVA50265,P139,Lung/Trachea,NA,None,NA
+UVA13623,P139,Lung/Trachea,NA,None,NA
+UVA70567,P140,Lung/Trachea,NA,None,NA
+UVA60445,P140,Lung/Trachea,NA,None,NA
+UVA29289,P141,Lung/Trachea,NA,None,NA
+UVA81771,P142,Lung/Trachea,GAS,Group A Streptococcus,Bacteria
+UVA77880,P143,Lung/Trachea,NA,None,NA
+UVA39860,P144,Urine/Catheter,NA,None,NA
+UVA45098,P144,Urine/Catheter,NA,None,NA
+UVA42308,P145,Lung/Trachea,H. influenzae,H. influenzae,Bacteria
+UVA89256,P146,ENT/Sinus,NA,None,NA
+UVA89731,P147,Urine/Catheter,NA,None,NA
+UVA56464,P148,Urine/Catheter,NA,None,NA
+UVA39299,P149,Urine/Catheter,NA,None,NA
+UVA12769,P150,ENT/Sinus,NA,None,NA
+UVA17211,P151,Urine/Catheter,NA,None,NA
+UVA82691,P152,ENT/Sinus,Burkholderia gladioli,B. gladioli,Bacteria
+UVA20915,P152,Lung/Trachea,B. gladioli,B. gladioli,Bacteria
+UVA35256,P153,Urine/Catheter,NA,None,NA
+UVA84956,P153,Urine/Catheter,E. faecalis,E. faecalis,Bacteria
+UVA65224,P154,Urine/Catheter,Enterococcus faecalis,E. faecalis,Bacteria
+UVA17888,P154,Urine/Catheter,NA,None,NA
+UVA25316,P154,Urine/Catheter,NA,None,NA
+UVA68339,P154,Urine/Catheter,Proteus mirabilis,P. mirabilis,Bacteria
+UVA45838,P154,Urine/Catheter,P. mirabilis,P. mirabilis,Bacteria
+UVA65742,P154,Urine/Catheter,NA,None,NA
+UVA13385,P154,Urine/Catheter,C. albicans,C. albicans,Fungus
+UVA27081,P154,Lung/Trachea,NA,None,NA
+UVA79924,P155,Lung/Trachea,NA,None,NA
+UVA21348,P156,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA74173,P157,Skin/Wound,NA,None,NA
+UVA76401,P158,Skin/Wound,S. aureus,MSSA,Bacteria
+UVA17061,P159,Lung/Trachea,NA,None,NA
+UVA36502,P160,Lung/Trachea,NA,None,NA
+UVA87524,P160,Lung/Trachea,NA,None,NA
+UVA31514,P160,Lung/Trachea,NA,None,NA
+UVA47633,P161,Lung/Trachea,NA,None,NA
+UVA40260,P162,Lung/Trachea,NA,None,NA
+UVA16905,P162,Lung/Trachea,NA,None,NA
+UVA69992,P162,Lung/Trachea,NA,None,NA
+UVA28909,P163,Skin/Wound,NA,None,NA
+UVA55069,P164,ENT/Sinus,NA,None,NA
+UVA87923,P164,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA18103,P164,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA64995,P164,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA25103,P165,Lung/Trachea,NA,None,NA
+UVA78014,P165,Lung/Trachea,NA,None,NA
+UVA58036,P166,Other,NA,None,NA
+UVA20775,P167,Urine/Catheter,Citrobacter fruendii,C. freundii,Bacteria
+UVA69837,P168,Lung/Trachea,NA,None,NA
+UVA31383,P169,Urine/Catheter,NA,None,NA
+UVA21740,P170,Urine/Catheter,K. pneumoniae ssp. pneumoniae,K. pneumoniae,Bacteria
+UVA15602,P171,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA37366,P172,Lung/Trachea,NA,None,NA
+UVA22854,P172,Blood,NA,None,NA
+UVA29191,P172,Lung/Trachea,NA,None,NA
+UVA35042,P173,Lung/Trachea,NA,None,NA
+UVA83468,P173,Lung/Trachea,NA,None,NA
+UVA81676,P173,ENT/Sinus,NA,None,NA
+UVA32089,P174,Lung/Trachea,NA,None,NA
+UVA63067,P175,Urine/Catheter,NA,None,NA
+UVA34984,P176,Lung/Trachea,H. influenzae,H. influenzae,Bacteria
+UVA34170,P177,Urine/Catheter,NA,None,NA
+UVA13968,P178,Urine/Catheter,NA,None,NA
+UVA47878,P179,Lung/Trachea,Stenotrophomonas maltophilia,S. maltophilia,Bacteria
+UVA25512,P179,Lung/Trachea,S. maltophilia,S. maltophilia,Bacteria
+UVA78982,P180,Urine/Catheter,NA,None,NA
+UVA89492,P181,Lung/Trachea,Steno maltophilia; Asp fumg cmplx,S. maltophilia,Bacteria
+UVA12529,P181,Lung/Trachea,Steno maltophilia; Asp fumg cmplx,S. maltophilia,Bacteria
+UVA18321,P181,Lung/Trachea,S. maltophilia,S. maltophilia,Bacteria
+UVA47366,P181,Lung/Trachea,NA,None,NA
+UVA29600,P182,Urine/Catheter,Klebsiella pneumoniae,K. pneumoniae,Bacteria
+UVA15034,P183,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA86266,P184,ENT/Sinus,"MSSA, Steno maltophilia",MSSA,Bacteria
+UVA67499,P184,ENT/Sinus,"MSSA, Steno maltophilia",MSSA,Bacteria
+UVA88395,P185,Urine/Catheter,NA,None,NA
+UVA85294,P186,Lung/Trachea,MRSA; MSSA,MRSA,Bacteria
+UVA24848,P186,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA86377,P187,Lung/Trachea,NA,None,NA
+UVA79367,P187,Lung/Trachea,NA,None,NA
+UVA11878,P187,Lung/Trachea,NA,None,NA
+UVA76831,P187,Lung/Trachea,NA,None,NA
+UVA20157,P188,Urine/Catheter,NA,None,NA
+UVA13575,P189,Urine/Catheter,NA,None,NA
+UVA50569,P190,Urine/Catheter,NA,None,NA
+UVA12354,P191,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA36347,P192,Lung/Trachea,NA,None,NA
+UVA18927,P193,Urine/Catheter,E. cloacae cmplx,E. cloacae,Bacteria
+UVA51689,P194,Lung/Trachea,NA,None,NA
+UVA69757,P195,Lung/Trachea,NA,None,NA
+UVA28635,P195,Lung/Trachea,NA,None,NA
+UVA70205,P195,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA81647,P195,Lung/Trachea,NA,None,NA
+UVA48314,P195,Lung/Trachea,NA,None,NA
+UVA50982,P195,Lung/Trachea,NA,None,NA
+UVA38520,P196,Urine/Catheter,NA,None,NA
+UVA15255,P197,Other,NA,None,NA
+UVA80865,P197,Other,lactobacillus; coag(-) Staph,Lactobacillus,Bacteria
+UVA36029,P197,Lung/Trachea,NA,None,NA
+UVA20943,P197,Lung/Trachea,NA,None,NA
+UVA43810,P197,Blood,E. faecium,E. faecium,Bacteria
+UVA70028,P198,Lung/Trachea,NA,None,NA
+UVA21757,P199,Lung/Trachea,NA,None,NA
+UVA81150,P199,Lung/Trachea,MSSA,MSSA,Bacteria
+UVA79223,P199,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA77609,P199,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA17922,P199,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA26601,P199,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA31619,P199,Lung/Trachea,NA,None,NA
+UVA73032,P199,Lung/Trachea,NA,None,NA
+UVA76735,P200,Lung/Trachea,MSSA,MSSA,Bacteria
+UVA66798,P200,Lung/Trachea,MSSA,MSSA,Bacteria
+UVA42217,P200,Lung/Trachea,MSSA,MSSA,Bacteria
+UVA73024,P201,Urine/Catheter,NA,None,NA
+UVA31469,P202,Lung/Trachea,MSSA; Aspergillis fumigatus cmplx,MSSA,Bacteria
+UVA20270,P202,ENT/Sinus,NA,None,NA
+UVA81023,P203,Lung/Trachea,NA,None,NA
+UVA65552,P203,Lung/Trachea,NA,None,NA
+UVA56328,P204,ENT/Sinus,NA,None,NA
+UVA35586,P205,Urine/Catheter,NA,None,NA
+UVA66661,P206,Lung/Trachea,NA,None,NA
+UVA30809,P206,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA85000,P207,Lung/Trachea,NA,None,NA
+UVA41838,P208,Lung/Trachea,NA,None,NA
+UVA20429,P208,Lung/Trachea,NA,None,NA
+UVA32264,P209,Urine/Catheter,NA,None,NA
+UVA27994,P210,Urine/Catheter,NA,None,NA
+UVA74525,P211,Skin/Wound,NA,None,NA
+UVA44068,P212,Lung/Trachea,NA,None,NA
+UVA87713,P213,Urine/Catheter,NA,None,NA
+UVA40886,P214,Urine/Catheter,NA,None,NA
+UVA76876,P215,Urine/Catheter,Morganella morgenii,M. morganii,Bacteria
+UVA18275,P216,ENT/Sinus,NA,None,NA
+UVA25062,P217,Urine/Catheter,NA,None,NA
+UVA67578,P217,Urine/Catheter,NA,None,NA
+UVA20178,P218,Lung/Trachea,NA,None,NA
+UVA81218,P220,Lung/Trachea,NA,None,NA
+UVA56489,P221,Other,NA,None,NA
+UVA81652,P222,Lung/Trachea,NA,None,NA
+UVA72391,P223,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA45906,P223,Lung/Trachea,NA,None,NA
+UVA40759,P224,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA52265,P225,Urine/Catheter,NA,None,NA
+UVA44952,P226,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA11432,P226,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA54808,P226,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA38604,P227,Skin/Wound,NA,None,NA
+UVA10691,P228,Urine/Catheter,K. pneumoniae,K. pneumoniae,Bacteria
+UVA43204,P229,Urine/Catheter,NA,None,NA
+UVA74477,P230,ENT/Sinus,NA,None,NA
+UVA72574,P231,Urine/Catheter,NA,None,NA
+UVA67296,P232,ENT/Sinus,NA,None,NA
+UVA20400,P233,ENT/Sinus,NA,None,NA
+UVA87222,P233,Lung/Trachea,Scedosporium spiospermum,S. apiospermum,Fungus
+UVA77308,P233,Lung/Trachea,A. fumigatus complex,A. fumigatus,Fungus
+UVA10545,P233,Lung/Trachea,A. fumigatus complex,A. fumigatus,Fungus
+UVA59971,P234,Urine/Catheter,NA,None,NA
+UVA77342,P235,ENT/Sinus,NA,None,NA
+UVA87179,P235,ENT/Sinus,NA,None,NA
+UVA59675,P236,Lung/Trachea,NA,None,NA
+UVA65052,P237,ENT/Sinus,NA,None,NA
+UVA13957,P237,ENT/Sinus,NA,None,NA
+UVA25702,P238,Urine/Catheter,NA,None,NA
+UVA83830,P239,Lung/Trachea,NA,None,NA
+UVA49130,P239,Lung/Trachea,NA,None,NA
+UVA32615,P239,Lung/Trachea,NA,None,NA
+UVA85817,P240,Blood,NA,None,NA
+UVA84371,P241,Lung/Trachea,NA,None,NA
+UVA52147,P241,Lung/Trachea,NA,None,NA
+UVA88362,P242,Lung/Trachea,NA,None,NA
+UVA12907,P242,Lung/Trachea,NA,None,NA
+UVA76794,P242,Lung/Trachea,NA,None,NA
+UVA21151,P243,Lung/Trachea,NA,None,NA
+UVA55124,P244,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA21958,P245,Lung/Trachea,NA,None,NA
+UVA19326,P245,Lung/Trachea,NA,None,NA
+UVA60385,P246,Lung/Trachea,NA,None,NA
+UVA53155,P247,Lung/Trachea,NA,None,NA
+UVA34964,P249,Lung/Trachea,NA,None,NA
+UVA39227,P249,Lung/Trachea,NA,None,NA
+UVA86920,P249,ENT/Sinus,NA,None,NA
+UVA71342,P249,ENT/Sinus,NA,None,NA
+UVA71669,P250,Urine/Catheter,P. mirabilis,P. mirabilis,Bacteria
+UVA17594,P251,Urine/Catheter,NA,None,NA
+UVA73152,P251,Skin/Wound,MRSA,MRSA,Bacteria
+UVA33039,P252,Lung/Trachea,NA,None,NA
+UVA11738,P253,Lung/Trachea,NA,None,NA
+UVA19396,P254,Lung/Trachea,A. fumigatus complex; S. aureus,A. fumigatus,Fungus
+UVA33574,P255,Urine/Catheter,NA,None,NA
+UVA83809,P256,Skin/Wound,NA,None,NA
+UVA19756,P256,Skin/Wound,NA,None,NA
+UVA59281,P257,Lung/Trachea,B cepacia group,B. cepacia,Bacteria
+UVA67455,P258,Lung/Trachea,NA,None,NA
+UVA77619,P258,Lung/Trachea,NA,None,NA
+UVA71996,P258,Lung/Trachea,NA,None,NA
+UVA46266,P259,Urine/Catheter,NA,None,NA
+UVA74920,P260,Skin/Wound,NA,None,NA
+UVA15627,P261,ENT/Sinus,Strep intermedius,S. intermedius,Bacteria
+UVA76497,P262,Lung/Trachea,NA,None,NA
+UVA59526,P262,Lung/Trachea,NA,None,NA
+UVA84251,P263,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA41960,P263,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA60407,P264,ENT/Sinus,NA,None,NA
+UVA33021,P265,Lung/Trachea,NA,None,NA
+UVA77128,P265,Lung/Trachea,NA,None,NA
+UVA72374,P266,Urine/Catheter,NA,None,NA
+UVA81216,P267,Skin/Wound,NA,None,NA
+UVA54869,P268,Lung/Trachea,NA,None,NA
+UVA52453,P269,Skin/Wound,NA,None,NA
+UVA66959,P270,Lung/Trachea,NA,None,NA
+UVA77526,P271,Blood,NA,None,NA
+UVA14444,P272,Urine/Catheter,NA,None,NA
+UVA54578,P273,Lung/Trachea,NA,None,NA
+UVA72906,P274,Lung/Trachea,NA,None,NA
+UVA36506,P275,Urine/Catheter,NA,None,NA
+UVA81018,P276,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA14629,P277,Skin/Wound,S. aureus,MSSA,Bacteria
+UVA24357,P278,Lung/Trachea,NA,None,NA
+UVA68943,P279,Lung/Trachea,MSSA,MSSA,Bacteria
+UVA60382,P279,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA11701,P280,Urine/Catheter,Raoultella planticola,R. planticola,Bacteria
+UVA13627,P281,Urine/Catheter,"E. cloacae cmplx, E. faecalis",E. cloacae,Bacteria
+UVA59183,P282,Urine/Catheter,NA,None,NA
+UVA79393,P283,Urine/Catheter,NA,None,NA
+UVA81611,P283,Urine/Catheter,NA,None,NA
+UVA58714,P284,Urine/Catheter,E. coli,E. coli,Bacteria
+UVA49404,P285,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA22853,P286,Urine/Catheter,K. pneumoniae,K. pneumoniae,Bacteria
+UVA49028,P287,Urine/Catheter,K. pneumoniae ssp. pneumoniae,K. pneumoniae,Bacteria
+UVA29615,P288,Lung/Trachea,NA,None,NA
+UVA52881,P288,Lung/Trachea,NA,None,NA
+UVA17215,P289,Urine/Catheter,Candida albicans,C. albicans,Fungus
+UVA64466,P290,Lung/Trachea,NA,None,NA
+UVA72625,P323,Lung/Trachea,NA,None,NA
+UVA22555,P292,Urine/Catheter,NA,None,NA
+UVA14109,P293,Urine/Catheter,NA,None,NA
+UVA45606,P293,Urine/Catheter,NA,None,NA
+UVA25452,P294,ENT/Sinus,NA,None,NA
+UVA39999,P295,Urine/Catheter,NA,None,NA
+UVA81630,P296,Lung/Trachea,NA,None,NA
+UVA62718,P296,Lung/Trachea,NA,None,NA
+UVA64308,P296,Lung/Trachea,NA,None,NA
+UVA72110,P297,Urine/Catheter,NA,None,NA
+UVA35387,P298,Urine/Catheter,NA,None,NA
+UVA48488,P299,Urine/Catheter,NA,None,NA
+UVA45766,P300,ENT/Sinus,NA,None,NA
+UVA13527,P300,ENT/Sinus,NA,None,NA
+UVA59465,P301,Lung/Trachea,A. baummanii cmplx,A. baumannii,Bacteria
+UVA68232,P302,ENT/Sinus,NA,None,NA
+UVA86222,P303,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA61073,P304,Lung/Trachea,NA,None,NA
+UVA66424,P305,Lung/Trachea,NA,None,NA
+UVA43811,P306,Skin/Wound,NA,None,NA
+UVA20033,P307,Lung/Trachea,NA,None,NA
+UVA60415,P308,Urine/Catheter,E. coli,E. coli,Bacteria
+UVA89572,P309,Urine/Catheter,K. pneumoniae,K. pneumoniae,Bacteria
+UVA36667,P310,ENT/Sinus,NA,None,NA
+UVA40072,P311,Urine/Catheter,NA,None,NA
+UVA21396,P312,Urine/Catheter,NA,None,NA
+UVA65043_1,P313,Lung/Trachea,NA,None,NA
+UVA18666,P313,Lung/Trachea,NA,None,NA
+UVA32708,P313,Lung/Trachea,Aspergillis,A. fumigatus,Fungus
+UVA77870,P313,Lung/Trachea,Aspergillis,A. fumigatus,Fungus
+UVA44435,P314,Lung/Trachea,NA,None,NA
+UVA77098,P314,Lung/Trachea,NA,None,NA
+UVA73512,P315,Skin/Wound,NA,None,NA
+UVA31753,P316,ENT/Sinus,S. constellatus,S. constellatus,Bacteria
+UVA75788,P317,ENT/Sinus,NA,None,NA
+UVA37832,P318,Skin/Wound,NA,None,NA
+UVA68142,P319,Urine/Catheter,E. faecalis,E. faecalis,Bacteria
+UVA36334,P320,Lung/Trachea,NA,None,NA
+UVA80377,P320,Lung/Trachea,NA,None,NA
+UVA57665,P320,Lung/Trachea,NA,None,NA
+UVA64014,P321,Urine/Catheter,NA,None,NA
+UVA57654,P322,Lung/Trachea,NA,None,NA
+UVA39220,P323,Lung/Trachea,NA,None,NA
+UVA71738,P323,Lung/Trachea,NA,None,NA
+UVA87034,P323,Lung/Trachea,NA,None,NA
+UVA60396,P324,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA30370,P325,ENT/Sinus,NA,None,NA
+UVA26486,P326,Urine/Catheter,NA,None,NA
+UVA12347,P327,Urine/Catheter,NA,None,NA
+UVA17334,P328,Lung/Trachea,NA,None,NA
+UVA31930,P328,Lung/Trachea,NA,None,NA
+UVA74885,P328,Lung/Trachea,NA,None,NA
+UVA79163,P328,Lung/Trachea,NA,None,NA
+UVA21134,P329,Urine/Catheter,NA,None,NA
+UVA15708,P330,Lung/Trachea,NA,None,NA
+UVA23384,P330,Lung/Trachea,NA,None,NA
+UVA14817,P331,Lung/Trachea,NA,None,NA
+UVA16470,P331,Other,NA,None,NA
+UVA49180,P331,Blood,NA,None,NA
+UVA37404,P332,Urine/Catheter,Providencia rettgeri,P. rettgeri,Bacteria
+UVA88966,P333,Urine/Catheter,NA,None,NA
+UVA63932,P334,Other,NA,None,NA
+UVA59336,P335,Skin/Wound,"coag (-) staph, Finegoldia magna",Coagulase Negative Staphylococcus,Bacteria
+UVA67120,P336,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA41159,P336,Urine/Catheter,MRSA,MRSA,Bacteria
+UVA86722,P337,Lung/Trachea,NA,None,NA
+UVA60900,P338,Lung/Trachea,NA,None,NA
+UVA29905,P339,Skin/Wound,NA,None,NA
+UVA70533,P340,Lung/Trachea,NA,None,NA
+UVA44229,P341,Lung/Trachea,NA,None,NA
+UVA11002,P342,Lung/Trachea,NA,None,NA
+UVA75683,P343,Lung/Trachea,H. influenzae,H. influenzae,Bacteria
+UVA30856,P343,Lung/Trachea,NA,None,NA
+UVA77111,P344,Urine/Catheter,NA,None,NA
+UVA51795,P344,Urine/Catheter,NA,None,NA
+UVA53600,P345,Skin/Wound,Candida albicans,C. albicans,Fungus
+UVA11320,P346,ENT/Sinus,NA,None,NA
+UVA57542,P347,Urine/Catheter,NA,None,NA
+UVA10627,P348,ENT/Sinus,NA,None,NA
+UVA60721,P348,ENT/Sinus,MSSA,MSSA,Bacteria
+UVA60106,P348,ENT/Sinus,MSSA,MSSA,Bacteria
+UVA66984,P348,ENT/Sinus,NA,None,NA
+UVA41344,P348,ENT/Sinus,NA,None,NA
+UVA37480,P348,ENT/Sinus,NA,None,NA
+UVA34989,P348,ENT/Sinus,NA,None,NA
+UVA65043_2,P348,ENT/Sinus,NA,None,NA
+UVA61922,P349,ENT/Sinus,NA,None,NA
+UVA21295,P350,ENT/Sinus,NA,None,NA
+UVA13104,P351,Lung/Trachea,NA,None,NA
+UVA50380,P351,Lung/Trachea,NA,None,NA
+UVA26710,P352,Skin/Wound,NA,None,NA
+UVA14916,P353,Skin/Wound,MRSA,MRSA,Bacteria
+UVA65529,P355,Lung/Trachea,NA,None,NA
+UVA58533,P356,Urine/Catheter,NA,None,NA
+UVA65965,P357,Skin/Wound,S. aureus,MSSA,Bacteria
+UVA50039,P358,Lung/Trachea,NA,None,NA
+UVA15321,P359,Skin/Wound,NA,None,NA
+UVA42776,P360,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA63516,P361,Urine/Catheter,NA,None,NA
+UVA78461,P363,Urine/Catheter,NA,None,NA
+UVA55009,P364,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA72608,P366,Urine/Catheter,NA,None,NA
+UVA11523,P367,ENT/Sinus,NA,None,NA
+UVA84910,P368,Lung/Trachea,coryneform G+ rods,Corynebacterium,Bacteria
+UVA15038,P369,Lung/Trachea,NA,None,NA
+UVA83362,P370,ENT/Sinus,NA,None,NA
+UVA82106,P371,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA85906,P371,Lung/Trachea,NA,None,NA
+UVA78291,P371,Lung/Trachea,NA,None,NA
+UVA54405,P371,Lung/Trachea,NA,None,NA
+UVA69084,P372,Lung/Trachea,H. influenzae,H. influenzae,Bacteria
+UVA21233,P372,ENT/Sinus,NA,None,NA
+UVA80627,P372,Lung/Trachea,NA,None,NA
+UVA55552,P373,Urine/Catheter,NA,None,NA
+UVA32762,P374,Urine/Catheter,NA,None,NA
+UVA61519,P375,Skin/Wound,NA,None,NA
+UVA50198,P376,Urine/Catheter,NA,None,NA
+UVA15647,P377,Lung/Trachea,"S. aureus, S. maltophilia",MSSA,Bacteria
+UVA16209,P378,ENT/Sinus,NA,None,NA
+UVA11718,P379,Urine/Catheter,NA,None,NA
+UVA96951,P380,Skin/Wound,NA,None,NA
+UVA16378,P1,Urine/Catheter,NA,None,NA
+UVA28358,P3,Skin/Wound,NA,None,NA
+UVA54057,P381,Urine/Catheter,NA,None,NA
+UVA23211,P7,Lung/Trachea,NA,None,NA
+UVA27939,P382,Other,S. marcescens,S. marcescens,Bacteria
+UVA67900,P12,Lung/Trachea,NA,None,NA
+UVA71598,P12,Lung/Trachea,NA,None,NA
+UVA77520,P383,Urine/Catheter,NA,None,NA
+UVA83878,P384,Lung/Trachea,NA,None,NA
+UVA65080,P384,ENT/Sinus,NA,None,NA
+UVA10338,P385,Skin/Wound,NA,None,NA
+UVA18857,P386,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA74290,P19,Lung/Trachea,MRSA; Aspergillis,MRSA,Bacteria
+UVA33600,P20,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA29656,P387,Urine/Catheter,NA,None,NA
+UVA16906,P387,Urine/Catheter,NA,None,NA
+UVA11307,P388,Skin/Wound,NA,None,NA
+UVA19260,P21,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA92180,P389,Lung/Trachea,E. cloacae cmplx,E. cloacae,Bacteria
+UVA19210,P390,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA59270,P390,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA73245,P26,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA25490,P391,Urine/Catheter,NA,None,NA
+UVA88457,P392,ENT/Sinus,NA,None,NA
+UVA27636,P393,Lung/Trachea,NA,None,NA
+UVA71882,P393,Lung/Trachea,NA,None,NA
+UVA99415,P394,Urine/Catheter,group B strep,Group B Streptococcus,Bacteria
+UVA77565,P41,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA57358,P395,Lung/Trachea,yeast (not cryptococcus),Unspecified yeast,Fungus
+UVA47531,P395,Lung/Trachea,yeast (not cryptococcus),Unspecified yeast,Fungus
+UVA77561,P396,Lung/Trachea,NA,None,NA
+UVA32523,P397,Skin/Wound,NA,None,NA
+UVA35947,P397,Skin/Wound,NA,None,NA
+UVA19137,P46,Lung/Trachea,NA,None,NA
+UVA38552,P398,Urine/Catheter,NA,None,NA
+UVA12516,P399,Urine/Catheter,E. coli,E. coli,Bacteria
+UVA91898,P53,Lung/Trachea,NA,None,NA
+UVA81029,P400,Skin/Wound,NA,None,NA
+UVA53958,P401,Blood,NA,None,NA
+UVA56703,P401,Blood,NA,None,NA
+UVA39174,P402,Lung/Trachea,"M. catarrhalis, S. aureus",M. catarrhalis,Bacteria
+UVA38894,P60,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA30200,P60,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA69848,P403,Lung/Trachea,NA,None,NA
+UVA93612,P404,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA57476,P61,Lung/Trachea,NA,None,NA
+UVA78967,P405,Lung/Trachea,P. mirabilis,P. mirabilis,Bacteria
+UVA52004,P406,Urine/Catheter,NA,None,NA
+UVA74130,P406,Urine/Catheter,NA,None,NA
+UVA27899,P407,ENT/Sinus,NA,None,NA
+UVA71742,P408,ENT/Sinus,NA,None,NA
+UVA50910,P409,Urine/Catheter,NA,None,NA
+UVA96247,P410,Urine/Catheter,Candida parapsilosis cmplx,C. parapsilosis,Fungus
+UVA15544,P72,Lung/Trachea,NA,None,NA
+UVA73396,P72,Lung/Trachea,NA,None,NA
+UVA53542,P72,Lung/Trachea,S. maltophilia,S. maltophilia,Bacteria
+UVA36800,P72,Lung/Trachea,S. maltophilia,S. maltophilia,Bacteria
+UVA66479,P76,Lung/Trachea,NA,None,NA
+UVA81392,P76,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA41793,P76,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA51075,P76,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA28293,P411,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA34105,P412,Urine/Catheter,NA,None,NA
+UVA59424,P413,Urine/Catheter,Morganella morganii ssp morganii,M. morganii,Bacteria
+UVA58103,P414,ENT/Sinus,NA,None,NA
+UVA74001,P82,Skin/Wound,NA,None,NA
+UVA87371,P82,Skin/Wound,NA,None,NA
+UVA13369,P415,Lung/Trachea,NA,None,NA
+UVA71186,P415,Lung/Trachea,NA,None,NA
+UVA77579,P83,Lung/Trachea,NA,None,NA
+UVA75469,P416,Lung/Trachea,NA,None,NA
+UVA58342,P417,Skin/Wound,NA,None,NA
+UVA37201,P90,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA82254,P418,Urine/Catheter,NA,None,NA
+UVA44252,P419,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA62360,P420,Urine/Catheter,E. faecalis,E. faecalis,Bacteria
+UVA67141,P421,ENT/Sinus,NA,None,NA
+UVA34952,P422,Skin/Wound,NA,None,NA
+UVA28995,P423,Urine/Catheter,NA,None,NA
+UVA23886,P103,Lung/Trachea,"Aspergillis, MRSA",A. fumigatus,Fungus
+UVA92661,P103,Lung/Trachea,"Aspergillis, MRSA",A. fumigatus,Fungus
+UVA78496,P103,Lung/Trachea,NA,None,NA
+UVA21789,P103,Lung/Trachea,NA,None,NA
+UVA16568,P424,ENT/Sinus,"S. aureus, GBS, S. marcescens",MSSA,Bacteria
+UVA47252,P425,ENT/Sinus,NA,None,NA
+UVA88338,P426,Skin/Wound,NA,None,NA
+UVA88049,P427,Urine/Catheter,NA,None,NA
+UVA81910,P428,Skin/Wound,NA,None,NA
+UVA65966,P429,Urine/Catheter,NA,None,NA
+UVA46147,P430,Other,NA,None,NA
+UVA74513,P431,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA64180,P432,Urine/Catheter,NA,None,NA
+UVA63016,P432,Blood,NA,None,NA
+UVA18334,P433,Urine/Catheter,NA,None,NA
+UVA38828,P434,ENT/Sinus,NA,None,NA
+UVA29364,P119,Lung/Trachea,NA,None,NA
+UVA53380,P119,Lung/Trachea,NA,None,NA
+UVA55117,P119,Lung/Trachea,NA,None,NA
+UVA79332,P121,Lung/Trachea,NA,None,NA
+UVA24304,P129,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA58843,P129,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA37691,P435,Lung/Trachea,NA,None,NA
+UVA57377,P436,Urine/Catheter,NA,None,NA
+UVA10439,P133,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA73804,P437,Urine/Catheter,NA,None,NA
+UVA54208,P135,Blood,NA,None,NA
+UVA80028,P438,Skin/Wound,NA,None,NA
+UVA42643,P439,Lung/Trachea,NA,None,NA
+UVA74611,P440,Urine/Catheter,C. freundii,C. freundii,Bacteria
+UVA31079,P139,Lung/Trachea,NA,None,NA
+UVA16893,P139,Lung/Trachea,NA,None,NA
+UVA38445,P139,Lung/Trachea,NA,None,NA
+UVA82219,P141,Lung/Trachea,NA,None,NA
+UVA11719,P141,Lung/Trachea,NA,None,NA
+UVA76098,P143,Lung/Trachea,NA,None,NA
+UVA17980,P143,Lung/Trachea,NA,None,NA
+UVA80360,P144,Urine/Catheter,NA,None,NA
+UVA61926,P441,Lung/Trachea,NA,None,NA
+UVA92737,P441,Lung/Trachea,NA,None,NA
+UVA55924,P442,Urine/Catheter,NA,None,NA
+UVA53129,P442,Urine/Catheter,NA,None,NA
+UVA42029,P443,Lung/Trachea,NA,None,NA
+UVA11529,P151,Urine/Catheter,E. aerogenes,K. aerogenes,Bacteria
+UVA63725,P444,Lung/Trachea,GBS,Group B Streptococcus,Bacteria
+UVA37984,P444,Lung/Trachea,"yeast, not cryptococcus",Unspecified yeast,Fungus
+UVA65244,P444,Lung/Trachea,NA,None,NA
+UVA71782,P445,Lung/Trachea,NA,None,NA
+UVA95779,P445,Urine/Catheter,NA,None,NA
+UVA11840,P152,ENT/Sinus,NA,None,NA
+UVA75728,P446,Lung/Trachea,"S. aureus, P. fluorescens",MSSA,Bacteria
+UVA91556,P154,Lung/Trachea,NA,None,NA
+UVA16182,P447,Skin/Wound,Achromobacter sp,Achromobacter,Bacteria
+UVA97814,P448,Blood,NA,None,NA
+UVA94177,P162,Lung/Trachea,NA,None,NA
+UVA40818,P449,Lung/Trachea,NA,None,NA
+UVA31234,P164,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA22511,P165,ENT/Sinus,NA,None,NA
+UVA14961,P450,Lung/Trachea,NA,None,NA
+UVA79834,P451,ENT/Sinus,NA,None,NA
+UVA84682,P169,Urine/Catheter,E. faecalis,E. faecalis,Bacteria
+UVA83419,P452,Urine/Catheter,NA,None,NA
+UVA73371,P453,Blood,NA,None,NA
+UVA84369,P454,Urine/Catheter,NA,None,NA
+UVA35584,P455,Blood,NA,None,NA
+UVA26412,P456,ENT/Sinus,NA,None,NA
+UVA80757,P457,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA35074,P457,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA39484,P179,Lung/Trachea,NA,None,NA
+UVA71380,P179,Lung/Trachea,NA,None,NA
+UVA72945,P179,Lung/Trachea,S. maltophilia,S. maltophilia,Bacteria
+UVA91598,P179,Lung/Trachea,"S. maltophilia, A. fumigatus sp cmpls",S. maltophilia,Bacteria
+UVA74847,P179,Lung/Trachea,S. maltophilia,S. maltophilia,Bacteria
+UVA87542,P458,Lung/Trachea,NA,None,NA
+UVA75609,P184,ENT/Sinus,NA,None,NA
+UVA83133,P186,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA85089,P459,Urine/Catheter,NA,None,NA
+UVA81554,P191,Lung/Trachea,NA,None,NA
+UVA33506,P191,Lung/Trachea,NA,None,NA
+UVA59535,P191,Lung/Trachea,S. aureus; Exophiala sp,MSSA,Bacteria
+UVA81541,P191,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA98765,P195,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA17042,P195,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA43268,P460,Skin/Wound,S. aureus,MSSA,Bacteria
+UVA18681,P461,Urine/Catheter,K. pneumoniae ssp. pneumoniae,K. pneumoniae,Bacteria
+UVA81817,P462,Urine/Catheter,NA,None,NA
+UVA89505,P463,ENT/Sinus,NA,None,NA
+UVA50502,P464,Urine/Catheter,NA,None,NA
+UVA91879,P199,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA84268,P199,Lung/Trachea,"S. aureus, S. maltophilia",MSSA,Bacteria
+UVA31622,P465,Lung/Trachea,NA,None,NA
+UVA84727,P202,Lung/Trachea,NA,None,NA
+UVA64531,P202,Lung/Trachea,NA,None,NA
+UVA65847,P203,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA40647,P466,Lung/Trachea,NA,None,NA
+UVA63083,P466,Lung/Trachea,NA,None,NA
+UVA80048,P206,Lung/Trachea,NA,None,NA
+UVA94731,P467,Urine/Catheter,NA,None,NA
+UVA64021,P468,Skin/Wound,NA,None,NA
+UVA25313,P469,Blood,NA,None,NA
+UVA27964,P220,Lung/Trachea,NA,None,NA
+UVA48872,P220,Lung/Trachea,NA,None,NA
+UVA53791,P218,ENT/Sinus,NA,None,NA
+UVA96797,P223,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA36761,P223,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA60331,P470,Skin/Wound,coag (-) staph,Coagulase Negative Staphylococcus,Bacteria
+UVA92147,P471,Skin/Wound,NA,None,NA
+UVA58976,P472,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA69181,P226,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA68021,P226,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA64515,P226,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA58625,P473,Urine/Catheter,NA,None,NA
+UVA76418,P474,Lung/Trachea,NA,None,NA
+UVA94596,P475,Lung/Trachea,NA,None,NA
+UVA69538,P476,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA93653,P476,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA88196,P477,Urine/Catheter,NA,None,NA
+UVA82499,P478,Blood,E. coli,E. coli,Bacteria
+UVA55634,P479,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA51595,P479,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA45565,P479,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA94662,P479,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA50174,P480,Urine/Catheter,NA,None,NA
+UVA91946,P480,Urine/Catheter,NA,None,NA
+UVA54286,P480,Urine/Catheter,NA,None,NA
+UVA36733,P481,Other,S. aureus,MSSA,Bacteria
+UVA63026,P481,Lung/Trachea,NA,None,NA
+UVA68507,P481,Lung/Trachea,NA,None,NA
+UVA66988,P482,Skin/Wound,NA,None,NA
+UVA23754,P483,Other,abscess,None,NA
+UVA61824,P484,Lung/Trachea,NA,None,NA
+UVA60663,P485,Lung/Trachea,NA,None,NA
+UVA71072,P241,Lung/Trachea,NA,None,NA
+UVA68859,P487,Urine/Catheter,NA,None,NA
+UVA69728,P488,ENT/Sinus,Trichosporon asahii,T. asahii,Fungus
+UVA63833,P489,Urine/Catheter,NA,None,NA
+UVA29272,P490,Urine/Catheter,NA,None,NA
+UVA58417,P491,ENT/Sinus,NA,None,NA
+UVA40981,P492,Lung/Trachea,NA,None,NA
+UVA69342,P249,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA37621,P493,Skin/Wound,Enterococcus faecium,E. faecium,Bacteria
+UVA96272,P493,Lung/Trachea,NA,None,NA
+UVA95569,P494,Skin/Wound,NA,None,NA
+UVA13275,P495,Skin/Wound,B. fragilis,B. fragilis,Bacteria
+UVA49205,P496,Lung/Trachea,S. maltophilia,S. maltophilia,Bacteria
+UVA10098,P251,Other,Bacteroides fragilis,B. fragilis,Bacteria
+UVA17939,P251,Urine/Catheter,NA,None,NA
+UVA36815,P497,Skin/Wound,C. albicans,C. albicans,Fungus
+UVA86543,P254,Lung/Trachea,MRSA; Aspergillis,MRSA,Bacteria
+UVA62109,P498,Lung/Trachea,NA,None,NA
+UVA59097,P499,ENT/Sinus,NA,None,NA
+UVA78509,P500,Urine/Catheter,NA,None,NA
+UVA72232,P258,Lung/Trachea,NA,None,NA
+UVA36928,P258,Lung/Trachea,NA,None,NA
+UVA10036,P258,Lung/Trachea,NA,None,NA
+UVA69414,P258,Lung/Trachea,NA,None,NA
+UVA91753,P258,Lung/Trachea,NA,None,NA
+UVA98236,P501,Skin/Wound,C. albicans,C. albicans,Fungus
+UVA39478,P502,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA21933,P265,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA97603,P265,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA21061,P503,Urine/Catheter,NA,None,NA
+UVA89326,P504,Lung/Trachea,NA,None,NA
+UVA40242,P276,ENT/Sinus,NA,None,NA
+UVA62324,P505,Urine/Catheter,E. coli,E. coli,Bacteria
+UVA22185,P506,Skin/Wound,MRSA; Prevotella sp.,MRSA,Bacteria
+UVA43114,P507,Lung/Trachea,NA,None,NA
+UVA94810,P508,Urine/Catheter,NA,None,NA
+UVA20237,P509,Urine/Catheter,C. albicans,C. albicans,Fungus
+UVA10549,P510,ENT/Sinus,NA,None,NA
+UVA62849,P511,Skin/Wound,MRSA,MRSA,Bacteria
+UVA92957,P512,Urine/Catheter,NA,None,NA
+UVA53984,P512,Urine/Catheter,NA,None,NA
+UVA12766,P512,Urine/Catheter,NA,None,NA
+UVA90832,P513,Lung/Trachea,yeast (not cryptococcus),Unspecified yeast,Fungus
+UVA91411,P514,Lung/Trachea,NA,None,NA
+UVA12662,P515,Urine/Catheter,E. aerogenes,K. aerogenes,Bacteria
+UVA31926,P516,Blood,NA,None,NA
+UVA59020,P517,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA96040,P517,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA29543,P295,Urine/Catheter,NA,None,NA
+UVA28897,P295,Urine/Catheter,NA,None,NA
+UVA57739,P518,Blood,K. pneumoniae,K. pneumoniae,Bacteria
+UVA20797,P518,Lung/Trachea,K. pneumoniae,K. pneumoniae,Bacteria
+UVA79701,P519,ENT/Sinus,"S. pneumoniae, Moraxella catarrhalis, Provedencia rettgeri",S. pneumoniae,Bacteria
+UVA81232,P520,Skin/Wound,NA,None,NA
+UVA77801,P307,Lung/Trachea,A. fumigatus sp cmpls,A. fumigatus,Fungus
+UVA92238,P521,Urine/Catheter,NA,None,NA
+UVA35908,P522,Urine/Catheter,NA,None,NA
+UVA83617,P523,ENT/Sinus,Enterobacter aerogenes,K. aerogenes,Bacteria
+UVA90381,P524,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA42546,P524,Lung/Trachea,NA,None,NA
+UVA70570,P314,Lung/Trachea,E. faecium,E. faecium,Bacteria
+UVA19942,P525,Urine/Catheter,NA,None,NA
+UVA31614,P315,Urine/Catheter,NA,None,NA
+UVA15113,P315,Skin/Wound,NA,None,NA
+UVA81252,P315,Skin/Wound,NA,None,NA
+UVA48732,P526,Urine/Catheter,NA,None,NA
+UVA30822,P527,Urine/Catheter,NA,None,NA
+UVA68706,P320,Lung/Trachea,NA,None,NA
+UVA13989,P528,Urine/Catheter,NA,None,NA
+UVA32920,P528,Urine/Catheter,NA,None,NA
+UVA65818,P323,Lung/Trachea,NA,None,NA
+UVA46762,P323,Lung/Trachea,NA,None,NA
+UVA17946,P323,Lung/Trachea,NA,None,NA
+UVA45140,P323,Lung/Trachea,NA,None,NA
+UVA52725,P529,Urine/Catheter,NA,None,NA
+UVA87965,P530,Skin/Wound,MRSA,MRSA,Bacteria
+UVA90493,P328,Lung/Trachea,NA,None,NA
+UVA13562,P531,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA12216,P531,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA43001,P532,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA89688,P532,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA88080,P533,Lung/Trachea,NA,None,NA
+UVA91261,P534,Urine/Catheter,NA,None,NA
+UVA23044,P535,Urine/Catheter,NA,None,NA
+UVA74553,P536,Urine/Catheter,E. faecalis,E. faecalis,Bacteria
+UVA37356,P537,Skin/Wound,B. fragilis group,B. fragilis,Bacteria
+UVA28717,P538,Lung/Trachea,NA,None,NA
+UVA62361,P539,Lung/Trachea,Achromobacter sp; MRSA,Achromobacter,Bacteria
+UVA16951,P540,Lung/Trachea,NA,None,NA
+UVA67755,P540,Lung/Trachea,A. baumanii,A. baumannii,Bacteria
+UVA93133,P540,Lung/Trachea,NA,None,NA
+UVA95268,P540,Lung/Trachea,NA,None,NA
+UVA62136,P541,Urine/Catheter,NA,None,NA
+UVA29803,P542,Skin/Wound,"GBS, MRSA",Group B Streptococcus,Bacteria
+UVA72200,P543,Blood,NA,None,NA
+UVA34553,P543,Urine/Catheter,NA,None,NA
+UVA42806,P544,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA74921,P545,Urine/Catheter,NA,None,NA
+UVA32572,P343,Lung/Trachea,NA,None,NA
+UVA51289,P343,Lung/Trachea,NA,None,NA
+UVA45011,P546,Skin/Wound,NA,None,NA
+UVA73437,P546,Skin/Wound,NA,None,NA
+UVA54542,P547,Urine/Catheter,NA,None,NA
+UVA71449,P344,Urine/Catheter,NA,None,NA
+UVA28992,P347,Urine/Catheter,NA,None,NA
+UVA52771,P347,Urine/Catheter,NA,None,NA
+UVA17824,P348,Lung/Trachea,NA,None,NA
+UVA39927,P348,Lung/Trachea,NA,None,NA
+UVA80510,P348,Lung/Trachea,NA,None,NA
+UVA29723,P348,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA58515,P348,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA70040,P348,Lung/Trachea,NA,None,NA
+UVA44545,P548,Skin/Wound,E. cloacae complex,E. cloacae,Bacteria
+UVA42066,P549,Lung/Trachea,"yeast, not cryptococcus",Unspecified yeast,Fungus
+UVA92832,P550,ENT/Sinus,NA,None,NA
+UVA86013,P550,ENT/Sinus,NA,None,NA
+UVA58858,P360,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA47193,P360,ENT/Sinus,NA,None,NA
+UVA11210,P551,Lung/Trachea,NA,None,NA
+UVA72262,P362,Urine/Catheter,NA,None,NA
+UVA12442,P364,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA40862,P552,Urine/Catheter,NA,None,NA
+UVA69762,P4,Blood,"Providencia stuartii, Proteus mirabilis, MRSA",P. stuartii,Bacteria
+UVA53422,P19,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA12017,P553,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA70485,P554,Lung/Trachea,NA,None,NA
+UVA97913,P41,ENT/Sinus,NA,None,NA
+UVA72047,P555,Urine/Catheter,NA,None,NA
+UVA11294,P556,Lung/Trachea,Achromobacter sp.,Achromobacter,Bacteria
+UVA85119,P557,Lung/Trachea,NA,None,NA
+UVA87439,P61,Lung/Trachea,NA,None,NA
+UVA36768,P71,ENT/Sinus,NA,None,NA
+UVA75638,P72,Lung/Trachea,S. maltophilia,S. maltophilia,Bacteria
+UVA98844,P72,Lung/Trachea,S. maltophilia,S. maltophilia,Bacteria
+UVA58107,P76,Lung/Trachea,NA,None,NA
+UVA35046,P76,Lung/Trachea,NA,None,NA
+UVA45581,P76,Lung/Trachea,NA,None,NA
+UVA78585,P76,Lung/Trachea,NA,None,NA
+UVA32461,P558,Skin/Wound,NA,None,NA
+UVA76705,P559,Skin/Wound,coryneform G+ rods,Corynebacterium,Bacteria
+UVA98838,P560,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA66155,P561,Other,NA,None,NA
+UVA50849,P90,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA51130,P563,Lung/Trachea,NA,None,NA
+UVA22509,P421,ENT/Sinus,NA,None,NA
+UVA12392,P564,ENT/Sinus,NA,None,NA
+UVA56091,P103,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA99950,P431,Lung/Trachea,NA,None,NA
+UVA85482,P565,Urine/Catheter,S. aureus,MSSA,Bacteria
+UVA21747,P212,Lung/Trachea,NA,None,NA
+UVA79969,P566,Skin/Wound,Enterobacter avium,E. avium,Bacteria
+UVA43570,P134,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA35727,P441,Lung/Trachea,NA,None,NA
+UVA24201,P441,Lung/Trachea,NA,None,NA
+UVA78123,P441,Lung/Trachea,NA,None,NA
+UVA40154,P567,Lung/Trachea,NA,None,NA
+UVA69541,P154,Urine/Catheter,NA,None,NA
+UVA41578,P154,Urine/Catheter,NA,None,NA
+UVA33072,P154,Lung/Trachea,NA,None,NA
+UVA70876,P154,Lung/Trachea,NA,None,NA
+UVA23444,P154,Urine/Catheter,NA,None,NA
+UVA41596,P568,Urine/Catheter,NA,None,NA
+UVA47632,P569,Lung/Trachea,NA,None,NA
+UVA35326,P569,Lung/Trachea,NA,None,NA
+UVA61605,P450,Lung/Trachea,NA,None,NA
+UVA36880,P570,Skin/Wound,"E. cloacae cmplx, Pseudomonas stutzeri",E. cloacae,Bacteria
+UVA66081,P571,Skin/Wound,NA,None,NA
+UVA15131,P171,Lung/Trachea,"S. aureus, Steno maltophilia",MSSA,Bacteria
+UVA17448,P572,Skin/Wound,Staphylococcus lugdunesis,S. lugdunensis,Bacteria
+UVA66325,P177,Urine/Catheter,NA,None,NA
+UVA99065,P179,Lung/Trachea,"yeast, not cryptococcus",Unspecified yeast,Fungus
+UVA39039,P179,Lung/Trachea,"yeast, not cryptococcus",Unspecified yeast,Fungus
+UVA98549,P179,Lung/Trachea,"yeast, not cryptococcus",Unspecified yeast,Fungus
+UVA84638,P573,Urine/Catheter,NA,None,NA
+UVA24760,P186,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA89704,P194,Lung/Trachea,Enterobacter aerogenes,K. aerogenes,Bacteria
+UVA80653,P195,Lung/Trachea,S. aureus,MSSA,Bacteria
+UVA92554,P195,Lung/Trachea,NA,None,NA
+UVA50961,P574,Urine/Catheter,E. faecalis,E. faecalis,Bacteria
+UVA32492,P575,Urine/Catheter,NA,None,NA
+UVA85552,P576,Lung/Trachea,NA,None,NA
+UVA43753,P211,Urine/Catheter,NA,None,NA
+UVA88515,P577,Lung/Trachea,NA,None,NA
+UVA16846,P578,Lung/Trachea,NA,None,NA
+UVA88643,P579,Urine/Catheter,NA,None,NA
+UVA96553,P580,Urine/Catheter,NA,None,NA
+UVA89844,P233,Lung/Trachea,NA,None,NA
+UVA52494,P233,Lung/Trachea,NA,None,NA
+UVA27083,P235,ENT/Sinus,NA,None,NA
+UVA92845,P235,ENT/Sinus,NA,None,NA
+UVA95796,P581,Urine/Catheter,E. coli,E. coli,Bacteria
+UVA95972,P582,Other,"B. fragilis, Strep anginosus grp, Fusobacterium necrophorum",B. fragilis,Bacteria
+UVA29113,P583,ENT/Sinus,NA,None,NA
+UVA17351,P251,Urine/Catheter,NA,None,NA
+UVA44388,P584,Lung/Trachea,MRSA,MRSA,Bacteria
+UVA68690,P258,Lung/Trachea,NA,None,NA
+UVA39301,P258,Lung/Trachea,NA,None,NA
+UVA16865,P586,Skin/Wound,NA,None,NA
+UVA24741,P587,Skin/Wound,"E. faecium, Candida glabrata",E. faecium,Bacteria
+UVA53663,P588,Urine/Catheter,NA,None,NA
+UVA37007,P588,Urine/Catheter,NA,None,NA
+UVA23417,P589,ENT/Sinus,NA,None,NA
+UVA94219,P589,ENT/Sinus,NA,None,NA
+UVA54441,P590,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA93169,P591,Lung/Trachea,NA,None,NA
+UVA62258,P526,Urine/Catheter,NA,None,NA
+UVA55496,P317,ENT/Sinus,MRSA,MRSA,Bacteria
+UVA84977,P320,ENT/Sinus,S. aureus,MSSA,Bacteria
+UVA78111,P328,ENT/Sinus,NA,None,NA
+UVA41748,P328,ENT/Sinus,NA,None,NA
+UVA11871,P328,ENT/Sinus,NA,None,NA
+UVA83950,P592,Urine/Catheter,NA,None,NA
+UVA19288,P537,Skin/Wound,"Actinomyces sp., B. fragilis group",Actinomyces,Bacteria
+UVA68246,P540,Blood,NA,None,NA
+UVA28224,P540,Urine/Catheter,NA,None,NA
+UVA63033,P593,Other,NA,None,NA
+UVA88571,P594,Urine/Catheter,NA,None,NA
+UVA35280,P348,ENT/Sinus,NA,None,NA
+UVA33030,P595,Skin/Wound,MRSA; yeast,MRSA,Bacteria
+UVA89966,P596,Lung/Trachea,NA,None,NA
+UVA44020,P597,Urine/Catheter,"coryneform rod, coag (-) staph",Corynebacterium,Bacteria
+UVA76166,P598,Lung/Trachea,NA,None,NA
+UVA48570,P30,Blood,"S. salivarius, S. mitis/S. oralis",S. mitis/S. oralis,Bacteria
+UVA71539,P36,Lung/Trachea,S. maltophilia; A. fumigatus cmplx,A. fumigatus,Fungus
+UVA82578,P41,Lung/Trachea,"A. fumigatis species cmplx, S. aureus",MSSA,Bacteria
+UVA72389,P136,Other,E. faecalis; K. oxytoca,K. oxytoca,Bacteria
+UVA89492,P181,Lung/Trachea,Steno maltophilia; Asp fumg cmplx,A. fumigatus,Fungus
+UVA12529,P181,Lung/Trachea,Steno maltophilia; Asp fumg cmplx,A. fumigatus,Fungus
+UVA86266,P184,ENT/Sinus,"MSSA, Steno maltophilia",S. maltophilia,Bacteria
+UVA67499,P184,ENT/Sinus,"MSSA, Steno maltophilia",S. maltophilia,Bacteria
+UVA85294,P186,Lung/Trachea,MRSA; MSSA,MSSA,Bacteria
+UVA80865,P197,Other,lactobacillus; coag(-) Staph,Coagulase Negative Staphylococcus,Bacteria
+UVA31469,P202,Lung/Trachea,MSSA; Aspergillis fumigatus cmplx,A. fumigatus,Fungus
+UVA19396,P254,Lung/Trachea,A. fumigatus complex; S. aureus,MSSA,Bacteria
+UVA13627,P281,Urine/Catheter,"E. cloacae cmplx, E. faecalis",E. faecalis,Bacteria
+UVA59336,P335,Skin/Wound,"coag (-) staph, Finegoldia magna",F. magna,Bacteria
+UVA15647,P377,Lung/Trachea,"S. aureus, S. maltophilia",S. maltophilia,Bacteria
+UVA74290,P19,Lung/Trachea,MRSA; Aspergillis,A. fumigatus,Fungus
+UVA39174,P402,Lung/Trachea,"M. catarrhalis, S. aureus",MSSA,Bacteria
+UVA23886,P103,Lung/Trachea,"Aspergillis, MRSA",MRSA,Bacteria
+UVA92661,P103,Lung/Trachea,"Aspergillis, MRSA",MRSA,Bacteria
+UVA16568,P424,ENT/Sinus,"S. aureus, GBS, S. marcescens",Group B Streptococcus,Bacteria
+UVA75728,P446,Lung/Trachea,"S. aureus, P. fluorescens",P. fluorescens,Bacteria
+UVA91598,P179,Lung/Trachea,"S. maltophilia, A. fumigatus sp cmpls",A. fumigatus,Fungus
+UVA59535,P191,Lung/Trachea,S. aureus; Exophiala sp,Exophiala,Fungus
+UVA84268,P199,Lung/Trachea,"S. aureus, S. maltophilia",S. maltophilia,Bacteria
+UVA86543,P254,Lung/Trachea,MRSA; Aspergillis,A. fumigatus,Fungus
+UVA22185,P506,Skin/Wound,MRSA; Prevotella sp.,Prevotella,Bacteria
+UVA79701,P519,ENT/Sinus,"S. pneumoniae, Moraxella catarrhalis, Provedencia rettgeri",M. catarrhalis,Bacteria
+UVA62361,P539,Lung/Trachea,Achromobacter sp; MRSA,MRSA,Bacteria
+UVA29803,P542,Skin/Wound,"GBS, MRSA",MRSA,Bacteria
+UVA69762,P4,Blood,"Providencia stuartii, Proteus mirabilis, MRSA",P. mirabilis,Bacteria
+UVA45873,P562,Lung/Trachea,"GNR, Elizabethkinga sp.",Elizabethkingia,Bacteria
+UVA36880,P570,Skin/Wound,"E. cloacae cmplx, Pseudomonas stutzeri",P. stutzeri,Bacteria
+UVA15131,P171,Lung/Trachea,"S. aureus, Steno maltophilia",S. maltophilia,Bacteria
+UVA95972,P582,Other,"B. fragilis, Strep anginosus grp, Fusobacterium necrophorum",Streptococcus anginosus group,Bacteria
+UVA24741,P587,Skin/Wound,"E. faecium, Candida glabrata",C. glabrata,Fungus
+UVA19288,P537,Skin/Wound,"Actinomyces sp., B. fragilis group",B. fragilis,Bacteria
+UVA33030,P595,Skin/Wound,MRSA; yeast,Unspecified yeast,Fungus
+UVA44020,P597,Urine/Catheter,"coryneform rod, coag (-) staph",Coagulase Negative Staphylococcus,Bacteria
+UVA16568,P424,ENT/Sinus,"S. aureus, GBS, S. marcescens",S. marcescens,Bacteria
+UVA79701,P519,ENT/Sinus,"S. pneumoniae, Moraxella catarrhalis, Provedencia rettgeri",P. rettgeri,Bacteria
+UVA69762,P4,Blood,"Providencia stuartii, Proteus mirabilis, MRSA",MRSA,Bacteria
+UVA95972,P582,Other,"B. fragilis, Strep anginosus grp, Fusobacterium necrophorum",F. necrophorum,Bacteria
